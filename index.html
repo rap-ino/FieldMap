@@ -11,119 +11,169 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
 body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Error overlay ── */
 #err-overlay { display:none; position:fixed; inset:0; background:#1e293b; z-index:99999; align-items:center; justify-content:center; flex-direction:column; gap:12px; padding:40px; }
 #err-overlay h2 { color:#f87171; font-size:18px; }
 #err-overlay p  { color:#94a3b8; font-size:13px; text-align:center; max-width:500px; }
 #err-overlay button { background:#0ea5e9; color:white; border:none; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; }
-#err-overlay button:hover { background:#0284c7; }
 
-header { background: #1e293b; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #0ea5e9; flex-shrink: 0; z-index: 10; flex-wrap: wrap; }
-header h1 { font-size: 17px; font-weight: 800; color: #f8fafc; letter-spacing: -0.5px; }
-header h1 span { color: #38bdf8; }
-.subtitle { font-size: 11px; color: #64748b; }
-.header-right { margin-left: auto; display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
-#interactive-controls { display: none; align-items: center; gap: 7px; background: #4c1d9533; border: 1px solid #7c3aed88; border-radius: 20px; padding: 4px 11px 4px 9px; }
-#interactive-controls label { font-size: 11px; font-weight: 700; color: #c4b5fd; white-space: nowrap; }
-#miles-select { background: #4c1d95; color: white; border: 1px solid #7c3aed; border-radius: 7px; padding: 4px 7px; font-size: 12px; font-weight: 700; cursor: pointer; outline: none; }
-.btn { padding: 6px 12px; border: none; border-radius: 7px; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.15s; white-space: nowrap; }
-.btn-dark { background: #334155; color: #e2e8f0; } .btn-dark:hover { background: #475569; }
-.btn-green { background: #10b981; color: white; } .btn-green:hover { background: #059669; }
-.btn-red { background: #ef4444; color: white; font-size: 11px; padding: 3px 7px; border-radius: 5px; } .btn-red:hover { background: #dc2626; }
-.btn-heat-on { background: #b45309 !important; color: white !important; }
-.btn-inter-on { background: #7c3aed !important; color: white !important; box-shadow: 0 0 0 3px #7c3aed44; }
+/* ── Header ── */
+header { background:#1e293b; padding:10px 16px; display:flex; align-items:center; gap:10px; border-bottom:2px solid #0ea5e9; flex-shrink:0; z-index:10; flex-wrap:wrap; }
+header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5px; }
+header h1 span { color:#38bdf8; }
+.subtitle { font-size:11px; color:#64748b; }
+.header-right { margin-left:auto; display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
+#interactive-controls { display:none; align-items:center; gap:7px; background:#4c1d9533; border:1px solid #7c3aed88; border-radius:20px; padding:4px 11px 4px 9px; }
+#interactive-controls label { font-size:11px; font-weight:700; color:#c4b5fd; white-space:nowrap; }
+#miles-select { background:#4c1d95; color:white; border:1px solid #7c3aed; border-radius:7px; padding:4px 7px; font-size:12px; font-weight:700; cursor:pointer; outline:none; }
+.btn { padding:6px 12px; border:none; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.15s; white-space:nowrap; }
+.btn-dark { background:#334155; color:#e2e8f0; } .btn-dark:hover { background:#475569; }
+.btn-green { background:#10b981; color:white; } .btn-green:hover { background:#059669; }
+.btn-red { background:#ef4444; color:white; font-size:11px; padding:3px 7px; border-radius:5px; } .btn-red:hover { background:#dc2626; }
+.btn-heat-on { background:#b45309 !important; color:white !important; }
+.btn-inter-on { background:#7c3aed !important; color:white !important; box-shadow:0 0 0 3px #7c3aed44; }
 
-.app-body { display: flex; flex: 1; overflow: hidden; }
+/* ── Layout ── */
+.app-body { display:flex; flex:1; overflow:hidden; }
 
-#sidebar { width: 300px; background: #fff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; box-shadow: 2px 0 8px rgba(0,0,0,0.06); }
-.sidebar-controls { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 7px; background: #f8fafc; flex-shrink: 0; }
-.search-wrap { position: relative; }
-.search-wrap input { width: 100%; padding: 7px 28px 7px 30px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; outline: none; background: white; color: #1e293b; }
-.search-wrap input:focus { border-color: #0ea5e9; }
-.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; color: #94a3b8; }
-.s-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: 800; cursor: pointer; color: #94a3b8; background: #e2e8f0; border-radius: 50%; width: 16px; height: 16px; display: none; align-items: center; justify-content: center; line-height: 1; }
-.s-clear:hover { background: #cbd5e1; color: #475569; }
-.team-row { display: flex; align-items: center; gap: 8px; }
-.team-row label { font-size: 11px; font-weight: 700; color: #64748b; white-space: nowrap; }
-#team-filter { flex: 1; background: white; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 9px; font-size: 12px; font-weight: 600; color: #1e293b; outline: none; cursor: pointer; }
-#team-filter:focus { border-color: #0ea5e9; }
+/* ── Sidebar toggle handle ── */
+#sidebar-toggle { flex-shrink:0; width:18px; background:#1e293b; border:none; border-left:1px solid #334155; border-right:1px solid #0ea5e9; cursor:pointer; color:#94a3b8; font-size:13px; display:flex; align-items:center; justify-content:center; z-index:20; transition:background 0.15s; }
+#sidebar-toggle:hover { background:#334155; color:white; }
 
-.sidebar-tabs { display: flex; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
-.tab { flex: 1; padding: 9px 4px; text-align: center; font-size: 11px; font-weight: 700; cursor: pointer; color: #94a3b8; border-bottom: 2px solid transparent; transition: all 0.15s; }
-.tab.active { color: #0ea5e9; border-bottom-color: #0ea5e9; background: white; }
-.tab:hover:not(.active) { color: #475569; }
-.tab-content { display: none; flex: 1; overflow-y: auto; padding: 10px; flex-direction: column; gap: 7px; }
-.tab-content.active { display: flex; }
-.section-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 4px 0 2px; }
+/* ── Sidebar ── */
+#sidebar { width:300px; background:#fff; display:flex; flex-direction:column; overflow:hidden; flex-shrink:0; transition:width 0.25s ease; }
+#sidebar.collapsed { width:0; }
 
-#inter-hint { display: none; background: linear-gradient(135deg,#4c1d95,#6d28d9); color: white; padding: 9px 12px; font-size: 11px; font-weight: 600; line-height: 1.5; flex-shrink: 0; border-bottom: 1px solid #7c3aed; }
-#inter-hint strong { color: #c4b5fd; }
+/* Sidebar controls */
+.sidebar-controls { padding:10px 12px; border-bottom:1px solid #e2e8f0; display:flex; flex-direction:column; gap:7px; background:#f8fafc; flex-shrink:0; }
 
-.person-card { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 9px; padding: 8px 10px; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 8px; }
-.person-card:hover { border-color: #93c5fd; background: #eff6ff; }
-.person-card.selected { border-color: #0ea5e9; background: #e0f2fe; box-shadow: 0 0 0 2px #0ea5e940; }
-.person-card.in-radius { border-color: #7c3aed; background: #f5f3ff; box-shadow: 0 0 0 2px #7c3aed30; }
-.pdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; border: 2px solid white; box-shadow: 0 0 0 1px #cbd5e1; margin-top: 3px; }
-.pdot-t { background: #0284c7; } .pdot-c { background: #ea580c; }
-.pinfo { flex: 1; min-width: 0; }
-.pname { font-size: 12px; font-weight: 700; color: #1e293b; line-height: 1.3; }
-.pmeta { font-size: 10px; color: #94a3b8; font-weight: 500; margin-top: 1px; }
-.card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-.team-badge { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 10px; color: white; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; letter-spacing: 0.02em; }
-.team-badge:hover { opacity: 0.8; }
-.del-btn { opacity: 0; transition: opacity 0.15s; }
-.person-card:hover .del-btn { opacity: 1; }
+/* ── Search ── */
+.search-wrap { position:relative; }
+.search-wrap input { width:100%; padding:7px 28px 7px 30px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:12px; font-weight:500; outline:none; background:white; color:#1e293b; }
+.search-wrap input:focus { border-color:#0ea5e9; }
+.search-icon { position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:13px; pointer-events:none; color:#94a3b8; }
+.s-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:800; cursor:pointer; color:#94a3b8; background:#e2e8f0; border-radius:50%; width:16px; height:16px; display:none; align-items:center; justify-content:center; line-height:1; }
+.s-clear:hover { background:#cbd5e1; color:#475569; }
 
-#dist-empty { color: #94a3b8; font-size: 12px; text-align: center; padding: 28px 10px; line-height: 1.7; }
-.dist-header { font-size: 12px; font-weight: 800; color: #0ea5e9; padding-bottom: 7px; border-bottom: 2px solid #e0f2fe; margin-bottom: 2px; }
-.dist-item { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.15s; font-size: 12px; }
-.dist-item:hover { border-color: #ea580c; background: #fff7ed; }
-.dist-item.inter { border-color: #7c3aed44; } .dist-item.inter:hover { background: #f5f3ff; border-color: #7c3aed; }
-.dist-rank { width: 22px; height: 22px; border-radius: 50%; background: #e2e8f0; color: #64748b; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.r1 { background: #10b981; color: white; } .r2 { background: #f59e0b; color: white; } .r3 { background: #f97316; color: white; }
-.dname { flex: 1; font-weight: 700; color: #1e293b; } .dname small { color: #94a3b8; font-size: 10px; font-weight: 500; display: block; }
-.dmiles { color: #0284c7; font-weight: 800; font-size: 13px; } .dmiles.inside { color: #7c3aed; }
+/* ── Search dropdown ── */
+#search-dropdown { display:none; position:absolute; top:100%; left:0; right:0; margin-top:4px; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.14); z-index:500; max-height:320px; overflow-y:auto; }
+#search-dropdown .sd-item { display:flex; align-items:center; gap:9px; padding:9px 12px; cursor:pointer; transition:background 0.1s; border-bottom:1px solid #f8fafc; }
+#search-dropdown .sd-item:last-child { border-bottom:none; }
+#search-dropdown .sd-item:hover { background:#f0f9ff; }
+#search-dropdown .sd-item:first-child { border-radius:8px 8px 0 0; }
+#search-dropdown .sd-item:last-child { border-radius:0 0 8px 8px; }
+#search-dropdown .sd-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; border:2px solid white; box-shadow:0 0 0 1px #cbd5e1; }
+#search-dropdown .sd-info { flex:1; min-width:0; }
+#search-dropdown .sd-name { font-size:12px; font-weight:700; color:#1e293b; }
+#search-dropdown .sd-meta { font-size:10px; color:#94a3b8; }
+#search-dropdown .sd-badge { font-size:9px; font-weight:800; padding:2px 6px; border-radius:10px; color:white; flex-shrink:0; }
+#search-dropdown .sd-empty { padding:14px; text-align:center; color:#94a3b8; font-size:12px; }
 
-.form-group { display: flex; flex-direction: column; gap: 4px; }
-.form-group label { font-size: 11px; color: #64748b; font-weight: 700; }
-.form-group input, .form-group select { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 7px; padding: 7px 9px; color: #1e293b; font-size: 12px; outline: none; font-weight: 500; }
-.form-group input:focus, .form-group select:focus { border-color: #0ea5e9; background: white; }
-#drop-zone { border: 2px dashed #cbd5e1; border-radius: 9px; padding: 16px; text-align: center; cursor: pointer; color: #94a3b8; font-size: 12px; transition: all 0.15s; background: #f8fafc; }
-#drop-zone:hover, #drop-zone.over { border-color: #0ea5e9; color: #0ea5e9; background: #e0f2fe; }
-#drop-zone .dicon { font-size: 24px; margin-bottom: 4px; }
+.team-row { display:flex; align-items:center; gap:8px; }
+.team-row label { font-size:11px; font-weight:700; color:#64748b; white-space:nowrap; }
+#team-filter { flex:1; background:white; border:1.5px solid #e2e8f0; border-radius:8px; padding:6px 9px; font-size:12px; font-weight:600; color:#1e293b; outline:none; cursor:pointer; }
+#team-filter:focus { border-color:#0ea5e9; }
 
-#map-wrap { position: relative; flex: 1; overflow: hidden; }
-#map { width: 100%; height: 100%; }
-#conn-banner { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; border-radius: 20px; padding: 8px 20px; font-size: 12px; font-weight: 700; z-index: 1000; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.3); white-space: nowrap; pointer-events: none; border: 1px solid #38bdf8; }
+.sidebar-tabs { display:flex; border-bottom:1px solid #e2e8f0; flex-shrink:0; }
+.tab { flex:1; padding:9px 4px; text-align:center; font-size:11px; font-weight:700; cursor:pointer; color:#94a3b8; border-bottom:2px solid transparent; transition:all 0.15s; }
+.tab.active { color:#0ea5e9; border-bottom-color:#0ea5e9; background:white; }
+.tab:hover:not(.active) { color:#475569; }
+.tab-content { display:none; flex:1; overflow-y:auto; padding:10px; flex-direction:column; gap:7px; }
+.tab-content.active { display:flex; }
+.section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; margin:4px 0 2px; }
 
-.map-legend { position: absolute; bottom: 30px; right: 10px; z-index: 1000; background: white; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 14px; font-size: 11px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-.li { display: flex; align-items: center; gap: 7px; margin: 3px 0; font-weight: 600; color: #475569; }
-.ldot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 1px #cbd5e1; }
-#heat-legend { position: absolute; bottom: 30px; left: 310px; z-index: 1000; background: white; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 14px; font-size: 11px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: none; }
-.heat-bar { width: 130px; height: 12px; border-radius: 6px; background: linear-gradient(to right,#3b82f6,#22c55e,#facc15,#f97316,#ef4444); margin: 5px 0; }
-.heat-labels { display: flex; justify-content: space-between; color: #94a3b8; font-size: 10px; font-weight: 600; }
+#inter-hint { display:none; background:linear-gradient(135deg,#4c1d95,#6d28d9); color:white; padding:9px 12px; font-size:11px; font-weight:600; line-height:1.5; flex-shrink:0; border-bottom:1px solid #7c3aed; }
+#inter-hint strong { color:#c4b5fd; }
 
-.cluster-popup { position: absolute; z-index: 2000; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); padding: 8px 6px; min-width: 180px; pointer-events: auto; transform: translateX(-50%) translateY(-100%); margin-top: -12px; }
-.cluster-popup::after { content: ''; position: absolute; bottom: -7px; left: 50%; width: 12px; height: 12px; background: white; border-right: 1.5px solid #e2e8f0; border-bottom: 1.5px solid #e2e8f0; transform: translateX(-50%) rotate(45deg); }
-.cluster-popup-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; padding: 2px 8px 6px; border-bottom: 1px solid #f1f5f9; margin-bottom: 4px; }
-.cluster-popup-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: background 0.1s; font-size: 12px; font-weight: 600; color: #1e293b; }
-.cluster-popup-item:hover { background: #f1f5f9; }
-.cluster-popup-item.in-radius-item { background: #f5f3ff; } .cluster-popup-item.in-radius-item:hover { background: #ede9fe; }
+/* ── Person cards ── */
+.person-card { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:9px; padding:8px 10px; cursor:pointer; transition:all 0.15s; display:flex; align-items:flex-start; gap:8px; }
+.person-card:hover { border-color:#93c5fd; background:#eff6ff; }
+.person-card.selected { border-color:#0ea5e9; background:#e0f2fe; box-shadow:0 0 0 2px #0ea5e940; }
+.person-card.in-radius { border-color:#7c3aed; background:#f5f3ff; box-shadow:0 0 0 2px #7c3aed30; }
+.pdot { width:9px; height:9px; border-radius:50%; flex-shrink:0; border:2px solid white; box-shadow:0 0 0 1px #cbd5e1; margin-top:3px; }
+.pdot-t { background:#0284c7; } .pdot-c { background:#ea580c; } .pdot-o { background:#0d9488; }
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:12px; font-weight:700; color:#1e293b; line-height:1.3; }
+.pmeta { font-size:10px; color:#94a3b8; font-weight:500; margin-top:1px; }
+.card-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+.team-badge { font-size:9px; font-weight:800; padding:2px 6px; border-radius:10px; color:white; cursor:pointer; transition:opacity 0.15s; white-space:nowrap; }
+.team-badge:hover { opacity:0.8; }
+.del-btn { opacity:0; transition:opacity 0.15s; }
+.person-card:hover .del-btn { opacity:1; }
 
-#team-picker { position: absolute; z-index: 3000; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); padding: 6px; min-width: 170px; display: none; }
-.tp-item { padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: background 0.1s; }
-.tp-item:hover { background: #f1f5f9; }
-.tp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+/* ── Archive section ── */
+.archive-header { display:flex; align-items:center; gap:8px; cursor:pointer; padding:7px 10px; border-radius:8px; background:#fef3c7; border:1.5px solid #fde68a; transition:background 0.15s; }
+.archive-header:hover { background:#fde68a; }
+.archive-header span { font-size:11px; font-weight:800; color:#92400e; flex:1; }
+.archive-count { background:#f59e0b; color:white; font-size:10px; font-weight:800; padding:1px 6px; border-radius:10px; }
+.archive-chevron { font-size:11px; color:#92400e; transition:transform 0.2s; }
+.archive-chevron.open { transform:rotate(90deg); }
+#archive-list { display:none; flex-direction:column; gap:5px; padding-top:4px; }
+#archive-list.open { display:flex; }
+.archive-card { background:#fffbeb; border:1.5px solid #fde68a; border-radius:8px; padding:7px 10px; display:flex; align-items:center; gap:8px; }
+.archive-card .pname { font-size:11px; font-weight:600; color:#78350f; }
+.archive-card .pmeta { font-size:10px; color:#a16207; }
+.restore-btn { background:#f59e0b; color:white; border:none; border-radius:5px; font-size:10px; font-weight:700; padding:3px 7px; cursor:pointer; flex-shrink:0; }
+.restore-btn:hover { background:#d97706; }
 
-#toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(60px); background: #10b981; color: white; padding: 9px 18px; border-radius: 20px; font-size: 12px; font-weight: 700; z-index: 9999; transition: transform 0.25s; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-#toast.show { transform: translateX(-50%) translateY(0); }
-#toast.err { background: #ef4444; } #toast.purple { background: #7c3aed; }
+/* ── Distances ── */
+#dist-empty { color:#94a3b8; font-size:12px; text-align:center; padding:28px 10px; line-height:1.7; }
+.dist-header { font-size:12px; font-weight:800; color:#0ea5e9; padding-bottom:7px; border-bottom:2px solid #e0f2fe; margin-bottom:2px; }
+.dist-item { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:8px; cursor:pointer; transition:all 0.15s; font-size:12px; }
+.dist-item:hover { border-color:#ea580c; background:#fff7ed; }
+.dist-item.inter { border-color:#7c3aed44; } .dist-item.inter:hover { background:#f5f3ff; border-color:#7c3aed; }
+.dist-rank { width:22px; height:22px; border-radius:50%; background:#e2e8f0; color:#64748b; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.r1{background:#10b981;color:white} .r2{background:#f59e0b;color:white} .r3{background:#f97316;color:white}
+.dname { flex:1; font-weight:700; color:#1e293b; } .dname small { color:#94a3b8; font-size:10px; font-weight:500; display:block; }
+.dmiles { color:#0284c7; font-weight:800; font-size:13px; } .dmiles.inside { color:#7c3aed; }
 
-#loading { position: fixed; inset: 0; background: rgba(15,23,42,0.7); display: none; align-items: center; justify-content: center; z-index: 9998; flex-direction: column; gap: 12px; }
-.spinner { width: 36px; height: 36px; border: 3px solid #334155; border-top-color: #38bdf8; border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* ── Add form ── */
+.form-group { display:flex; flex-direction:column; gap:4px; }
+.form-group label { font-size:11px; color:#64748b; font-weight:700; }
+.form-group input, .form-group select { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:7px; padding:7px 9px; color:#1e293b; font-size:12px; outline:none; font-weight:500; }
+.form-group input:focus, .form-group select:focus { border-color:#0ea5e9; background:white; }
+#drop-zone { border:2px dashed #cbd5e1; border-radius:9px; padding:16px; text-align:center; cursor:pointer; color:#94a3b8; font-size:12px; transition:all 0.15s; background:#f8fafc; }
+#drop-zone:hover, #drop-zone.over { border-color:#0ea5e9; color:#0ea5e9; background:#e0f2fe; }
+#drop-zone .dicon { font-size:24px; margin-bottom:4px; }
 
-.dist-label-el { background: white; border: 2px solid #1e293b; border-radius: 6px; padding: 2px 7px; font-size: 11px; font-weight: 800; color: #1e293b; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+/* ── Map ── */
+#map-wrap { position:relative; flex:1; overflow:hidden; min-width:0; }
+#map { width:100%; height:100%; }
+#conn-banner { position:absolute; top:12px; left:50%; transform:translateX(-50%); background:#1e293b; color:white; border-radius:20px; padding:8px 20px; font-size:12px; font-weight:700; z-index:1000; display:none; box-shadow:0 4px 16px rgba(0,0,0,0.3); white-space:nowrap; pointer-events:none; border:1px solid #38bdf8; }
+.map-legend { position:absolute; bottom:30px; right:10px; z-index:1000; background:white; border:1px solid #e2e8f0; border-radius:9px; padding:10px 14px; font-size:11px; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+.li { display:flex; align-items:center; gap:7px; margin:3px 0; font-weight:600; color:#475569; }
+.ldot { width:10px; height:10px; border-radius:50%; border:2px solid white; box-shadow:0 0 0 1px #cbd5e1; }
+#heat-legend { position:absolute; bottom:30px; left:10px; z-index:1000; background:white; border:1px solid #e2e8f0; border-radius:9px; padding:10px 14px; font-size:11px; box-shadow:0 2px 8px rgba(0,0,0,0.12); display:none; }
+.heat-bar { width:130px; height:12px; border-radius:6px; background:linear-gradient(to right,#3b82f6,#22c55e,#facc15,#f97316,#ef4444); margin:5px 0; }
+.heat-labels { display:flex; justify-content:space-between; color:#94a3b8; font-size:10px; font-weight:600; }
+
+/* ── Cluster popup ── */
+.cluster-popup { position:absolute; z-index:2000; background:white; border:1.5px solid #e2e8f0; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.18); padding:8px 6px; min-width:190px; max-height:280px; overflow-y:auto; pointer-events:auto; transform:translateX(-50%) translateY(-100%); margin-top:-12px; }
+.cluster-popup::after { content:''; position:absolute; bottom:-7px; left:50%; width:12px; height:12px; background:white; border-right:1.5px solid #e2e8f0; border-bottom:1.5px solid #e2e8f0; transform:translateX(-50%) rotate(45deg); }
+.cluster-popup-title { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; padding:2px 8px 6px; border-bottom:1px solid #f1f5f9; margin-bottom:4px; }
+.cluster-popup-item { display:flex; align-items:center; gap:8px; padding:7px 8px; border-radius:7px; cursor:pointer; transition:background 0.1s; font-size:12px; font-weight:600; color:#1e293b; }
+.cluster-popup-item:hover { background:#f1f5f9; }
+.cluster-popup-item.in-radius-item { background:#f5f3ff; } .cluster-popup-item.in-radius-item:hover { background:#ede9fe; }
+
+/* ── Team picker ── */
+#team-picker { position:absolute; z-index:3000; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.18); padding:6px; min-width:170px; display:none; }
+.tp-item { padding:7px 10px; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; display:flex; align-items:center; gap:8px; transition:background 0.1s; }
+.tp-item:hover { background:#f1f5f9; }
+.tp-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* ── Toast ── */
+#toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%) translateY(60px); background:#10b981; color:white; padding:9px 18px; border-radius:20px; font-size:12px; font-weight:700; z-index:9999; transition:transform 0.25s; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+#toast.show { transform:translateX(-50%) translateY(0); }
+#toast.err { background:#ef4444; } #toast.purple { background:#7c3aed; }
+
+/* ── Loading ── */
+#loading { position:fixed; inset:0; background:rgba(15,23,42,0.7); display:none; align-items:center; justify-content:center; z-index:9998; flex-direction:column; gap:12px; }
+.spinner { width:36px; height:36px; border:3px solid #334155; border-top-color:#38bdf8; border-radius:50%; animation:spin 0.7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.dist-label-el { background:white; border:2px solid #1e293b; border-radius:6px; padding:2px 7px; font-size:11px; font-weight:800; color:#1e293b; white-space:nowrap; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:2px; }
 </style>
 </head>
 <body>
@@ -147,12 +197,14 @@ header h1 span { color: #38bdf8; }
 </header>
 
 <div class="app-body">
+  <!-- Sidebar -->
   <div id="sidebar">
     <div class="sidebar-controls">
-      <div class="search-wrap">
+      <div class="search-wrap" id="search-wrap">
         <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Search name, zip or city…">
+        <input type="text" id="search-input" placeholder="Search name, zip or city…" autocomplete="off">
         <div class="s-clear" id="search-clear">✕</div>
+        <div id="search-dropdown"></div>
       </div>
       <div class="team-row">
         <label>Team:</label>
@@ -163,7 +215,7 @@ header h1 span { color: #38bdf8; }
           <option value="Gold">Gold</option>
           <option value="NCE">NCE</option>
           <option value="Service Desk">Service Desk</option>
-          <option value="Operations & SLT">Operations &amp; SLT</option>
+          <option value="Operations &amp; SLT">Operations &amp; SLT</option>
           <option value="Unassigned">Unassigned</option>
         </select>
       </div>
@@ -186,6 +238,15 @@ header h1 span { color: #38bdf8; }
       <div id="tech-list"></div>
       <div class="section-label">Clients</div>
       <div id="client-list"></div>
+      <!-- Archive section -->
+      <div id="archive-section" style="margin-top:10px;display:none;">
+        <div class="archive-header" id="archive-toggle">
+          <span>🗄 Archived</span>
+          <div class="archive-count" id="archive-count">0</div>
+          <div class="archive-chevron" id="archive-chevron">▶</div>
+        </div>
+        <div id="archive-list"></div>
+      </div>
     </div>
 
     <div class="tab-content" id="tab-distances">
@@ -198,7 +259,7 @@ header h1 span { color: #38bdf8; }
 
     <div class="tab-content" id="tab-add">
       <div class="section-label">Import CSV</div>
-      <div id="drop-zone"><div class="dicon">📂</div><div style="font-weight:700;">Drop CSV here or click to browse</div><div style="font-size:10px;margin-top:3px;color:#94a3b8;">Columns: Names, Label (T/C), zipcode, Team (optional)</div></div>
+      <div id="drop-zone"><div class="dicon">📂</div><div style="font-weight:700;">Drop CSV here or click to browse</div><div style="font-size:10px;margin-top:3px;color:#94a3b8;">Columns: Names, Type/Label (T/C), zipcode, Team (optional)</div></div>
       <input type="file" id="csv-file" accept=".csv" style="display:none">
       <div class="section-label">Add Manually</div>
       <div class="form-group"><label>Name</label><input id="f-name" type="text" placeholder="e.g. John Smith"></div>
@@ -220,6 +281,10 @@ header h1 span { color: #38bdf8; }
     </div>
   </div>
 
+  <!-- Sidebar toggle -->
+  <button id="sidebar-toggle" title="Hide/show panel">‹</button>
+
+  <!-- Map -->
   <div id="map-wrap">
     <div id="map"></div>
     <div id="conn-banner"></div>
@@ -228,6 +293,7 @@ header h1 span { color: #38bdf8; }
     <div class="map-legend">
       <div class="li"><div class="ldot" style="background:#0284c7"></div>Technician</div>
       <div class="li"><div class="ldot" style="background:#ea580c"></div>Client</div>
+      <div class="li"><div class="ldot" style="background:#0d9488"></div>OunceIT</div>
       <div class="li" id="legend-radius" style="display:none"><div style="width:10px;height:10px;border-radius:50%;border:2px solid #7c3aed;background:#7c3aed22;flex-shrink:0;"></div>Radius</div>
     </div>
     <div id="heat-legend">
@@ -240,7 +306,7 @@ header h1 span { color: #38bdf8; }
 
 <div id="err-overlay">
   <h2>⚠️ Something went wrong</h2>
-  <p id="err-msg">An error occurred while loading the app.</p>
+  <p id="err-msg">An error occurred loading the app.</p>
   <button onclick="localStorage.clear();location.reload()">Clear saved data &amp; reload</button>
 </div>
 <div id="toast"></div>
@@ -249,804 +315,794 @@ header h1 span { color: #38bdf8; }
 <script>
 // ── Constants ─────────────────────────────────────────────────────────────────
 var TEAMS = ['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
-var TEAM_COLOR = {
-  'Burgundy':         '#9f1239',
-  'Slate':            '#475569',
-  'Gold':             '#b45309',
-  'NCE':              '#065f46',
-  'Service Desk':     '#1e40af',
-  'Operations & SLT': '#7c3aed',
-  'Unassigned':       '#94a3b8'
-};
+var TEAM_COLOR = {'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
 function teamColor(t) { return TEAM_COLOR[t] || '#94a3b8'; }
-function teamShort(t) {
-  if (!t) return '—';
-  return t.replace('Operations & SLT','Ops&SLT').replace('Service Desk','Svc Desk');
-}
+function teamShort(t) { if (!t) return '—'; return t.replace('Operations & SLT','Ops&SLT').replace('Service Desk','Svc Desk'); }
+
+// OunceIT special rendering
+function isOunceIT(p) { return p && p.name && p.name.toLowerCase().indexOf('ounceit') !== -1; }
+function personLabel(p) { return isOunceIT(p) ? 'O' : p.type; }
+function personFill(p)  { return isOunceIT(p) ? '#0d9488' : (p.type === 'T' ? '#0284c7' : '#ea580c'); }
 
 // ── State ─────────────────────────────────────────────────────────────────────
 function safeParse(key, fallback) {
-  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-  catch(e) { localStorage.removeItem(key); return fallback; }
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e) { localStorage.removeItem(key); return fallback; }
 }
 var people    = safeParse('fsmap_people',    []);
 var geoCache  = safeParse('fsmap_geocache',  {});
 var cityCache = safeParse('fsmap_citycache', {});
-// Validate people array — wipe if corrupted
 if (!Array.isArray(people)) { people = []; localStorage.removeItem('fsmap_people'); }
+
 var zipGroups       = {};
 var markers         = {};
-var connLines       = [];
-var connLabels      = [];
-var heatCanvas      = null;
-var heatOn          = false;
+var connLines       = [], connLabels = [];
+var heatCanvas      = null, heatOn   = false;
 var interMode       = false;
 var radiusCircle    = null;
-var selectedTech    = null;
-var lastInterPerson = null;
+var selectedTech    = null, lastInterPerson = null;
 var interHighlight  = new Set();
 var teamFilter      = 'All';
 var searchQuery     = '';
 var popupCloseTimer = null;
+var sidebarOpen     = true;
+var archiveExpanded = false;
 var map;
 
-// ── Map init ──────────────────────────────────────────────────────────────────
+// ── Error trap ────────────────────────────────────────────────────────────────
+window.onerror = function(msg, src, line) {
+  var el = document.getElementById('err-overlay');
+  var pm = document.getElementById('err-msg');
+  if (el) el.style.display = 'flex';
+  if (pm) pm.textContent = msg + ' (line ' + line + ')';
+  return false;
+};
+
+// ── Map ───────────────────────────────────────────────────────────────────────
 function initMap() {
-  map = L.map('map').setView([42.36, -71.06], 10);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 19
-  }).addTo(map);
-  map.on('moveend zoomend', function() { if (heatOn) drawHeatCanvas(); });
-  map.on('click', function() { hideClusterPopup(); hideTeamPicker(); });
+  map = L.map('map').setView([42.36,-71.06],10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);
+  map.on('moveend zoomend',function(){ if(heatOn) drawHeatCanvas(); });
+  map.on('click',function(){ hideClusterPopup(); hideTeamPicker(); hideSearchDropdown(); });
 }
 
 // ── Geocoding ─────────────────────────────────────────────────────────────────
 async function geocodeZip(zip) {
-  var key = zip.toString().padStart(5, '0');
+  var key = zip.toString().padStart(5,'0');
   if (geoCache[key]) return geoCache[key];
   try {
-    var r = await fetch(
-      'https://nominatim.openstreetmap.org/search?postalcode=' + key + '&country=US&format=json&limit=1&addressdetails=1',
-      { headers: { 'Accept-Language': 'en' } }
-    );
+    var r = await fetch('https://nominatim.openstreetmap.org/search?postalcode='+key+'&country=US&format=json&limit=1&addressdetails=1',{headers:{'Accept-Language':'en'}});
     var d = await r.json();
     if (d && d[0]) {
-      var coords = { lat: +d[0].lat, lng: +d[0].lon };
+      var coords = {lat:+d[0].lat, lng:+d[0].lon};
       geoCache[key] = coords;
       var addr = d[0].address || {};
       cityCache[key] = addr.city || addr.town || addr.village || addr.suburb || addr.county || '';
-      localStorage.setItem('fsmap_geocache',  JSON.stringify(geoCache));
-      localStorage.setItem('fsmap_citycache', JSON.stringify(cityCache));
+      localStorage.setItem('fsmap_geocache',JSON.stringify(geoCache));
+      localStorage.setItem('fsmap_citycache',JSON.stringify(cityCache));
       return coords;
     }
   } catch(e) {}
   return null;
 }
-
-function getCity(zip) {
-  if (!zip) return '';
-  return cityCache[zip.toString().padStart(5, '0')] || '';
-}
-
-function metaLine(p) {
-  if (!p.zip) return '';
-  var city = getCity(p.zip);
-  return city ? p.zip + ' · ' + city : p.zip;
-}
+function getCity(zip) { if (!zip) return ''; return cityCache[zip.toString().padStart(5,'0')] || ''; }
+function metaLine(p) { if (!p.zip) return ''; var city=getCity(p.zip); return city ? p.zip+' · '+city : p.zip; }
 
 // ── Distance ──────────────────────────────────────────────────────────────────
-function miles(a, b) {
-  var R = 3958.8;
-  var dLat = (b.lat - a.lat) * Math.PI / 180;
-  var dLng = (b.lng - a.lng) * Math.PI / 180;
-  var x = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(a.lat * Math.PI/180) * Math.cos(b.lat * Math.PI/180) *
-          Math.sin(dLng/2) * Math.sin(dLng/2);
-  return R * 2 * Math.asin(Math.sqrt(x));
-}
+function miles(a,b){var R=3958.8,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180;var x=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.asin(Math.sqrt(x));}
 
 // ── Visibility ────────────────────────────────────────────────────────────────
 function isVisible(p) {
-  var teamOk = (teamFilter === 'All' || p.team === teamFilter);
+  if (p.archived) return false;
+  var teamOk = (teamFilter==='All' || p.team===teamFilter);
   if (!teamOk) return false;
   if (!searchQuery) return true;
   var q = searchQuery.toLowerCase();
-  var city = getCity(p.zip);
-  return p.name.toLowerCase().includes(q) ||
-         (p.zip || '').toString().includes(q) ||
-         city.toLowerCase().includes(q);
+  return p.name.toLowerCase().indexOf(q)!==-1 || (p.zip||'').indexOf(q)!==-1 || getCity(p.zip).toLowerCase().indexOf(q)!==-1;
 }
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
-function singleIcon(type, state) {
+function singleIcon(p, state) {
   state = state || 'normal';
-  var fill = type === 'T' ? '#0284c7' : '#ea580c';
-  var ring = state === 'selected'  ? '<circle cx="20" cy="20" r="17" fill="none" stroke="' + fill + '" stroke-width="3" opacity="0.5"/>' : '';
-  var glow = state === 'in-radius' ? '<circle cx="20" cy="20" r="17" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>' : '';
-  var r = (state === 'selected' || state === 'in-radius') ? 13 : 11;
-  var y = r > 11 ? 25 : 24;
-  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">' +
-    '<filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/></filter>' +
-    ring + glow +
-    '<circle cx="20" cy="20" r="' + r + '" fill="' + fill + '" stroke="white" stroke-width="2.5" filter="url(#sh)"/>' +
-    '<text x="20" y="' + y + '" text-anchor="middle" font-size="10" font-weight="800" fill="white" font-family="sans-serif">' + type + '</text>' +
-    '</svg>';
-  return L.divIcon({ html: svg, iconSize: [40,40], iconAnchor: [20,20], className: '' });
+  var fill  = personFill(p);
+  var label = personLabel(p);
+  var ring  = state==='selected'  ? '<circle cx="20" cy="20" r="17" fill="none" stroke="'+fill+'" stroke-width="3" opacity="0.5"/>' : '';
+  var glow  = state==='in-radius' ? '<circle cx="20" cy="20" r="17" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>' : '';
+  var r     = (state==='selected'||state==='in-radius') ? 13 : 11;
+  var svg   = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/></filter>'+ring+glow+'<circle cx="20" cy="20" r="'+r+'" fill="'+fill+'" stroke="white" stroke-width="2.5" filter="url(#sh)"/><text x="20" y="'+(r>11?25:24)+'" text-anchor="middle" font-size="10" font-weight="800" fill="white" font-family="sans-serif">'+label+'</text></svg>';
+  return L.divIcon({html:svg, iconSize:[40,40], iconAnchor:[20,20], className:''});
 }
 
 function clusterIcon(vis, state) {
   state = state || 'normal';
-  var nT = vis.filter(function(p){ return p.type==='T'; }).length;
-  var nC = vis.filter(function(p){ return p.type==='C'; }).length;
-  var n = vis.length;
-  var fill = (nT > 0 && nC > 0) ? '#7c3aed' : nT > 0 ? '#0284c7' : '#ea580c';
-  var ring = state === 'selected'  ? '<circle cx="22" cy="22" r="19" fill="none" stroke="' + fill + '" stroke-width="3" opacity="0.45"/>' : '';
-  var glow = state === 'in-radius' ? '<circle cx="22" cy="22" r="19" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>' : '';
-  var inner = (nT > 0 && nC > 0)
-    ? '<path d="M22,8 A14,14 0 0,1 36,22 L22,22 Z" fill="#0284c7"/><path d="M36,22 A14,14 0 0,1 8,22 L22,22 Z" fill="#ea580c"/><path d="M8,22 A14,14 0 0,1 22,8 L22,22 Z" fill="#7c3aed"/>'
-    : '<circle cx="22" cy="22" r="14" fill="' + fill + '"/>';
-  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">' +
-    '<filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/></filter>' +
-    ring + glow +
-    '<g filter="url(#sh2)">' + inner + '<circle cx="22" cy="22" r="14" fill="none" stroke="white" stroke-width="2.5"/></g>' +
-    '<text x="22" y="27" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="sans-serif">' + n + '</text>' +
-    '</svg>';
-  return L.divIcon({ html: svg, iconSize: [44,44], iconAnchor: [22,22], className: '' });
+  var nT=vis.filter(function(p){return p.type==='T';}).length;
+  var nC=vis.filter(function(p){return p.type==='C';}).length;
+  var n=vis.length;
+  var fill=(nT>0&&nC>0)?'#7c3aed':nT>0?'#0284c7':'#ea580c';
+  var ring=state==='selected' ?'<circle cx="22" cy="22" r="19" fill="none" stroke="'+fill+'" stroke-width="3" opacity="0.45"/>':'';
+  var glow=state==='in-radius'?'<circle cx="22" cy="22" r="19" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>':'';
+  var inner=(nT>0&&nC>0)?'<path d="M22,8 A14,14 0 0,1 36,22 L22,22 Z" fill="#0284c7"/><path d="M36,22 A14,14 0 0,1 8,22 L22,22 Z" fill="#ea580c"/><path d="M8,22 A14,14 0 0,1 22,8 L22,22 Z" fill="#7c3aed"/>':'<circle cx="22" cy="22" r="14" fill="'+fill+'"/>';
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"><filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/></filter>'+ring+glow+'<g filter="url(#sh2)">'+inner+'<circle cx="22" cy="22" r="14" fill="none" stroke="white" stroke-width="2.5"/></g><text x="22" y="27" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="sans-serif">'+n+'</text></svg>';
+  return L.divIcon({html:svg, iconSize:[44,44], iconAnchor:[22,22], className:''});
 }
 
 // ── Render all ────────────────────────────────────────────────────────────────
 async function renderAll() {
-  Object.values(zipGroups).forEach(function(g) { if (g.marker) map.removeLayer(g.marker); });
-  zipGroups = {}; markers = {};
+  Object.values(zipGroups).forEach(function(g){if(g.marker)map.removeLayer(g.marker);});
+  zipGroups={}; markers={};
   clearConnections(); clearRadius(); hideClusterPopup(); hideTeamPicker();
 
-  var missing = people.filter(function(p) {
-    return p.zip && !geoCache[p.zip.toString().padStart(5,'0')];
-  });
-  if (missing.length) {
-    document.getElementById('loading').style.display = 'flex';
-    for (var i = 0; i < missing.length; i++) {
-      await geocodeZip(missing[i].zip);
-      await sleep(300);
-    }
-    document.getElementById('loading').style.display = 'none';
+  var missing=people.filter(function(p){return p.zip&&!p.archived&&!geoCache[p.zip.toString().trim().padStart(5,'0')];});
+  if(missing.length){
+    document.getElementById('loading').style.display='flex';
+    for(var i=0;i<missing.length;i++){await geocodeZip(missing[i].zip.toString().trim());await sleep(300);}
+    document.getElementById('loading').style.display='none';
   }
-
-  people.forEach(function(p) {
-    var c = geoCache[p.zip ? p.zip.toString().padStart(5,'0') : ''];
-    if (c) p.coords = c;
+  people.forEach(function(p){
+    if(!p.zip) return;
+    var key=p.zip.toString().trim().padStart(5,'0');
+    var c=geoCache[key]; if(c) p.coords=c;
   });
 
-  var grouped = {};
-  people.filter(function(p){ return p.coords; }).forEach(function(p) {
-    var key = p.zip.toString().padStart(5,'0');
-    if (!grouped[key]) grouped[key] = [];
+  var grouped={};
+  people.filter(function(p){return p.coords&&!p.archived;}).forEach(function(p){
+    var key=p.zip.toString().trim().padStart(5,'0');
+    if(!grouped[key])grouped[key]=[];
     grouped[key].push(p);
   });
 
-  Object.entries(grouped).forEach(function(entry) {
-    var zip = entry[0], group = entry[1];
-    var coords = geoCache[zip];
-    var m = createGroupMarker(zip, group, coords, 'normal');
-    zipGroups[zip] = { marker: m, people: group, hiddenIds: new Set() };
-    group.forEach(function(p) { markers[p.id] = m; });
+  Object.keys(grouped).forEach(function(zip){
+    var group=grouped[zip];
+    var coords=geoCache[zip];
+    var m=createGroupMarker(zip,group,coords,'normal');
+    zipGroups[zip]={marker:m,people:group,hiddenIds:new Set()};
+    group.forEach(function(p){markers[p.id]=m;});
   });
 
   applyVisFilter();
   renderSidebar();
-  if (heatOn) drawHeatCanvas();
+  if(heatOn) drawHeatCanvas();
   saveData();
 }
 
-// ── Apply team/search filter ──────────────────────────────────────────────────
-function applyVisFilter() {
-  Object.entries(zipGroups).forEach(function(entry) {
-    var zip = entry[0], g = entry[1];
-    g.hiddenIds = new Set(g.people.filter(function(p){ return !isVisible(p); }).map(function(p){ return p.id; }));
-    refreshGroup(zip, 'normal');
+// ── Visibility filter ─────────────────────────────────────────────────────────
+function applyVisFilter(){
+  Object.keys(zipGroups).forEach(function(zip){
+    var g=zipGroups[zip];
+    g.hiddenIds=new Set(g.people.filter(function(p){return !isVisible(p);}).map(function(p){return p.id;}));
+    refreshGroup(zip,'normal');
   });
 }
 
-// ── Group marker factory ──────────────────────────────────────────────────────
-function createGroupMarker(zip, group, coords, state) {
-  var isSolo = group.length === 1;
-  var icon = isSolo ? singleIcon(group[0].type, state) : clusterIcon(group, state);
-  var m = L.marker([coords.lat, coords.lng], { icon: icon }).addTo(map);
-  if (isSolo) {
-    var p = group[0];
-    var city = getCity(zip);
-    var tip = '<b>' + p.name + '</b><br>' + (p.type==='T'?'Technician':'Client') + ' · ' + zip + (city ? ' · ' + city : '');
-    m.bindTooltip(tip, { direction: 'top', offset: [0,-14] });
-    m.on('click', (function(pp){ return function(){ handleClick(pp); }; })(p));
+// ── Group markers ─────────────────────────────────────────────────────────────
+function createGroupMarker(zip,group,coords,state){
+  var isSolo=group.length===1;
+  var icon=isSolo?singleIcon(group[0],state):clusterIcon(group,state);
+  var m=L.marker([coords.lat,coords.lng],{icon:icon}).addTo(map);
+  if(isSolo){
+    var p=group[0]; var city=getCity(zip);
+    var tip='<b>'+p.name+'</b><br>'+(p.type==='T'?'Technician':'Client')+' · '+zip+(city?' · '+city:'');
+    m.bindTooltip(tip,{direction:'top',offset:[0,-14]});
+    m.on('click',(function(pp){return function(){handleClick(pp);};})(p));
   } else {
-    m.on('mouseover', (function(z){ return function(e){ openClusterPopup(z, e); }; })(zip));
-    m.on('mouseout', function(){ schedulePopupClose(); });
-    m.on('click', (function(z){ return function(){ openClusterPopup(z, null, true); }; })(zip));
+    m.on('mouseover',(function(z){return function(e){openClusterPopup(z,e);};})(zip));
+    m.on('mouseout',function(){schedulePopupClose();});
+    m.on('click',(function(z){return function(){openClusterPopup(z,null,true);};})(zip));
   }
   return m;
 }
 
-function refreshGroup(zip, state) {
-  var g = zipGroups[zip]; if (!g) return;
-  var vis = g.people.filter(function(p){ return !g.hiddenIds.has(p.id); });
-  if (vis.length === 0) { if (map.hasLayer(g.marker)) map.removeLayer(g.marker); return; }
-  if (!map.hasLayer(g.marker)) g.marker.addTo(map);
-  g.marker.setIcon(vis.length === 1 ? singleIcon(vis[0].type, state) : clusterIcon(vis, state));
+function refreshGroup(zip,state){
+  var g=zipGroups[zip]; if(!g) return;
+  var vis=g.people.filter(function(p){return !g.hiddenIds.has(p.id);});
+  if(vis.length===0){if(map.hasLayer(g.marker))map.removeLayer(g.marker);return;}
+  if(!map.hasLayer(g.marker))g.marker.addTo(map);
+  g.marker.setIcon(vis.length===1?singleIcon(vis[0],state):clusterIcon(vis,state));
 }
 
-function showPerson(p, state) {
-  var zip = p.zip ? p.zip.toString().padStart(5,'0') : null;
-  var g = zip ? zipGroups[zip] : null; if (!g) return;
-  if (isVisible(p)) g.hiddenIds.delete(p.id);
-  refreshGroup(zip, state || 'normal');
+function showPerson(p,state){
+  var zip=p.zip?p.zip.toString().trim().padStart(5,'0'):null;
+  var g=zip?zipGroups[zip]:null; if(!g) return;
+  if(isVisible(p))g.hiddenIds.delete(p.id);
+  refreshGroup(zip,state||'normal');
 }
-function hidePerson(p) {
-  var zip = p.zip ? p.zip.toString().padStart(5,'0') : null;
-  var g = zip ? zipGroups[zip] : null; if (!g) return;
-  g.hiddenIds.add(p.id);
-  refreshGroup(zip, 'normal');
+function hidePerson(p){
+  var zip=p.zip?p.zip.toString().trim().padStart(5,'0'):null;
+  var g=zip?zipGroups[zip]:null; if(!g) return;
+  g.hiddenIds.add(p.id); refreshGroup(zip,'normal');
 }
 
 // ── Cluster popup ─────────────────────────────────────────────────────────────
-function openClusterPopup(zip, ev, force) {
+function openClusterPopup(zip,ev,force){
   clearTimeout(popupCloseTimer);
-  var g = zipGroups[zip]; if (!g) return;
-  var vis = g.people.filter(function(p){ return !g.hiddenIds.has(p.id); });
-  if (!vis.length) return;
-  var popup = document.getElementById('cluster-popup');
-  var coords = map.latLngToContainerPoint(g.marker.getLatLng());
-  popup.style.left = coords.x + 'px';
-  popup.style.top  = (coords.y - 6) + 'px';
-  var nT = vis.filter(function(p){ return p.type==='T'; }).length;
-  var nC = vis.filter(function(p){ return p.type==='C'; }).length;
-  var city = getCity(zip);
-  var title = (nT && nC) ? (nT + ' tech' + (nT>1?'s':'') + ' + ' + nC + ' client' + (nC>1?'s':'') + ' · ' + zip)
-            : nT ? (nT + ' technician' + (nT>1?'s':'') + ' · ' + zip)
-            : (nC + ' client' + (nC>1?'s':'') + ' · ' + zip);
-  if (city) title += ' · ' + city;
-  var rows = vis.map(function(p) {
-    var dot = p.type==='T' ? '#0284c7' : '#ea580c';
-    var inR = interHighlight.has(p.id) ? 'in-radius-item' : '';
-    return '<div class="cluster-popup-item ' + inR + '" onclick="handleClick(byId(\'' + p.id + '\'));hideClusterPopup()">' +
-      '<svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="' + dot + '" stroke="white" stroke-width="1.5"/></svg>' +
-      '<span style="flex:1">' + p.name + '</span>' +
-      '<span style="font-size:10px;color:#94a3b8;font-weight:600">' + (p.type==='T'?'Tech':'Client') + '</span>' +
-      '</div>';
+  var g=zipGroups[zip]; if(!g) return;
+  var vis=g.people.filter(function(p){return !g.hiddenIds.has(p.id);});
+  if(!vis.length) return;
+  var popup=document.getElementById('cluster-popup');
+  var coords=map.latLngToContainerPoint(g.marker.getLatLng());
+  popup.style.left=coords.x+'px'; popup.style.top=(coords.y-6)+'px';
+  var nT=vis.filter(function(p){return p.type==='T';}).length;
+  var nC=vis.filter(function(p){return p.type==='C';}).length;
+  var city=getCity(zip);
+  var title=(nT&&nC)?(nT+' tech'+(nT>1?'s':'')+' + '+nC+' client'+(nC>1?'s':'')+' · '+zip):nT?(nT+' technician'+(nT>1?'s':'')+' · '+zip):(nC+' client'+(nC>1?'s':'')+' · '+zip);
+  if(city) title+=' · '+city;
+  var rows=vis.map(function(p){
+    var dot=personFill(p);
+    var inR=interHighlight.has(p.id)?'in-radius-item':'';
+    var tc=p.type==='T'?'Tech':'Client';
+    return '<div class="cluster-popup-item '+inR+'" onclick="handleClick(byId(\''+p.id+'\'));hideClusterPopup()"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="'+dot+'" stroke="white" stroke-width="1.5"/></svg><span style="flex:1">'+p.name+'</span><span style="font-size:10px;color:#94a3b8;font-weight:600">'+tc+'</span></div>';
   }).join('');
-  popup.innerHTML = '<div class="cluster-popup-title">' + title + '</div>' + rows;
-  popup.style.display = 'block';
-  popup.onmouseenter = function(){ clearTimeout(popupCloseTimer); };
-  popup.onmouseleave = function(){ schedulePopupClose(); };
+  popup.innerHTML='<div class="cluster-popup-title">'+title+'</div>'+rows;
+  popup.style.display='block';
+  popup.onmouseenter=function(){clearTimeout(popupCloseTimer);};
+  popup.onmouseleave=function(){schedulePopupClose();};
 }
-function schedulePopupClose() { popupCloseTimer = setTimeout(hideClusterPopup, 300); }
-function hideClusterPopup() { clearTimeout(popupCloseTimer); document.getElementById('cluster-popup').style.display = 'none'; }
+function schedulePopupClose(){popupCloseTimer=setTimeout(hideClusterPopup,300);}
+function hideClusterPopup(){clearTimeout(popupCloseTimer);document.getElementById('cluster-popup').style.display='none';}
 
 // ── Team picker ───────────────────────────────────────────────────────────────
-function openTeamPicker(event, personId) {
+function openTeamPicker(event,personId){
   event.stopPropagation();
-  var picker = document.getElementById('team-picker');
-  var rect = event.target.getBoundingClientRect();
-  var sbRect = document.getElementById('sidebar').getBoundingClientRect();
-  picker.style.left = (rect.left - sbRect.left) + 'px';
-  picker.style.top  = (rect.bottom - sbRect.top + 4) + 'px';
-  document.getElementById('sidebar').style.position = 'relative';
+  var picker=document.getElementById('team-picker');
+  var rect=event.target.getBoundingClientRect();
+  var sbRect=document.getElementById('sidebar').getBoundingClientRect();
+  document.getElementById('sidebar').style.position='relative';
   document.getElementById('sidebar').appendChild(picker);
-  picker.innerHTML = TEAMS.map(function(t) {
-    return '<div class="tp-item" onclick="assignTeam(\'' + personId + '\',\'' + t.replace(/'/g, "\\'") + '\')">' +
-      '<div class="tp-dot" style="background:' + teamColor(t) + '"></div>' +
-      '<span style="color:' + teamColor(t) + '">' + t + '</span>' +
+  picker.style.cssText='display:block;position:absolute;left:'+(rect.left-sbRect.left)+'px;top:'+(rect.bottom-sbRect.top+4)+'px;z-index:3000;';
+  picker.innerHTML=TEAMS.map(function(t){return '<div class="tp-item" onclick="assignTeam(\''+personId+'\',\''+t.replace(/&/g,'&amp;').replace(/'/g,"\\'")+'\')">'+'<div class="tp-dot" style="background:'+teamColor(t)+'"></div><span style="color:'+teamColor(t)+'">'+t+'</span></div>';}).join('');
+  setTimeout(function(){document.addEventListener('click',hideTeamPicker,{once:true});},0);
+}
+function hideTeamPicker(){document.getElementById('team-picker').style.display='none';}
+function assignTeam(personId,team){
+  var p=byId(personId); if(!p) return;
+  p.team=team; hideTeamPicker(); saveData(); applyVisFilter(); renderSidebar();
+  showToast(p.name+' → '+team);
+}
+
+// ── Archive ───────────────────────────────────────────────────────────────────
+function archivePerson(id){
+  var p=byId(id); if(!p) return;
+  p.archived=true;
+  if(selectedTech&&selectedTech.id===id){selectedTech=null;clearConnections();}
+  if(lastInterPerson&&lastInterPerson.id===id)lastInterPerson=null;
+  // Remove from map
+  var zip=p.zip?p.zip.toString().trim().padStart(5,'0'):null;
+  var g=zip?zipGroups[zip]:null;
+  if(g){g.hiddenIds.add(id);refreshGroup(zip,'normal');}
+  saveData(); renderSidebar();
+  showToast(p.name+' archived — see bottom of People tab');
+}
+function restorePerson(id){
+  var p=byId(id); if(!p) return;
+  p.archived=false;
+  saveData(); renderAll();
+  showToast(p.name+' restored!');
+}
+function renderArchive(){
+  var archived=people.filter(function(p){return p.archived;});
+  var section=document.getElementById('archive-section');
+  var countEl=document.getElementById('archive-count');
+  var list=document.getElementById('archive-list');
+  var chevron=document.getElementById('archive-chevron');
+  if(!archived.length){section.style.display='none';return;}
+  section.style.display='block';
+  countEl.textContent=archived.length;
+  chevron.className='archive-chevron'+(archiveExpanded?' open':'');
+  list.className='archive-list'+(archiveExpanded?' open':'');
+  list.innerHTML=archived.map(function(p){
+    var dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';
+    var meta=metaLine(p);
+    return '<div class="archive-card"><div class="pdot '+dot+'" style="margin-top:3px;flex-shrink:0;"></div><div class="pinfo"><div class="pname">'+p.name+'</div>'+(meta?'<div class="pmeta">'+meta+'</div>':'')+'</div><button class="restore-btn" onclick="restorePerson(\''+p.id+'\')">↩ Restore</button></div>';
+  }).join('');
+}
+document.getElementById('archive-toggle').addEventListener('click',function(){
+  archiveExpanded=!archiveExpanded; renderArchive();
+});
+
+// ── Search dropdown ───────────────────────────────────────────────────────────
+function renderSearchDropdown(){
+  var q=searchQuery.trim();
+  var dd=document.getElementById('search-dropdown');
+  if(!q){dd.style.display='none';return;}
+  var ql=q.toLowerCase();
+  var matches=people.filter(function(p){
+    if(p.archived) return false;
+    return p.name.toLowerCase().indexOf(ql)!==-1||(p.zip||'').indexOf(ql)!==-1||getCity(p.zip).toLowerCase().indexOf(ql)!==-1;
+  }).slice(0,10);
+  if(!matches.length){
+    dd.innerHTML='<div class="sd-empty">No results for "'+q+'"</div>';
+    dd.style.display='block'; return;
+  }
+  dd.innerHTML=matches.map(function(p){
+    var city=getCity(p.zip); var meta=(p.zip||'')+(city?' · '+city:'');
+    var dot=p.type==='T'?'#0284c7':isOunceIT(p)?'#0d9488':'#ea580c';
+    var tc=teamColor(p.team); var ts=teamShort(p.team);
+    return '<div class="sd-item" onclick="jumpToResult(\''+p.id+'\')">'+
+      '<svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0"><circle cx="5" cy="5" r="4" fill="'+dot+'" stroke="white" stroke-width="1.5"/></svg>'+
+      '<div class="sd-info"><div class="sd-name">'+p.name+'</div>'+(meta?'<div class="sd-meta">'+meta+'</div>':'')+'</div>'+
+      '<div class="sd-badge" style="background:'+tc+'">'+ts+'</div>'+
       '</div>';
   }).join('');
-  picker.style.display = 'block';
-  setTimeout(function(){ document.addEventListener('click', hideTeamPicker, { once: true }); }, 0);
-}
-function hideTeamPicker() { document.getElementById('team-picker').style.display = 'none'; }
-
-function assignTeam(personId, team) {
-  var p = byId(personId); if (!p) return;
-  p.team = team;
-  hideTeamPicker();
-  saveData();
-  applyVisFilter();
-  renderSidebar();
-  showToast(p.name + ' → ' + team);
+  dd.style.display='block';
 }
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
-function renderSidebar(highlightIds) {
-  highlightIds = highlightIds || [];
-  var techs   = people.filter(function(p){ return p.type==='T' && isVisible(p); });
-  var clients = people.filter(function(p){ return p.type==='C' && isVisible(p); });
-  document.getElementById('tech-list').innerHTML   = techs.length   ? techs.map(function(p){ return cardHTML(p,highlightIds); }).join('')   : emptyMsg('No technicians');
-  document.getElementById('client-list').innerHTML = clients.length ? clients.map(function(p){ return cardHTML(p,highlightIds); }).join('') : emptyMsg('No clients');
+function jumpToResult(id){
+  var p=byId(id); if(!p) return;
+  hideSearchDropdown();
+  document.getElementById('search-input').value='';
+  searchQuery='';
+  document.getElementById('search-clear').style.display='none';
+  applyVisFilter(); renderSidebar();
+  // Pan to person on map
+  if(p.coords){
+    map.setView([p.coords.lat,p.coords.lng],14,{animate:true});
+    var zip=p.zip?p.zip.toString().trim().padStart(5,'0'):'';
+    var g=zipGroups[zip];
+    if(g){
+      var vis=g.people.filter(function(x){return !g.hiddenIds.has(x.id);});
+      g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));
+      setTimeout(function(){
+        var v2=g.people.filter(function(x){return !g.hiddenIds.has(x.id);});
+        g.marker.setIcon(g.people.length===1?singleIcon(p,'normal'):clusterIcon(v2,'normal'));
+      },2000);
+    }
+  }
+  // Scroll to in sidebar
+  switchTab('people');
+  setTimeout(function(){
+    var cards=document.querySelectorAll('.person-card');
+    for(var i=0;i<cards.length;i++){
+      if(cards[i].getAttribute('onclick')&&cards[i].getAttribute('onclick').indexOf(id)!==-1){
+        cards[i].scrollIntoView({behavior:'smooth',block:'nearest'}); break;
+      }
+    }
+  },100);
 }
-function emptyMsg(m) { return '<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">' + m + '</div>'; }
-function cardHTML(p, highlightIds) {
-  var sel = (selectedTech && selectedTech.id === p.id) ? 'selected' : '';
-  var inR = highlightIds.includes(p.id) ? 'in-radius' : '';
-  var tc = teamColor(p.team);
-  var ts = teamShort(p.team);
-  var meta = metaLine(p);
-  return '<div class="person-card ' + sel + ' ' + inR + '" onclick="handleClick(byId(\'' + p.id + '\'))">' +
-    '<div class="pdot pdot-' + p.type.toLowerCase() + '"></div>' +
-    '<div class="pinfo">' +
-      '<div class="pname">' + p.name + '</div>' +
-      (meta ? '<div class="pmeta">' + meta + '</div>' : '') +
-    '</div>' +
-    '<div class="card-right">' +
-      '<div class="team-badge" style="background:' + tc + '" onclick="openTeamPicker(event,\'' + p.id + '\')" title="Click to change team">' + ts + '</div>' +
-      '<button class="btn btn-red del-btn" onclick="event.stopPropagation();deletePerson(\'' + p.id + '\')">✕</button>' +
-    '</div>' +
+
+function hideSearchDropdown(){document.getElementById('search-dropdown').style.display='none';}
+
+// ── Sidebar toggle ────────────────────────────────────────────────────────────
+document.getElementById('sidebar-toggle').addEventListener('click',function(){
+  sidebarOpen=!sidebarOpen;
+  var sb=document.getElementById('sidebar');
+  var btn=document.getElementById('sidebar-toggle');
+  if(sidebarOpen){sb.classList.remove('collapsed');btn.textContent='‹';btn.title='Hide panel';}
+  else{sb.classList.add('collapsed');btn.textContent='›';btn.title='Show panel';}
+  setTimeout(function(){if(map)map.invalidateSize();},260);
+});
+
+// ── Sidebar render ────────────────────────────────────────────────────────────
+function renderSidebar(highlightIds){
+  highlightIds=highlightIds||[];
+  var techs=people.filter(function(p){return p.type==='T'&&isVisible(p);});
+  var clients=people.filter(function(p){return p.type==='C'&&isVisible(p);});
+  document.getElementById('tech-list').innerHTML=techs.length?techs.map(function(p){return cardHTML(p,highlightIds);}).join(''):emptyMsg('No technicians');
+  document.getElementById('client-list').innerHTML=clients.length?clients.map(function(p){return cardHTML(p,highlightIds);}).join(''):emptyMsg('No clients');
+  renderArchive();
+}
+function emptyMsg(m){return '<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">'+m+'</div>';}
+function cardHTML(p,highlightIds){
+  var sel=(selectedTech&&selectedTech.id===p.id)?'selected':'';
+  var inR=highlightIds.indexOf(p.id)!==-1?'in-radius':'';
+  var tc=teamColor(p.team); var ts=teamShort(p.team);
+  var meta=metaLine(p);
+  var dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';
+  return '<div class="person-card '+sel+' '+inR+'" onclick="handleClick(byId(\''+p.id+'\'))">'+
+    '<div class="pdot '+dot+'"></div>'+
+    '<div class="pinfo"><div class="pname">'+p.name+'</div>'+(meta?'<div class="pmeta">'+meta+'</div>':'')+'</div>'+
+    '<div class="card-right">'+
+      '<div class="team-badge" style="background:'+tc+'" onclick="openTeamPicker(event,\''+p.id+'\')" title="Change team">'+ts+'</div>'+
+      '<button class="btn btn-red del-btn" onclick="event.stopPropagation();archivePerson(\''+p.id+'\')" title="Archive">🗄</button>'+
+    '</div>'+
     '</div>';
 }
-function byId(id) { return people.find(function(p){ return p.id === id; }); }
+function byId(id){return people.find(function(p){return p.id===id;});}
 
 // ── Click dispatcher ──────────────────────────────────────────────────────────
-function handleClick(p) {
-  if (!p) return;
-  hideTeamPicker();
-  if (interMode) { handleInteractiveClick(p); return; }
-  // Reset all icons
-  Object.keys(zipGroups).forEach(function(z){ refreshGroup(z,'normal'); });
-  if (p.type === 'T') {
-    if (selectedTech && selectedTech.id === p.id) {
-      selectedTech = null; clearConnections();
-      document.getElementById('conn-banner').style.display = 'none';
-      document.getElementById('dist-empty').style.display = '';
-      document.getElementById('dist-body').style.display = 'none';
+function handleClick(p){
+  if(!p) return;
+  hideTeamPicker(); hideSearchDropdown();
+  if(interMode){handleInteractiveClick(p);return;}
+  Object.keys(zipGroups).forEach(function(z){refreshGroup(z,'normal');});
+  if(p.type==='T'){
+    if(selectedTech&&selectedTech.id===p.id){
+      selectedTech=null; clearConnections();
+      document.getElementById('conn-banner').style.display='none';
+      document.getElementById('dist-empty').style.display='';
+      document.getElementById('dist-body').style.display='none';
       renderSidebar(); return;
     }
-    selectedTech = p;
-    var gz = zipGroups[p.zip ? p.zip.toString().padStart(5,'0') : ''];
-    if (gz) { var gvis = gz.people.filter(function(x){ return !gz.hiddenIds.has(x.id); }); gz.marker.setIcon(gz.people.length===1 ? singleIcon('T','selected') : clusterIcon(gvis,'selected')); }
+    selectedTech=p;
+    var gz=zipGroups[p.zip?p.zip.toString().trim().padStart(5,'0'):''];
+    if(gz){var gv=gz.people.filter(function(x){return !gz.hiddenIds.has(x.id);});gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}
     showConnections(p); switchTab('distances');
   } else {
-    var gz2 = zipGroups[p.zip ? p.zip.toString().padStart(5,'0') : ''];
-    if (gz2) {
-      var gv2 = gz2.people.filter(function(x){ return !gz2.hiddenIds.has(x.id); });
-      gz2.marker.setIcon(gz2.people.length===1 ? singleIcon('C','selected') : clusterIcon(gv2,'selected'));
-      setTimeout(function(){
-        if (!gz2) return;
-        var gv3 = gz2.people.filter(function(x){ return !gz2.hiddenIds.has(x.id); });
-        gz2.marker.setIcon(gz2.people.length===1 ? singleIcon('C','normal') : clusterIcon(gv3,'normal'));
-      }, 1800);
+    var gz2=zipGroups[p.zip?p.zip.toString().trim().padStart(5,'0'):''];
+    if(gz2){
+      var gv2=gz2.people.filter(function(x){return !gz2.hiddenIds.has(x.id);});
+      gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));
+      setTimeout(function(){if(!gz2)return;var v3=gz2.people.filter(function(x){return !gz2.hiddenIds.has(x.id);});gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);
     }
-    if (selectedTech && selectedTech.coords && p.coords)
-      showToast(selectedTech.name + ' → ' + p.name + ': ' + miles(selectedTech.coords, p.coords).toFixed(1) + ' mi');
+    if(selectedTech&&selectedTech.coords&&p.coords)showToast(selectedTech.name+' → '+p.name+': '+miles(selectedTech.coords,p.coords).toFixed(1)+' mi');
   }
   renderSidebar();
 }
 
 // ── Interactive mode ──────────────────────────────────────────────────────────
-function handleInteractiveClick(p) {
-  if (!p || !p.coords) { showToast('Location not found', true); return; }
-  lastInterPerson = p;
-  applyRadius(p, +document.getElementById('miles-select').value);
+function handleInteractiveClick(p){
+  if(!p||!p.coords){showToast('Location not found',true);return;}
+  lastInterPerson=p; applyRadius(p,+document.getElementById('miles-select').value);
 }
 
-function applyRadius(p, radiusMi) {
-  clearConnections(); clearRadius(); hideClusterPopup();
-  interHighlight = new Set();
-  // Restore visibility
-  Object.keys(zipGroups).forEach(function(z) {
-    var g = zipGroups[z];
-    g.hiddenIds = new Set(g.people.filter(function(x){ return !isVisible(x); }).map(function(x){ return x.id; }));
-    refreshGroup(z, 'normal');
-  });
-  var radiusM = radiusMi * 1609.344;
-
-  if (p.type === 'T') {
-    selectedTech = p;
-    var gz = zipGroups[p.zip ? p.zip.toString().padStart(5,'0') : ''];
-    if (gz) { var gv = gz.people.filter(function(x){ return !gz.hiddenIds.has(x.id); }); gz.marker.setIcon(gz.people.length===1?singleIcon('T','selected'):clusterIcon(gv,'selected')); }
-
-    radiusCircle = L.circle([p.coords.lat, p.coords.lng], { radius:radiusM, color:'#7c3aed', weight:2.5, opacity:0.9, fillColor:'#7c3aed', fillOpacity:0.08, dashArray:'6 4' }).addTo(map);
-
-    var allC = people.filter(function(x){ return x.type==='C' && x.coords && isVisible(x); });
-    var inC  = allC.filter(function(c){ return miles(p.coords, c.coords) <= radiusMi; });
-    var outC = allC.filter(function(c){ return miles(p.coords, c.coords) >  radiusMi; });
-    outC.forEach(hidePerson);
-    inC.forEach(function(c){ interHighlight.add(c.id); });
-    var inCZips = new Set(inC.map(function(c){ return c.zip ? c.zip.toString().padStart(5,'0') : ''; }));
-    inCZips.forEach(function(z){ refreshGroup(z,'in-radius'); });
-    people.filter(function(x){ return x.type==='T' && x.id!==p.id && isVisible(x); }).forEach(hidePerson);
-
-    map.fitBounds(radiusCircle.getBounds(), { padding:[40,40], animate:true });
-    setBanner('🎯 ' + p.name + ' · ' + radiusMi + ' mi · ' + inC.length + ' client' + (inC.length!==1?'s':'') + ' inside', '#a78bfa');
-    var sortedC = inC.map(function(c){ return Object.assign({}, c, {dist: miles(p.coords,c.coords)}); }).sort(function(a,b){ return a.dist-b.dist; });
-    showDistPanel('Within ' + radiusMi + ' mi of ' + p.name, sortedC, inC.map(function(c){ return c.id; }), true);
-    renderSidebar(inC.map(function(c){ return c.id; }));
+function applyRadius(p,radiusMi){
+  clearConnections(); clearRadius(); hideClusterPopup(); interHighlight=new Set();
+  Object.keys(zipGroups).forEach(function(z){var g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(function(x){return !isVisible(x);}).map(function(x){return x.id;}));refreshGroup(z,'normal');});
+  var radiusM=radiusMi*1609.344;
+  if(p.type==='T'){
+    selectedTech=p;
+    var gz=zipGroups[p.zip?p.zip.toString().trim().padStart(5,'0'):''];
+    if(gz){var gv=gz.people.filter(function(x){return !gz.hiddenIds.has(x.id);});gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}
+    radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map);
+    var allC=people.filter(function(x){return x.type==='C'&&x.coords&&isVisible(x);});
+    var inC=allC.filter(function(c){return miles(p.coords,c.coords)<=radiusMi;});
+    var outC=allC.filter(function(c){return miles(p.coords,c.coords)>radiusMi;});
+    outC.forEach(hidePerson); inC.forEach(function(c){interHighlight.add(c.id);});
+    new Set(inC.map(function(c){return c.zip?c.zip.toString().trim().padStart(5,'0'):'';})).forEach(function(z){refreshGroup(z,'in-radius');});
+    people.filter(function(x){return x.type==='T'&&x.id!==p.id&&isVisible(x);}).forEach(hidePerson);
+    map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});
+    setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inC.length+' client'+(inC.length!==1?'s':'')+' inside','#a78bfa');
+    var sortedC=inC.map(function(c){return merge(c,{dist:miles(p.coords,c.coords)});}).sort(function(a,b){return a.dist-b.dist;});
+    showDistPanel('Within '+radiusMi+' mi of '+p.name,sortedC,inC.map(function(c){return c.id;}),true);
+    renderSidebar(inC.map(function(c){return c.id;}));
   } else {
-    var gz2 = zipGroups[p.zip ? p.zip.toString().padStart(5,'0') : ''];
-    if (gz2) { var gv2 = gz2.people.filter(function(x){ return !gz2.hiddenIds.has(x.id); }); gz2.marker.setIcon(gz2.people.length===1?singleIcon('C','selected'):clusterIcon(gv2,'selected')); }
-
-    radiusCircle = L.circle([p.coords.lat, p.coords.lng], { radius:radiusM, color:'#ea580c', weight:2.5, opacity:0.9, fillColor:'#ea580c', fillOpacity:0.07, dashArray:'6 4' }).addTo(map);
-
-    var allT = people.filter(function(x){ return x.type==='T' && x.coords && isVisible(x); });
-    var inT  = allT.filter(function(t){ return miles(p.coords, t.coords) <= radiusMi; });
-    var outT = allT.filter(function(t){ return miles(p.coords, t.coords) >  radiusMi; });
-    outT.forEach(hidePerson);
-    inT.forEach(function(t){ interHighlight.add(t.id); });
-    var inTZips = new Set(inT.map(function(t){ return t.zip ? t.zip.toString().padStart(5,'0') : ''; }));
-    inTZips.forEach(function(z){ refreshGroup(z,'in-radius'); });
-    people.filter(function(x){ return x.type==='C' && x.id!==p.id && isVisible(x); }).forEach(hidePerson);
-
-    map.fitBounds(radiusCircle.getBounds(), { padding:[40,40], animate:true });
-    setBanner('🎯 ' + p.name + ' · ' + radiusMi + ' mi · ' + inT.length + ' technician' + (inT.length!==1?'s':'') + ' nearby', '#fb923c');
-    var sortedT = inT.map(function(t){ return Object.assign({}, t, {dist: miles(p.coords,t.coords)}); }).sort(function(a,b){ return a.dist-b.dist; });
-    showDistPanel('Technicians within ' + radiusMi + ' mi of ' + p.name, sortedT, inT.map(function(t){ return t.id; }), true);
-    renderSidebar(inT.map(function(t){ return t.id; }));
+    var gz2=zipGroups[p.zip?p.zip.toString().trim().padStart(5,'0'):''];
+    if(gz2){var gv2=gz2.people.filter(function(x){return !gz2.hiddenIds.has(x.id);});gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));}
+    radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map);
+    var allT=people.filter(function(x){return x.type==='T'&&x.coords&&isVisible(x);});
+    var inT=allT.filter(function(t){return miles(p.coords,t.coords)<=radiusMi;});
+    var outT=allT.filter(function(t){return miles(p.coords,t.coords)>radiusMi;});
+    outT.forEach(hidePerson); inT.forEach(function(t){interHighlight.add(t.id);});
+    new Set(inT.map(function(t){return t.zip?t.zip.toString().trim().padStart(5,'0'):'';})).forEach(function(z){refreshGroup(z,'in-radius');});
+    people.filter(function(x){return x.type==='C'&&x.id!==p.id&&isVisible(x);}).forEach(hidePerson);
+    map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});
+    setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inT.length+' technician'+(inT.length!==1?'s':'')+' nearby','#fb923c');
+    var sortedT=inT.map(function(t){return merge(t,{dist:miles(p.coords,t.coords)});}).sort(function(a,b){return a.dist-b.dist;});
+    showDistPanel('Technicians within '+radiusMi+' mi of '+p.name,sortedT,inT.map(function(t){return t.id;}),true);
+    renderSidebar(inT.map(function(t){return t.id;}));
   }
-  document.getElementById('legend-radius').style.display = 'flex';
-  switchTab('distances');
+  document.getElementById('legend-radius').style.display='flex'; switchTab('distances');
 }
+function merge(obj,extra){var r={};Object.keys(obj).forEach(function(k){r[k]=obj[k];});Object.keys(extra).forEach(function(k){r[k]=extra[k];});return r;}
 
-function clearRadius() {
-  if (radiusCircle) { map.removeLayer(radiusCircle); radiusCircle = null; }
-  document.getElementById('legend-radius').style.display = 'none';
-}
+function clearRadius(){if(radiusCircle){map.removeLayer(radiusCircle);radiusCircle=null;}document.getElementById('legend-radius').style.display='none';}
 
-// ── Normal connections ────────────────────────────────────────────────────────
-function showConnections(tech) {
+// ── Connections ───────────────────────────────────────────────────────────────
+function showConnections(tech){
   clearConnections(); clearRadius();
-  if (!tech.coords) { showToast('Location not found', true); return; }
-  var clients = people.filter(function(p){ return p.type==='C' && p.coords && isVisible(p); });
-  if (!clients.length) { showToast('No visible clients', true); return; }
-  var sorted = clients.map(function(c){ return Object.assign({},c,{dist:miles(tech.coords,c.coords)}); }).sort(function(a,b){ return a.dist-b.dist; });
-  var lc = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];
-  sorted.forEach(function(c, i) {
-    var color = lc[i % lc.length];
-    var line = L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]], { color:color, weight:i===0?5:i<3?4:3, opacity:0.9 }).addTo(map);
-    var mid = [(tech.coords.lat+c.coords.lat)/2, (tech.coords.lng+c.coords.lng)/2];
-    var label = L.marker(mid, {
-      icon: L.divIcon({ html:'<div class="dist-label-el" style="border-color:'+color+';color:'+color+';">'+c.dist.toFixed(1)+' mi</div>', className:'', iconAnchor:[24,10] }),
-      interactive:false, zIndexOffset:500
-    }).addTo(map);
+  if(!tech.coords){showToast('Location not found',true);return;}
+  var clients=people.filter(function(p){return p.type==='C'&&p.coords&&isVisible(p);});
+  if(!clients.length){showToast('No visible clients',true);return;}
+  var sorted=clients.map(function(c){return merge(c,{dist:miles(tech.coords,c.coords)});}).sort(function(a,b){return a.dist-b.dist;});
+  var lc=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];
+  sorted.forEach(function(c,i){
+    var color=lc[i%lc.length];
+    var line=L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]],{color:color,weight:i===0?5:i<3?4:3,opacity:0.9}).addTo(map);
+    var mid=[(tech.coords.lat+c.coords.lat)/2,(tech.coords.lng+c.coords.lng)/2];
+    var label=L.marker(mid,{icon:L.divIcon({html:'<div class="dist-label-el" style="border-color:'+color+';color:'+color+';">'+c.dist.toFixed(1)+' mi</div>',className:'',iconAnchor:[24,10]}),interactive:false,zIndexOffset:500}).addTo(map);
     connLines.push(line); connLabels.push(label);
   });
-  map.fitBounds([[tech.coords.lat,tech.coords.lng]].concat(sorted.map(function(c){ return [c.coords.lat,c.coords.lng]; })), { padding:[70,70], maxZoom:13, animate:true });
-  setBanner('📍 ' + tech.name + ' — ' + sorted.length + ' clients', '#38bdf8');
-  showDistPanel(tech.name + ' → Clients', sorted, [], false);
+  map.fitBounds([[tech.coords.lat,tech.coords.lng]].concat(sorted.map(function(c){return [c.coords.lat,c.coords.lng];})),{padding:[70,70],maxZoom:13,animate:true});
+  setBanner('📍 '+tech.name+' — '+sorted.length+' clients','#38bdf8');
+  showDistPanel(tech.name+' → Clients',sorted,[],false);
 }
 
-function showDistPanel(title, sorted, inRadiusIds, isInter) {
-  document.getElementById('dist-empty').style.display = 'none';
-  var body = document.getElementById('dist-body');
-  body.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
-  document.getElementById('dist-title').textContent = title;
-  if (!sorted.length) {
-    document.getElementById('dist-list').innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:8px 2px;">None within this radius.</div>';
-    return;
-  }
-  document.getElementById('dist-list').innerHTML = sorted.map(function(x, i) {
-    var rnk = i < 3 ? 'r' + (i+1) : '';
-    var city = getCity(x.zip);
-    var cls = isInter ? 'inter' : '';
-    var mc  = isInter ? 'inside' : '';
-    return '<div class="dist-item ' + cls + '" onclick="panTo(\'' + x.id + '\')">' +
-      '<div class="dist-rank ' + rnk + '">' + (i+1) + '</div>' +
-      '<div class="dname">' + x.name + '<small>' + (x.zip||'') + (city?' · '+city:'') + '</small></div>' +
-      '<div class="dmiles ' + mc + '">' + x.dist.toFixed(1) + ' mi</div>' +
-      '</div>';
+function showDistPanel(title,sorted,inRadiusIds,isInter){
+  document.getElementById('dist-empty').style.display='none';
+  var body=document.getElementById('dist-body'); body.style.cssText='display:flex;flex-direction:column;gap:6px;';
+  document.getElementById('dist-title').textContent=title;
+  if(!sorted.length){document.getElementById('dist-list').innerHTML='<div style="color:#94a3b8;font-size:12px;padding:8px 2px;">None within this radius.</div>';return;}
+  document.getElementById('dist-list').innerHTML=sorted.map(function(x,i){
+    var rnk=i<3?'r'+(i+1):''; var city=getCity(x.zip);
+    return '<div class="dist-item '+(isInter?'inter':'')+'" onclick="panTo(\''+x.id+'\')"><div class="dist-rank '+rnk+'">'+(i+1)+'</div><div class="dname">'+x.name+'<small>'+(x.zip||'')+(city?' · '+city:'')+'</small></div><div class="dmiles '+(isInter?'inside':'')+'">'+x.dist.toFixed(1)+' mi</div></div>';
   }).join('');
 }
 
-function clearConnections() {
-  connLines.forEach(function(l){ map.removeLayer(l); });
-  connLabels.forEach(function(l){ map.removeLayer(l); });
-  connLines = []; connLabels = [];
-}
-
-function setBanner(html, borderColor) {
-  var b = document.getElementById('conn-banner');
-  b.innerHTML = html; b.style.borderColor = borderColor; b.style.display = 'block';
-}
-
-function panTo(id) {
-  var p = byId(id); if (!p || !p.coords) return;
-  map.setView([p.coords.lat, p.coords.lng], 13, { animate:true });
-  var zip = p.zip ? p.zip.toString().padStart(5,'0') : '';
-  var g = zipGroups[zip];
-  if (g) {
-    var vis = g.people.filter(function(x){ return !g.hiddenIds.has(x.id); });
-    g.marker.setIcon(g.people.length===1 ? singleIcon(p.type,'selected') : clusterIcon(vis,'selected'));
-    setTimeout(function(){
-      var vis2 = g.people.filter(function(x){ return !g.hiddenIds.has(x.id); });
-      g.marker.setIcon(g.people.length===1 ? singleIcon(p.type,'in-radius') : clusterIcon(vis2,'in-radius'));
-    }, 1500);
-  }
+function clearConnections(){connLines.forEach(function(l){map.removeLayer(l);});connLabels.forEach(function(l){map.removeLayer(l);});connLines=[];connLabels=[];}
+function setBanner(html,c){var b=document.getElementById('conn-banner');b.innerHTML=html;b.style.borderColor=c;b.style.display='block';}
+function panTo(id){
+  var p=byId(id); if(!p||!p.coords) return;
+  map.setView([p.coords.lat,p.coords.lng],13,{animate:true});
+  var zip=p.zip?p.zip.toString().trim().padStart(5,'0'):''; var g=zipGroups[zip];
+  if(g){var vis=g.people.filter(function(x){return !g.hiddenIds.has(x.id);});g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(function(){var v2=g.people.filter(function(x){return !g.hiddenIds.has(x.id);});g.marker.setIcon(g.people.length===1?singleIcon(p,'in-radius'):clusterIcon(v2,'in-radius'));},1500);}
 }
 
 // ── Reset ─────────────────────────────────────────────────────────────────────
-function resetToDefault() {
-  selectedTech = null; lastInterPerson = null; interHighlight = new Set();
-  clearConnections(); clearRadius(); hideClusterPopup(); hideTeamPicker();
+function resetToDefault(){
+  selectedTech=null; lastInterPerson=null; interHighlight=new Set();
+  clearConnections(); clearRadius(); hideClusterPopup(); hideTeamPicker(); hideSearchDropdown();
   applyVisFilter();
-  document.getElementById('conn-banner').style.display = 'none';
-  document.getElementById('dist-empty').style.display = '';
-  document.getElementById('dist-body').style.display = 'none';
+  document.getElementById('conn-banner').style.display='none';
+  document.getElementById('dist-empty').style.display='';
+  document.getElementById('dist-body').style.display='none';
   renderSidebar();
 }
 
 // ── Controls ──────────────────────────────────────────────────────────────────
-document.getElementById('btn-inter').addEventListener('click', function() {
-  interMode = !interMode;
-  document.getElementById('btn-inter').classList.toggle('btn-inter-on', interMode);
-  document.getElementById('interactive-controls').style.display = interMode ? 'flex' : 'none';
-  document.getElementById('inter-hint').style.display = interMode ? 'block' : 'none';
-  if (!interMode) { resetToDefault(); showToast('Interactive mode off'); }
-  else showToast('Interactive mode on', false, 'purple');
+document.getElementById('btn-inter').addEventListener('click',function(){
+  interMode=!interMode;
+  document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode);
+  document.getElementById('interactive-controls').style.display=interMode?'flex':'none';
+  document.getElementById('inter-hint').style.display=interMode?'block':'none';
+  if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on',false,'purple');
 });
-document.getElementById('miles-select').addEventListener('change', function() {
-  if (!interMode || !lastInterPerson) return;
-  applyRadius(lastInterPerson, +this.value);
-});
-document.getElementById('btn-fit').addEventListener('click', function() {
-  var pts = people.filter(function(p){ return p.coords && isVisible(p); }).map(function(p){ return [p.coords.lat, p.coords.lng]; });
-  if (pts.length) map.fitBounds(pts, { padding:[50,50] });
-});
-document.getElementById('btn-clear').addEventListener('click', function() { resetToDefault(); showToast('Cleared'); });
+document.getElementById('miles-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;applyRadius(lastInterPerson,+this.value);});
+document.getElementById('btn-fit').addEventListener('click',function(){var pts=people.filter(function(p){return p.coords&&isVisible(p);}).map(function(p){return [p.coords.lat,p.coords.lng];});if(pts.length)map.fitBounds(pts,{padding:[50,50]});});
+document.getElementById('btn-clear').addEventListener('click',function(){resetToDefault();showToast('Cleared');});
+document.getElementById('team-filter').addEventListener('change',function(){teamFilter=this.value;resetToDefault();});
 
-document.getElementById('team-filter').addEventListener('change', function() {
-  teamFilter = this.value; resetToDefault();
+// Search
+var searchInput=document.getElementById('search-input');
+var searchClear=document.getElementById('search-clear');
+searchInput.addEventListener('input',function(){
+  searchQuery=this.value.trim();
+  searchClear.style.display=searchQuery?'flex':'none';
+  renderSearchDropdown();
+  applyVisFilter(); renderSidebar();
 });
-
-var searchInput = document.getElementById('search-input');
-var searchClear = document.getElementById('search-clear');
-searchInput.addEventListener('input', function() {
-  searchQuery = this.value.trim();
-  searchClear.style.display = searchQuery ? 'flex' : 'none';
-  resetToDefault();
+searchInput.addEventListener('focus',function(){if(searchQuery)renderSearchDropdown();});
+searchInput.addEventListener('keydown',function(e){if(e.key==='Escape'){hideSearchDropdown();this.blur();}});
+searchClear.addEventListener('click',function(){
+  searchInput.value=''; searchQuery='';
+  searchClear.style.display='none';
+  hideSearchDropdown(); resetToDefault();
 });
-searchClear.addEventListener('click', function() {
-  searchInput.value = ''; searchQuery = '';
-  searchClear.style.display = 'none';
-  resetToDefault();
+// Close dropdown when clicking outside
+document.addEventListener('click',function(e){
+  if(!document.getElementById('search-wrap').contains(e.target))hideSearchDropdown();
 });
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
-  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.toggle('active', c.id === 'tab-' + name); });
-}
-document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click', function(){ switchTab(t.dataset.tab); }); });
+function switchTab(name){document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.tab===name);});document.querySelectorAll('.tab-content').forEach(function(c){c.classList.toggle('active',c.id==='tab-'+name);});}
+document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){switchTab(t.dataset.tab);});});
 
-// ── Add person ────────────────────────────────────────────────────────────────
-document.getElementById('btn-add').addEventListener('click', async function() {
-  var name = document.getElementById('f-name').value.trim();
-  var type = document.getElementById('f-type').value;
-  var zip  = document.getElementById('f-zip').value.trim();
-  var team = document.getElementById('f-team').value;
-  if (!name) { showToast('Name is required', true); return; }
-  people.push({ id: uid(), name: name, type: type, zip: zip || '', team: team });
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-zip').value  = '';
-  showToast(name + ' added!');
-  await renderAll(); switchTab('people');
+// ── Add ───────────────────────────────────────────────────────────────────────
+document.getElementById('btn-add').addEventListener('click',async function(){
+  var name=document.getElementById('f-name').value.trim();
+  var type=document.getElementById('f-type').value;
+  var zip=document.getElementById('f-zip').value.trim();
+  var team=document.getElementById('f-team').value;
+  if(!name){showToast('Name is required',true);return;}
+  people.push({id:uid(),name:name,type:type,zip:zip||'',team:team,archived:false});
+  document.getElementById('f-name').value=''; document.getElementById('f-zip').value='';
+  showToast(name+' added!'); await renderAll(); switchTab('people');
 });
 
-// ── CSV import ────────────────────────────────────────────────────────────────
-function normalizeTeam(raw) {
-  if (!raw) return 'Unassigned';
-  var r = raw.trim();
-  return TEAMS.find(function(t){ return t.toLowerCase() === r.toLowerCase(); }) ||
-         TEAMS.find(function(t){ return t.toLowerCase().includes(r.toLowerCase()); }) ||
-         'Unassigned';
+// ── CSV ───────────────────────────────────────────────────────────────────────
+function normalizeTeam(raw){
+  if(!raw) return 'Unassigned';
+  var r=raw.trim();
+  return TEAMS.find(function(t){return t.toLowerCase()===r.toLowerCase();})||TEAMS.find(function(t){return t.toLowerCase().indexOf(r.toLowerCase())!==-1;})||'Unassigned';
 }
-function importCSV(text) {
-  var rows = Papa.parse(text, { header: true, skipEmptyLines: true }).data;
-  var added = 0;
-  rows.forEach(function(row) {
-    var name = (row['Names']||row['Name']||row['name']||'').trim();
-    var type = (row['Label']||row['label']||row['Type']||'').trim().toUpperCase();
-    var zip  = (row['zipcode']||row['Zipcode']||row['ZipCode']||row['zip']||'').toString().trim();
-    var team = normalizeTeam(row['Team']||row['team']||'');
-    if (name && (type==='T'||type==='C') && !people.find(function(p){ return p.name===name && p.zip===zip; })) {
-      people.push({ id: uid(), name: name, type: type, zip: zip, team: team });
-      added++;
+function importCSV(text){
+  var rows=Papa.parse(text,{header:true,skipEmptyLines:true}).data;
+  var added=0;
+  rows.forEach(function(row){
+    var name=(row['Names']||row['Name']||row['name']||'').trim();
+    var type=(row['Type']||row['Label']||row['label']||row['type']||'').trim().toUpperCase();
+    var zip=(row['zipcode']||row['Zipcode']||row['ZipCode']||row['zip']||'').toString().trim();
+    var team=normalizeTeam(row['Team']||row['team']||'');
+    if(name&&(type==='T'||type==='C')&&!people.find(function(p){return p.name===name&&p.zip===zip;})){
+      people.push({id:uid(),name:name,type:type,zip:zip,team:team,archived:false}); added++;
     }
   });
   return added;
 }
-document.getElementById('drop-zone').addEventListener('click', function(){ document.getElementById('csv-file').click(); });
-document.getElementById('csv-file').addEventListener('change', async function(e) {
-  var f = e.target.files[0]; if (!f) return;
-  var n = importCSV(await f.text());
-  showToast('Imported ' + n + ' records');
-  await renderAll(); switchTab('people'); e.target.value = '';
+document.getElementById('drop-zone').addEventListener('click',function(){document.getElementById('csv-file').click();});
+document.getElementById('csv-file').addEventListener('change',async function(e){
+  var f=e.target.files[0]; if(!f) return;
+  var n=importCSV(await f.text()); showToast('Imported '+n+' records');
+  await renderAll(); switchTab('people'); e.target.value='';
 });
-var dz = document.getElementById('drop-zone');
-dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('over'); });
-dz.addEventListener('dragleave', function(){ dz.classList.remove('over'); });
-dz.addEventListener('drop', async function(e) {
+var dz=document.getElementById('drop-zone');
+dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',function(){dz.classList.remove('over');});
+dz.addEventListener('drop',async function(e){
   e.preventDefault(); dz.classList.remove('over');
-  var f = e.dataTransfer.files[0]; if (!f) return;
-  var n = importCSV(await f.text());
-  showToast('Imported ' + n + ' records');
+  var f=e.dataTransfer.files[0]; if(!f) return;
+  var n=importCSV(await f.text()); showToast('Imported '+n+' records');
   await renderAll(); switchTab('people');
 });
 
-// ── Delete ────────────────────────────────────────────────────────────────────
-function deletePerson(id) {
-  people = people.filter(function(p){ return p.id !== id; });
-  if (selectedTech && selectedTech.id === id) { selectedTech = null; clearConnections(); }
-  if (lastInterPerson && lastInterPerson.id === id) lastInterPerson = null;
-  renderAll(); showToast('Removed');
-}
-
 // ── Persist ───────────────────────────────────────────────────────────────────
-function saveData() { localStorage.setItem('fsmap_people', JSON.stringify(people)); }
+function saveData(){localStorage.setItem('fsmap_people',JSON.stringify(people));}
 
 // ── Heat map ──────────────────────────────────────────────────────────────────
-function drawHeatCanvas() {
-  if (heatCanvas) { heatCanvas.remove(); heatCanvas = null; }
-  if (!heatOn) return;
-  var pts = people.filter(function(p){ return p.coords && isVisible(p); });
-  if (!pts.length) return;
-  var pane   = map.getPanes().overlayPane;
-  var canvas = document.createElement('canvas');
-  var size   = map.getSize();
-  canvas.width  = size.x;
-  canvas.height = size.y;
-  canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:400;opacity:0.75;';
-  pane.appendChild(canvas);
-  heatCanvas = canvas;
-  var ctx = canvas.getContext('2d');
-  var RADIUS = 70;
-  var tmp  = document.createElement('canvas');
-  tmp.width = size.x; tmp.height = size.y;
-  var tctx = tmp.getContext('2d');
-  pts.forEach(function(p) {
-    var pt = map.latLngToContainerPoint([p.coords.lat, p.coords.lng]);
-    var intensity = p.type === 'C' ? 0.45 : 0.35;
-    for (var i = 0; i < 3; i++) {
-      var r = RADIUS - i * 15;
-      var grad = tctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, r);
-      grad.addColorStop(0, 'rgba(0,0,0,' + intensity + ')');
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      tctx.fillStyle = grad;
-      tctx.beginPath();
-      tctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
-      tctx.fill();
-    }
+function drawHeatCanvas(){
+  if(heatCanvas){heatCanvas.remove();heatCanvas=null;} if(!heatOn) return;
+  var pts=people.filter(function(p){return p.coords&&isVisible(p);}); if(!pts.length) return;
+  var pane=map.getPanes().overlayPane; var canvas=document.createElement('canvas');
+  var size=map.getSize(); canvas.width=size.x; canvas.height=size.y;
+  canvas.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:400;opacity:0.75;';
+  pane.appendChild(canvas); heatCanvas=canvas;
+  var ctx=canvas.getContext('2d'),RADIUS=70;
+  var tmp=document.createElement('canvas'); tmp.width=size.x; tmp.height=size.y; var tctx=tmp.getContext('2d');
+  pts.forEach(function(p){
+    var pt=map.latLngToContainerPoint([p.coords.lat,p.coords.lng]); var intensity=p.type==='C'?0.45:0.35;
+    for(var i=0;i<3;i++){var r=RADIUS-i*15;var grad=tctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,r);grad.addColorStop(0,'rgba(0,0,0,'+intensity+')');grad.addColorStop(1,'rgba(0,0,0,0)');tctx.fillStyle=grad;tctx.beginPath();tctx.arc(pt.x,pt.y,r,0,Math.PI*2);tctx.fill();}
   });
-  var imgData = tctx.getImageData(0, 0, size.x, size.y);
-  var data    = imgData.data;
-  var palette = buildPalette();
-  for (var i = 0; i < data.length; i += 4) {
-    var a = data[i+3];
-    if (a > 0) {
-      var c = palette[Math.min(a, 255)];
-      data[i]   = c[0];
-      data[i+1] = c[1];
-      data[i+2] = c[2];
-      data[i+3] = Math.min(230, a * 2.5);
-    }
-  }
-  tctx.putImageData(imgData, 0, 0);
-  ctx.clearRect(0, 0, size.x, size.y);
-  ctx.drawImage(tmp, 0, 0);
-  L.DomUtil.setPosition(canvas, map.containerPointToLayerPoint([0, 0]));
+  var imgData=tctx.getImageData(0,0,size.x,size.y),data=imgData.data,palette=buildPalette();
+  for(var i=0;i<data.length;i+=4){var a=data[i+3];if(a>0){var c=palette[Math.min(a,255)];data[i]=c[0];data[i+1]=c[1];data[i+2]=c[2];data[i+3]=Math.min(230,a*2.5);}}
+  tctx.putImageData(imgData,0,0); ctx.clearRect(0,0,size.x,size.y); ctx.drawImage(tmp,0,0);
+  L.DomUtil.setPosition(canvas,map.containerPointToLayerPoint([0,0]));
 }
-
-function buildPalette() {
-  var stops = [
-    [0,   [59,  130, 246]],
-    [80,  [34,  197, 94 ]],
-    [140, [250, 204, 21 ]],
-    [200, [249, 115, 22 ]],
-    [255, [239, 68,  68 ]]
-  ];
-  var palette = new Array(256);
-  for (var i = 0; i < 256; i++) {
-    var lo = stops[0], hi = stops[stops.length - 1];
-    for (var j = 0; j < stops.length - 1; j++) {
-      if (i >= stops[j][0] && i <= stops[j+1][0]) { lo = stops[j]; hi = stops[j+1]; break; }
-    }
-    var t = lo[0] === hi[0] ? 0 : (i - lo[0]) / (hi[0] - lo[0]);
-    palette[i] = [
-      Math.round(lo[1][0] + t * (hi[1][0] - lo[1][0])),
-      Math.round(lo[1][1] + t * (hi[1][1] - lo[1][1])),
-      Math.round(lo[1][2] + t * (hi[1][2] - lo[1][2]))
-    ];
+function buildPalette(){
+  var stops=[[0,[59,130,246]],[80,[34,197,94]],[140,[250,204,21]],[200,[249,115,22]],[255,[239,68,68]]];
+  var palette=new Array(256);
+  for(var i=0;i<256;i++){
+    var lo=stops[0],hi=stops[stops.length-1];
+    for(var j=0;j<stops.length-1;j++){if(i>=stops[j][0]&&i<=stops[j+1][0]){lo=stops[j];hi=stops[j+1];break;}}
+    var t=lo[0]===hi[0]?0:(i-lo[0])/(hi[0]-lo[0]);
+    palette[i]=[Math.round(lo[1][0]+t*(hi[1][0]-lo[1][0])),Math.round(lo[1][1]+t*(hi[1][1]-lo[1][1])),Math.round(lo[1][2]+t*(hi[1][2]-lo[1][2]))];
   }
   return palette;
 }
-
-document.getElementById('btn-heat').addEventListener('click', function() {
-  heatOn = !heatOn;
-  document.getElementById('btn-heat').classList.toggle('btn-heat-on', heatOn);
-  document.getElementById('heat-legend').style.display = heatOn ? 'block' : 'none';
-  if (!heatOn && heatCanvas) { heatCanvas.remove(); heatCanvas = null; }
-  else drawHeatCanvas();
+document.getElementById('btn-heat').addEventListener('click',function(){
+  heatOn=!heatOn; document.getElementById('btn-heat').classList.toggle('btn-heat-on',heatOn);
+  document.getElementById('heat-legend').style.display=heatOn?'block':'none';
+  if(!heatOn&&heatCanvas){heatCanvas.remove();heatCanvas=null;}else drawHeatCanvas();
 });
 
 // ── Utils ─────────────────────────────────────────────────────────────────────
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
 var _tt;
-function showToast(msg, err, style) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show' + (err ? ' err' : '') + (style === 'purple' ? ' purple' : '');
-  clearTimeout(_tt);
-  _tt = setTimeout(function(){ t.className = ''; }, 3200);
+function showToast(msg,err,style){
+  var t=document.getElementById('toast'); t.textContent=msg;
+  t.className='show'+(err?' err':'')+(style==='purple'?' purple':'');
+  clearTimeout(_tt); _tt=setTimeout(function(){t.className='';},3200);
 }
 
-// ── Seed data ─────────────────────────────────────────────────────────────────
-var SEED = [
-  {name:"Anarfi, Abel",         type:"T", zip:"02132", team:"Burgundy"},
-  {name:"Atherley, Jonte",      type:"T", zip:"01607", team:"Burgundy"},
-  {name:"Ovando, Harold",       type:"T", zip:"",      team:"Burgundy"},
-  {name:"Atrium",               type:"C", zip:"02472", team:"Burgundy"},
-  {name:"BHNS",                 type:"C", zip:"02114", team:"Burgundy"},
-  {name:"Bridge",               type:"C", zip:"",      team:"Burgundy"},
-  {name:"CHS",                  type:"C", zip:"",      team:"Burgundy"},
-  {name:"CMS",                  type:"C", zip:"",      team:"Burgundy"},
-  {name:"DCD",                  type:"C", zip:"",      team:"Burgundy"},
-  {name:"JWP",                  type:"C", zip:"",      team:"Burgundy"},
-  {name:"Kingsley",             type:"C", zip:"",      team:"Burgundy"},
-  {name:"Rashi",                type:"C", zip:"",      team:"Burgundy"},
-  {name:"Tenacre",              type:"C", zip:"",      team:"Burgundy"},
-  {name:"Prosper, Judens",      type:"T", zip:"",      team:"Slate"},
-  {name:"Rivera, George",       type:"T", zip:"",      team:"Slate"},
-  {name:"Starkin, Paul",        type:"T", zip:"",      team:"Slate"},
-  {name:"Thang, Sundy",         type:"T", zip:"",      team:"Slate"},
-  {name:"CA",                   type:"C", zip:"01742", team:"Slate"},
-  {name:"Fessy",                type:"C", zip:"02465", team:"Slate"},
-  {name:"Pike",                 type:"C", zip:"01810", team:"Slate"},
-  {name:"Armoo-Daniels, Aba",   type:"T", zip:"01702", team:"Gold"},
-  {name:"Pinto, Melinda",       type:"T", zip:"",      team:"Gold"},
-  {name:"Poles, Nick",          type:"T", zip:"",      team:"Gold"},
-  {name:"Quartarro, Jordan",    type:"T", zip:"",      team:"Gold"},
-  {name:"White, Erik",          type:"T", zip:"",      team:"Gold"},
-  {name:"Baars, Freddy",        type:"T", zip:"",      team:"NCE"},
-  {name:"St.Marks",             type:"C", zip:"01772", team:"NCE"},
-  {name:"Michael, Andrea",      type:"T", zip:"",      team:"Service Desk"},
-  {name:"Zakarashvili, Georgy", type:"T", zip:"",      team:"Service Desk"},
-  {name:"YWCA",                 type:"C", zip:"02139", team:"Service Desk"},
-  {name:"Agyemang, Pius",       type:"T", zip:"02189", team:"Operations & SLT"},
-  {name:"Angoff, Jeremy",       type:"T", zip:"02132", team:"Operations & SLT"},
-  {name:"OunceIT",              type:"C", zip:"",      team:"Operations & SLT"},
-  {name:"Pereira, Aaron",       type:"T", zip:"",      team:"Operations & SLT"},
-  {name:"Smith, Robert",        type:"T", zip:"",      team:"Operations & SLT"}
+// ── Seed (from CSV — replaces all prior data) ─────────────────────────────────
+var SEED=[
+  {name:"Agyemang, Pius",type:"T",zip:"02189",team:"Operations & SLT"},
+  {name:"Anarfi, Abel",type:"T",zip:"02132",team:"Burgundy"},
+  {name:"Andrea, Michael",type:"T",zip:"01701",team:"Service Desk"},
+  {name:"Angoff, Jeremy",type:"T",zip:"02132",team:"Operations & SLT"},
+  {name:"Armoo-Daniels, Aba",type:"T",zip:"01702",team:"Gold"},
+  {name:"Atherley, Jonte",type:"T",zip:"01607",team:"Burgundy"},
+  {name:"Baars, Freddy",type:"T",zip:"01760",team:"NCE"},
+  {name:"Barnatt, Joshua",type:"T",zip:"01760",team:"NCE"},
+  {name:"Brooks, Michelle",type:"T",zip:"01526",team:"Burgundy"},
+  {name:"Brown, Louis",type:"T",zip:"01453",team:"Operations & SLT"},
+  {name:"Busby, Henry",type:"T",zip:"02054",team:"Operations & SLT"},
+  {name:"Corbin, Thomas",type:"T",zip:"01778",team:"Operations & SLT"},
+  {name:"Delorme, Michael",type:"T",zip:"01520",team:"Gold"},
+  {name:"Foster, Barry",type:"T",zip:"02301",team:"Service Desk"},
+  {name:"Gorski, Brandon",type:"T",zip:"01923",team:"Slate"},
+  {name:"Gray, Joseph",type:"T",zip:"02129",team:"Gold"},
+  {name:"Green, Andrew",type:"T",zip:"01453",team:"NCE"},
+  {name:"Hoang, David",type:"T",zip:"02368",team:"Burgundy"},
+  {name:"Jamanka, Mamoudou",type:"T",zip:"02139",team:"Burgundy"},
+  {name:"Kaplish, Nipun",type:"T",zip:"02451",team:"NCE"},
+  {name:"Kaszycki, Julia",type:"T",zip:"01464",team:"Slate"},
+  {name:"Lahue, Cameron",type:"T",zip:"01905",team:"NCE"},
+  {name:"LeBlanc, Nathan",type:"T",zip:"01757",team:"Slate"},
+  {name:"Lincoln, Scott",type:"T",zip:"03051",team:"Slate"},
+  {name:"Matas, Jared",type:"T",zip:"02460",team:"Operations & SLT"},
+  {name:"McCormack, John",type:"T",zip:"01545",team:"Gold"},
+  {name:"McHugh, Amelia",type:"T",zip:"02472",team:"Operations & SLT"},
+  {name:"Meilus, Antanas",type:"T",zip:"02148",team:"NCE"},
+  {name:"Morgan, Susan",type:"T",zip:"01936",team:"Operations & SLT"},
+  {name:"Oppong, Nicholas",type:"T",zip:"01543",team:"NCE"},
+  {name:"Ovando, Harold",type:"T",zip:"01902",team:"Burgundy"},
+  {name:"Parker, Dale",type:"T",zip:"02169",team:"Operations & SLT"},
+  {name:"Pereira, Aaron",type:"T",zip:"02703",team:"Operations & SLT"},
+  {name:"Pinto, Melinda",type:"T",zip:"02472",team:"Gold"},
+  {name:"Poles, Nick",type:"T",zip:"01775",team:"Gold"},
+  {name:"Prosper, Judens",type:"T",zip:"01902",team:"Slate"},
+  {name:"Quartararo, Jordan",type:"T",zip:"01844",team:"Gold"},
+  {name:"Rivera, George",type:"T",zip:"01524",team:"Slate"},
+  {name:"Schmidt, Sean",type:"T",zip:"02135",team:"Slate"},
+  {name:"Smith, Robert",type:"T",zip:"01460",team:"Operations & SLT"},
+  {name:"Starkin, Paul",type:"T",zip:"01082",team:"Slate"},
+  {name:"Thang, Sundy",type:"T",zip:"01460",team:"Slate"},
+  {name:"White, Erik",type:"T",zip:"01568",team:"Gold"},
+  {name:"William Addo",type:"T",zip:"02132",team:"Burgundy"},
+  {name:"Zakarashvili, Georgy",type:"T",zip:"02478",team:"Service Desk"},
+  {name:"Acera School",type:"C",zip:"02476",team:"Service Desk"},
+  {name:"ACS",type:"C",zip:"02141",team:"Service Desk"},
+  {name:"Asha Patel",type:"C",zip:"02138",team:"Service Desk"},
+  {name:"Atrium School",type:"C",zip:"02472",team:"Burgundy"},
+  {name:"Bancroft School",type:"C",zip:"01605",team:"Gold"},
+  {name:"BCM",type:"C",zip:"02210",team:"Service Desk"},
+  {name:"BHNS",type:"C",zip:"02114",team:"Burgundy"},
+  {name:"Beaver Country Day School",type:"C",zip:"02467",team:"Service Desk"},
+  {name:"Berkman",type:"C",zip:"02445",team:"Service Desk"},
+  {name:"Bourell",type:"C",zip:"02090",team:"Service Desk"},
+  {name:"Bridge",type:"C",zip:"02119",team:"Burgundy"},
+  {name:"Broder Properties",type:"C",zip:"02116",team:"Service Desk"},
+  {name:"CMS",type:"C",zip:"02138",team:"Burgundy"},
+  {name:"CSW",type:"C",zip:"02493",team:"Gold"},
+  {name:"Carroll Pierce",type:"C",zip:"02108",team:"Service Desk"},
+  {name:"CNS",type:"C",zip:"02129",team:"Service Desk"},
+  {name:"Children's Own School",type:"C",zip:"01890",team:"Service Desk"},
+  {name:"Cliff Briggin",type:"C",zip:"02467",team:"Service Desk"},
+  {name:"CTAC",type:"C",zip:"02108",team:"Service Desk"},
+  {name:"Concord Academy",type:"C",zip:"01742",team:"Slate"},
+  {name:"Concord Museum",type:"C",zip:"01742",team:"Service Desk"},
+  {name:"CPW",type:"C",zip:"02151",team:"Service Desk"},
+  {name:"Curio Spice",type:"C",zip:"01803",team:"Service Desk"},
+  {name:"DCD",type:"C",zip:"02026",team:"Burgundy"},
+  {name:"Discovery Museum",type:"C",zip:"01720",team:"Service Desk"},
+  {name:"Donelan Contracting, Inc",type:"C",zip:"02130",team:"Service Desk"},
+  {name:"EHS",type:"C",zip:"01945",team:"Slate"},
+  {name:"Fayerweather",type:"C",zip:"02138",team:"Service Desk"},
+  {name:"Figur8",type:"C",zip:"02116",team:"Service Desk"},
+  {name:"Fred Maynard",type:"C",zip:"02116",team:"Service Desk"},
+  {name:"FreshComm",type:"C",zip:"01864",team:"Service Desk"},
+  {name:"Gann Academy",type:"C",zip:"02452",team:"NCE"},
+  {name:"GUS",type:"C",zip:"01915",team:"Slate"},
+  {name:"Harborlight",type:"C",zip:"01915",team:"Service Desk"},
+  {name:"Hardy+Man",type:"C",zip:"02189",team:"Service Desk"},
+  {name:"Harrington Heep",type:"C",zip:"02482",team:"Service Desk"},
+  {name:"Henshon Klein LLP",type:"C",zip:"02481",team:"Service Desk"},
+  {name:"HOPe",type:"C",zip:"02356",team:"Service Desk"},
+  {name:"JWP",type:"C",zip:"02458",team:"Burgundy"},
+  {name:"Jason & Fischer",type:"C",zip:"02108",team:"Service Desk"},
+  {name:"Jim Donovan",type:"C",zip:"02467",team:"Service Desk"},
+  {name:"Joan Weinsten",type:"C",zip:"02493",team:"Service Desk"},
+  {name:"Kingsley",type:"C",zip:"02116",team:"Burgundy"},
+  {name:"Lili Banani",type:"C",zip:"02110",team:"Service Desk"},
+  {name:"Mary Kane",type:"C",zip:"02115",team:"Service Desk"},
+  {name:"Material Impact",type:"C",zip:"02116",team:"Service Desk"},
+  {name:"MMLaw",type:"C",zip:"02151",team:"Service Desk"},
+  {name:"NEIA",type:"C",zip:"01752",team:"Gold"},
+  {name:"Nobles",type:"C",zip:"02026",team:"Gold"},
+  {name:"Oak Meadow",type:"C",zip:"01460",team:"Service Desk"},
+  {name:"OunceIT, LLC",type:"C",zip:"01760",team:"Operations & SLT"},
+  {name:"Park School",type:"C",zip:"02445",team:"Gold"},
+  {name:"Pike School",type:"C",zip:"01810",team:"Slate"},
+  {name:"Plymouth center",type:"C",zip:"02360",team:"Service Desk"},
+  {name:"Princeton Properties",type:"C",zip:"01851",team:"Service Desk"},
+  {name:"Promoboxx",type:"C",zip:"02118",team:"Service Desk"},
+  {name:"Quality Graphics",type:"C",zip:"02145",team:"Service Desk"},
+  {name:"Roxbury Latin",type:"C",zip:"02132",team:"Service Desk"},
+  {name:"Russo",type:"C",zip:"02459",team:"Service Desk"},
+  {name:"Sisters of Notre Dame",type:"C",zip:"01938",team:"Service Desk"},
+  {name:"Smarter Health Care",type:"C",zip:"01772",team:"Service Desk"},
+  {name:"SmarterWisdom Consulting",type:"C",zip:"02459",team:"Service Desk"},
+  {name:"St. Mark's School",type:"C",zip:"01772",team:"NCE"},
+  {name:"St. Sebastian's School",type:"C",zip:"02492",team:"Service Desk"},
+  {name:"Tenacre Country Day School",type:"C",zip:"02482",team:"Burgundy"},
+  {name:"Thacher Montessori School",type:"C",zip:"02186",team:"NCE"},
+  {name:"The Chestnut Hill School",type:"C",zip:"02467",team:"Burgundy"},
+  {name:"The Fenn School",type:"C",zip:"01742",team:"Service Desk"},
+  {name:"The Fessenden School",type:"C",zip:"02465",team:"Slate"},
+  {name:"The Rashi School",type:"C",zip:"02026",team:"Burgundy"},
+  {name:"The Waring School",type:"C",zip:"01915",team:"Slate"},
+  {name:"Tremont School",type:"C",zip:"01742",team:"Service Desk"},
+  {name:"Walnut Hill School",type:"C",zip:"01760",team:"Gold"},
+  {name:"Wellesley Historical Society",type:"C",zip:"02481",team:"Service Desk"},
+  {name:"Worcester Academy",type:"C",zip:"01604",team:"Service Desk"},
+  {name:"YWBoston",type:"C",zip:"02116",team:"Service Desk"},
+  {name:"YWCA Cambridge",type:"C",zip:"02139",team:"Service Desk"}
 ];
 
-// ── Global error trap (shows message instead of blank page) ──────────────────
-window.onerror = function(msg, src, line, col, err) {
-  var el = document.getElementById('err-overlay');
-  var pm = document.getElementById('err-msg');
-  if (el) { el.style.display = 'flex'; }
-  if (pm) { pm.textContent = msg + ' (line ' + line + ')'; }
-  return false;
-};
-
 // ── Boot ──────────────────────────────────────────────────────────────────────
-try {
-  initMap();
-} catch(e) {
-  console.error('initMap failed:', e);
-}
+try { initMap(); } catch(e) { console.error('initMap:',e); }
 
-(async function() {
+(async function(){
   try {
-    if (people.length === 0) {
-      SEED.forEach(function(s){ people.push(Object.assign({ id: uid() }, s)); });
-    } else {
-      // Migrate: ensure every person has required fields
-      people.forEach(function(p){
-        if (!p.team) p.team = 'Unassigned';
-        if (!p.id)   p.id   = uid();
-        if (p.zip === undefined || p.zip === null) p.zip = '';
-      });
-    }
+    // Always replace with fresh seed data (clears old versions)
+    people = SEED.map(function(s){ return Object.assign({id:uid(),archived:false},s); });
+    // Migrate any cached coords from previous sessions
+    people.forEach(function(p){ if(!p.team) p.team='Unassigned'; if(!p.hasOwnProperty('archived')) p.archived=false; });
     await renderAll();
-    var pts = people.filter(function(p){ return p.coords && isVisible(p); }).map(function(p){ return [p.coords.lat, p.coords.lng]; });
-    if (pts.length) map.fitBounds(pts, { padding: [50, 50] });
+    var pts=people.filter(function(p){return p.coords&&isVisible(p);}).map(function(p){return [p.coords.lat,p.coords.lng];});
+    if(pts.length) map.fitBounds(pts,{padding:[50,50]});
   } catch(e) {
-    console.error('Boot error:', e);
-    var el = document.getElementById('err-overlay');
-    if (el) { el.style.display = 'flex'; el.querySelector('p').textContent = e.message; }
+    console.error('Boot:',e);
+    var el=document.getElementById('err-overlay'); var pm=document.getElementById('err-msg');
+    if(el) el.style.display='flex'; if(pm) pm.textContent=e.message;
   }
 })();
 </script>
