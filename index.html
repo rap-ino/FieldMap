@@ -25,7 +25,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .sync-label { color:#64748b; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 #auth-btn { display:flex; align-items:center; gap:6px; background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
-#auth-btn:hover { background:#475569; } #auth-btn.signed-in { background:#065f46; border-color:#10b981; color:#6ee7b7; } #auth-btn.signed-in:hover { background:#047857; }
+#auth-btn:hover { background:#475569; } #auth-btn.signed-in { background:#065f46; border-color:#10b981; color:#6ee7b7; }
 .auth-dot { width:7px; height:7px; border-radius:50%; background:#64748b; flex-shrink:0; } #auth-btn.signed-in .auth-dot { background:#10b981; }
 #auth-menu { display:none; position:fixed; z-index:99000; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 28px rgba(0,0,0,0.22); padding:8px; min-width:210px; }
 #auth-menu.open { display:block; }
@@ -40,7 +40,6 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .btn { padding:6px 12px; border:none; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.15s; white-space:nowrap; }
 .btn-dark { background:#334155; color:#e2e8f0; } .btn-dark:hover { background:#475569; }
 .btn-green { background:#10b981; color:white; } .btn-green:hover { background:#059669; }
-.btn-red { background:#ef4444; color:white; font-size:11px; padding:3px 7px; border-radius:5px; } .btn-red:hover { background:#dc2626; }
 .btn-heat-on { background:#b45309 !important; color:white !important; }
 .btn-inter-on { background:#7c3aed !important; color:white !important; box-shadow:0 0 0 3px #7c3aed44; }
 .app-body { display:flex; flex:1; overflow:hidden; }
@@ -54,7 +53,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .search-icon { position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:13px; pointer-events:none; color:#94a3b8; }
 .s-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:800; cursor:pointer; color:#94a3b8; background:#e2e8f0; border-radius:50%; width:16px; height:16px; display:none; align-items:center; justify-content:center; }
 #search-dropdown { display:none; position:absolute; top:100%; left:0; right:0; margin-top:4px; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.14); z-index:500; max-height:300px; overflow-y:auto; }
-.sd-item { display:flex; align-items:center; gap:9px; padding:9px 12px; cursor:pointer; transition:background 0.1s; border-bottom:1px solid #f8fafc; }
+.sd-item { display:flex; align-items:center; gap:9px; padding:9px 12px; cursor:pointer; border-bottom:1px solid #f8fafc; transition:background 0.1s; }
 .sd-item:last-child { border-bottom:none; } .sd-item:hover { background:#f0f9ff; }
 .sd-name { font-size:12px; font-weight:700; color:#1e293b; } .sd-meta { font-size:10px; color:#94a3b8; }
 .sd-badge { font-size:9px; font-weight:800; padding:2px 6px; border-radius:10px; color:white; flex-shrink:0; }
@@ -77,7 +76,17 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .pinfo { flex:1; min-width:0; } .pname { font-size:12px; font-weight:700; color:#1e293b; line-height:1.3; } .pmeta { font-size:10px; color:#94a3b8; font-weight:500; margin-top:1px; }
 .card-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
 .team-badge { font-size:9px; font-weight:800; padding:2px 6px; border-radius:10px; color:white; cursor:pointer; white-space:nowrap; } .team-badge:hover { opacity:0.8; }
-.del-btn { opacity:0; transition:opacity 0.15s; } .person-card:hover .del-btn { opacity:1; }
+
+/* ── Action menu (⋮ button) ── */
+.action-btn { opacity:0; transition:opacity 0.15s; background:none; border:none; cursor:pointer; font-size:16px; color:#94a3b8; padding:0 2px; line-height:1; }
+.person-card:hover .action-btn { opacity:1; }
+.action-btn:hover { color:#475569; }
+#action-menu { display:none; position:fixed; z-index:5000; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.18); padding:5px; min-width:175px; }
+.action-item { display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; color:#1e293b; transition:background 0.1s; }
+.action-item:hover { background:#f8fafc; }
+.action-item.danger { color:#dc2626; }
+.action-item.danger:hover { background:#fef2f2; }
+
 .archive-header { display:flex; align-items:center; gap:8px; cursor:pointer; padding:7px 10px; border-radius:8px; background:#fef3c7; border:1.5px solid #fde68a; } .archive-header:hover { background:#fde68a; }
 .archive-header span { font-size:11px; font-weight:800; color:#92400e; flex:1; }
 .archive-count { background:#f59e0b; color:white; font-size:10px; font-weight:800; padding:1px 6px; border-radius:10px; }
@@ -86,6 +95,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .archive-card { background:#fffbeb; border:1.5px solid #fde68a; border-radius:8px; padding:7px 10px; display:flex; align-items:center; gap:8px; }
 .archive-card .pname { font-size:11px; font-weight:600; color:#78350f; } .archive-card .pmeta { font-size:10px; color:#a16207; }
 .restore-btn { background:#f59e0b; color:white; border:none; border-radius:5px; font-size:10px; font-weight:700; padding:3px 7px; cursor:pointer; flex-shrink:0; }
+
 #dist-empty { color:#94a3b8; font-size:12px; text-align:center; padding:28px 10px; line-height:1.7; }
 .dist-header { font-size:12px; font-weight:800; color:#0ea5e9; padding-bottom:7px; border-bottom:2px solid #e0f2fe; margin-bottom:2px; }
 .dist-item { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:8px; cursor:pointer; transition:all 0.15s; font-size:12px; }
@@ -161,6 +171,8 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
   <div class="auth-menu-email"><span>Signed in as</span><div id="auth-menu-email-addr"></div></div>
   <button id="auth-signout-btn">🚪 Sign Out</button>
 </div>
+<!-- Action dropdown menu (Archive / Delete) -->
+<div id="action-menu"></div>
 <div id="login-modal">
   <div class="login-box">
     <h2>Sign in to edit</h2>
@@ -246,7 +258,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, addDoc, updateDoc,
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
          onSnapshot, writeBatch, getDoc, setDoc }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
@@ -261,10 +273,9 @@ const fbApp = initializeApp({
   appId:"1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"
 });
 const db=getFirestore(fbApp), auth=getAuth(fbApp);
-const PEOPLE_COL = collection(db,'people');
-const SEED_FLAG  = doc(db,'_meta','seeded');
-// ★ Single document storing ALL zip coords as fields — one read, always complete
-const GEO_DOC    = doc(db,'_geocache','coords');
+const PEOPLE_COL=collection(db,'people');
+const SEED_FLAG =doc(db,'_meta','seeded');
+const GEO_DOC   =doc(db,'_geocache','coords'); // single doc — all zips as fields
 
 const TEAMS=['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
 const TEAM_COLOR={'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
@@ -281,6 +292,7 @@ let selectedTech=null,lastInterPerson=null,interHighlight=new Set();
 let teamFilter='All',searchQuery='',popupCloseTimer=null;
 let sidebarOpen=true,archiveExpanded=false;
 let currentUser=null,pendingWriteCallback=null;
+let activeActionPersonId=null;
 let map,renderTimer;
 
 window.onerror=(msg,src,line)=>{document.getElementById('err-overlay').style.display='flex';document.getElementById('err-msg').textContent=msg+' (line '+line+')';};
@@ -289,50 +301,40 @@ function initMap(){
   map=L.map('map').setView([42.36,-71.06],10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);
   map.on('moveend zoomend',()=>{if(heatOn)drawHeatCanvas();});
-  map.on('click',()=>{hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();});
+  map.on('click',()=>{hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();});
 }
 function setStatus(s){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-label').textContent=s==='live'?'Live':s==='connecting'?'Connecting…':'Offline';}
 function setLoadingMsg(m){document.getElementById('loading-msg').textContent=m;}
 
-// ── ★ Shared geocache — single document, one read, bullet-proof ───────────────
+// ── Shared geocache (single Firestore document) ───────────────────────────────
 async function loadSharedGeoCache(){
   setLoadingMsg('Loading location data…');
   document.getElementById('loading').style.display='flex';
   try{
-    const snap = await getDoc(GEO_DOC);
+    const snap=await getDoc(GEO_DOC);
     if(snap.exists()){
-      const data = snap.data();
-      // data looks like: { "02189": {lat:42.x, lng:-70.x, city:"East Weymouth"}, ... }
+      const data=snap.data();
       Object.keys(data).forEach(zip=>{
-        if(!geoCache[zip]){
-          geoCache[zip]={lat:data[zip].lat, lng:data[zip].lng};
-          cityCache[zip]=data[zip].city||'';
-        }
+        if(!geoCache[zip]){geoCache[zip]={lat:data[zip].lat,lng:data[zip].lng};cityCache[zip]=data[zip].city||'';}
       });
       localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));
       localStorage.setItem('fsmap_city',JSON.stringify(cityCache));
-      // Upload any locally-cached zips missing from Firestore
+      // Upload any locally-cached zips Firestore is missing
       const firestoreZips=new Set(Object.keys(data));
-      const missing=Object.keys(geoCache).filter(z=>!firestoreZips.has(z));
-      if(missing.length){
+      const localOnly=Object.keys(geoCache).filter(z=>!firestoreZips.has(z));
+      if(localOnly.length){
         setLoadingMsg('Syncing locations to cloud…');
         const update={};
-        missing.forEach(z=>{ update[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''}; });
-        try{ await setDoc(GEO_DOC,update,{merge:true}); }catch(e){}
+        localOnly.forEach(z=>{update[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});
+        try{await setDoc(GEO_DOC,update,{merge:true});}catch(e){}
       }
-    } else {
-      // No geocache doc yet — upload everything we have locally
-      if(Object.keys(geoCache).length>0){
-        setLoadingMsg('Creating location cache…');
-        const data={};
-        Object.keys(geoCache).forEach(z=>{ data[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''}; });
-        try{ await setDoc(GEO_DOC,data); }catch(e){}
-      }
+    } else if(Object.keys(geoCache).length>0){
+      setLoadingMsg('Creating location cache…');
+      const data={};
+      Object.keys(geoCache).forEach(z=>{data[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});
+      try{await setDoc(GEO_DOC,data);}catch(e){}
     }
-  }catch(e){
-    console.warn('Geocache load error:',e.code||e.message);
-    // Non-fatal — app continues with whatever is in localStorage
-  }
+  }catch(e){console.warn('Geocache error:',e.code||e.message);}
   document.getElementById('loading').style.display='none';
 }
 
@@ -355,7 +357,10 @@ function setupAuth(){
     }else openLoginModal(null);
   });
   document.getElementById('auth-signout-btn').addEventListener('click',()=>{signOut(auth);closeAuthMenu();showToast('Signed out successfully');});
-  document.addEventListener('click',e=>{if(!document.getElementById('auth-menu').contains(e.target)&&e.target!==document.getElementById('auth-btn'))closeAuthMenu();});
+  document.addEventListener('click',e=>{
+    if(!document.getElementById('auth-menu').contains(e.target)&&e.target!==document.getElementById('auth-btn'))closeAuthMenu();
+    if(!document.getElementById('action-menu').contains(e.target))closeActionMenu();
+  });
   document.getElementById('login-submit').addEventListener('click',submitLogin);
   document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
   document.getElementById('login-cancel').addEventListener('click',closeLoginModal);
@@ -375,28 +380,51 @@ async function submitLogin(){
 }
 function requireAuth(fn){if(currentUser)fn();else openLoginModal(fn);}
 
-// ── Geocoding — writes to single shared doc ───────────────────────────────────
+// ── ★ Action menu (Archive / Delete) ─────────────────────────────────────────
+function openActionMenu(event,personId){
+  event.stopPropagation();
+  closeActionMenu();
+  activeActionPersonId=personId;
+  const menu=document.getElementById('action-menu');
+  const rect=event.currentTarget.getBoundingClientRect();
+  menu.style.cssText=`display:block;top:${rect.bottom+4}px;right:${window.innerWidth-rect.right}px;left:auto;`;
+  menu.innerHTML=`
+    <div class="action-item" onclick="window._app.archivePerson('${personId}');window._app.closeActionMenu()">
+      🗄 <span>Archive</span>
+    </div>
+    <div class="action-item danger" onclick="window._app.deletePerson('${personId}');window._app.closeActionMenu()">
+      🗑 <span>Delete permanently</span>
+    </div>`;
+}
+function closeActionMenu(){document.getElementById('action-menu').style.display='none';activeActionPersonId=null;}
+
+// ── ★ Geocoding with fallback query ───────────────────────────────────────────
 async function geocodeZip(zip){
   const key=zip.toString().trim().padStart(5,'0');
   if(geoCache[key])return geoCache[key];
+  let coords=null;
   try{
-    const r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${key}&country=US&format=json&limit=1&addressdetails=1`,{headers:{'Accept-Language':'en'}});
-    const d=await r.json();
+    // Attempt 1: postal code search
+    let r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${key}&country=US&format=json&limit=1&addressdetails=1`,{headers:{'Accept-Language':'en'}});
+    let d=await r.json();
+    // Attempt 2: if no result, try general text search (catches some edge cases like 01526)
+    if(!d||!d[0]){
+      await sleep(400);
+      r=await fetch(`https://nominatim.openstreetmap.org/search?q=${key}&countrycodes=us&format=json&limit=1&addressdetails=1`,{headers:{'Accept-Language':'en'}});
+      d=await r.json();
+    }
     if(d&&d[0]){
-      const coords={lat:+d[0].lat,lng:+d[0].lon};
+      coords={lat:+d[0].lat,lng:+d[0].lon};
       geoCache[key]=coords;
       const addr=d[0].address||{};
       cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';
       localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));
       localStorage.setItem('fsmap_city',JSON.stringify(cityCache));
-      // ★ Write to single shared doc using merge so we don't overwrite other zips
-      const update={};
-      update[key]={lat:coords.lat,lng:coords.lng,city:cityCache[key]};
+      const update={};update[key]={lat:coords.lat,lng:coords.lng,city:cityCache[key]};
       try{await setDoc(GEO_DOC,update,{merge:true});}catch(e){}
-      return coords;
     }
   }catch(e){}
-  return null;
+  return coords;
 }
 const getCity=zip=>zip?(cityCache[zip.toString().trim().padStart(5,'0')]||''):'';
 const metaLine=p=>{if(!p.zip)return'';const c=getCity(p.zip);return c?`${p.zip} · ${c}`:p.zip;};
@@ -409,7 +437,7 @@ function clusterIcon(vis,state='normal'){const nT=vis.filter(p=>p.type==='T').le
 
 // ── Render ────────────────────────────────────────────────────────────────────
 async function renderAll(){
-  Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});zipGroups={};markers={};clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();
+  Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});zipGroups={};markers={};clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();closeActionMenu();
   const missing=[...new Set(people.filter(p=>p.zip&&!p.archived&&!geoCache[p.zip.toString().trim().padStart(5,'0')]).map(p=>p.zip.toString().trim()))];
   if(missing.length){setLoadingMsg(`Geocoding ${missing.length} new zip${missing.length>1?'s':''}…`);document.getElementById('loading').style.display='flex';for(const z of missing){await geocodeZip(z);await sleep(300);}document.getElementById('loading').style.display='none';}
   people.forEach(p=>{if(!p.zip)return;const c=geoCache[p.zip.toString().trim().padStart(5,'0')];if(c)p.coords=c;});
@@ -427,18 +455,46 @@ function hideClusterPopup(){clearTimeout(popupCloseTimer);document.getElementByI
 function openTeamPicker(event,personId){event.stopPropagation();const picker=document.getElementById('team-picker');const rect=event.target.getBoundingClientRect(),sbRect=document.getElementById('sidebar').getBoundingClientRect();document.getElementById('sidebar').style.position='relative';document.getElementById('sidebar').appendChild(picker);picker.style.cssText=`display:block;position:absolute;left:${rect.left-sbRect.left}px;top:${rect.bottom-sbRect.top+4}px;z-index:3000;`;picker.innerHTML=TEAMS.map(t=>`<div class="tp-item" onclick="window._app.assignTeam('${personId}','${t.replace(/'/g,"\\'")}')"><div class="tp-dot" style="background:${teamColor(t)}"></div><span style="color:${teamColor(t)}">${t}</span></div>`).join('');setTimeout(()=>document.addEventListener('click',hideTeamPicker,{once:true}),0);}
 function hideTeamPicker(){document.getElementById('team-picker').style.display='none';}
 function assignTeam(personId,team){const p=byId(personId);if(!p)return;hideTeamPicker();requireAuth(async()=>{try{await updateDoc(doc(db,'people',personId),{team});showToast(`${p.name} → ${team}`);}catch(e){showToast('Update failed',true);}});}
+
+// ── ★ Archive (recoverable) ───────────────────────────────────────────────────
 function archivePerson(id){const p=byId(id);if(!p)return;requireAuth(async()=>{try{await updateDoc(doc(db,'people',id),{archived:true});showToast(`${p.name} archived`);}catch(e){showToast('Archive failed',true);}});}
 function restorePerson(id){const p=byId(id);if(!p)return;requireAuth(async()=>{try{await updateDoc(doc(db,'people',id),{archived:false});showToast(`${p.name} restored!`);}catch(e){showToast('Restore failed',true);}});}
+
+// ── ★ Delete permanently ──────────────────────────────────────────────────────
+function deletePerson(id){
+  const p=byId(id);if(!p)return;
+  requireAuth(async()=>{
+    try{
+      await deleteDoc(doc(db,'people',id));
+      if(selectedTech?.id===id){selectedTech=null;clearConnections();}
+      if(lastInterPerson?.id===id)lastInterPerson=null;
+      showToast(`${p.name} permanently deleted`);
+    }catch(e){showToast('Delete failed',true);}
+  });
+}
+
 function renderArchive(){const archived=people.filter(p=>p.archived);const sec=document.getElementById('archive-section');if(!archived.length){sec.style.display='none';return;}sec.style.display='block';document.getElementById('archive-count').textContent=archived.length;document.getElementById('archive-chevron').className='archive-chevron'+(archiveExpanded?' open':'');const list=document.getElementById('archive-list');list.className='archive-list'+(archiveExpanded?' open':'');list.innerHTML=archived.map(p=>`<div class="archive-card"><div class="pdot ${p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c'}" style="margin-top:3px;flex-shrink:0;"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><button class="restore-btn" onclick="window._app.restorePerson('${p.id}')">↩ Restore</button></div>`).join('');}
 document.getElementById('archive-toggle').addEventListener('click',()=>{archiveExpanded=!archiveExpanded;renderArchive();});
 function renderSearchDropdown(){const q=searchQuery.trim(),dd=document.getElementById('search-dropdown');if(!q){dd.style.display='none';return;}const ql=q.toLowerCase(),matches=people.filter(p=>!p.archived&&(p.name.toLowerCase().includes(ql)||(p.zip||'').includes(ql)||getCity(p.zip).toLowerCase().includes(ql))).slice(0,10);if(!matches.length){dd.innerHTML=`<div class="sd-empty">No results for "${q}"</div>`;dd.style.display='block';return;}dd.innerHTML=matches.map(p=>`<div class="sd-item" onclick="window._app.jumpToResult('${p.id}')"><svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0"><circle cx="5" cy="5" r="4" fill="${personFill(p)}" stroke="white" stroke-width="1.5"/></svg><div><div class="sd-name">${p.name}</div>${metaLine(p)?`<div class="sd-meta">${metaLine(p)}</div>`:''}</div><div class="sd-badge" style="background:${teamColor(p.team)}">${teamShort(p.team)}</div></div>`).join('');dd.style.display='block';}
 function hideSearchDropdown(){document.getElementById('search-dropdown').style.display='none';}
 function jumpToResult(id){const p=byId(id);if(!p)return;hideSearchDropdown();document.getElementById('search-input').value='';searchQuery='';document.getElementById('search-clear').style.display='none';applyVisFilter();renderSidebar();if(p.coords)map.setView([p.coords.lat,p.coords.lng],14,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'normal'):clusterIcon(v2,'normal'));},2000);}switchTab('people');}
+
 function renderSidebar(highlightIds=[]){const techs=people.filter(p=>p.type==='T'&&isVisible(p)),clients=people.filter(p=>p.type==='C'&&isVisible(p));document.getElementById('tech-list').innerHTML=techs.length?techs.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No technicians');document.getElementById('client-list').innerHTML=clients.length?clients.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No clients');renderArchive();}
 function emptyMsg(m){return`<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">${m}</div>`;}
-function cardHTML(p,highlightIds){const sel=selectedTech?.id===p.id?'selected':'',inR=highlightIds.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';return`<div class="person-card ${sel} ${inR}" onclick="window._app.handleClick('${p.id}')"><div class="pdot ${dot}"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><div class="card-right"><div class="team-badge" style="background:${teamColor(p.team)}" onclick="window._app.openTeamPicker(event,'${p.id}')" title="Change team">${teamShort(p.team)}</div><button class="btn btn-red del-btn" onclick="event.stopPropagation();window._app.archivePerson('${p.id}')" title="Archive">🗄</button></div></div>`;}
+function cardHTML(p,highlightIds){
+  const sel=selectedTech?.id===p.id?'selected':'',inR=highlightIds.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';
+  return`<div class="person-card ${sel} ${inR}" onclick="window._app.handleClick('${p.id}')">
+    <div class="pdot ${dot}"></div>
+    <div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div>
+    <div class="card-right">
+      <div class="team-badge" style="background:${teamColor(p.team)}" onclick="window._app.openTeamPicker(event,'${p.id}')" title="Change team">${teamShort(p.team)}</div>
+      <button class="action-btn" onclick="window._app.openActionMenu(event,'${p.id}')" title="Archive or delete">⋮</button>
+    </div>
+  </div>`;}
 function byId(id){return people.find(p=>p.id===id);}
-function handleClick(idOrPerson){const p=typeof idOrPerson==='string'?byId(idOrPerson):idOrPerson;if(!p)return;hideTeamPicker();hideSearchDropdown();closeAuthMenu();if(interMode){handleInteractiveClick(p);return;}Object.keys(zipGroups).forEach(z=>refreshGroup(z,'normal'));if(p.type==='T'){if(selectedTech?.id===p.id){selectedTech=null;clearConnections();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();return;}selectedTech=p;const gz=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}showConnections(p);switchTab('distances');}else{const gz2=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz2){const gv2=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));setTimeout(()=>{const v3=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);}if(selectedTech?.coords&&p.coords)showToast(`${selectedTech.name} → ${p.name}: ${miles(selectedTech.coords,p.coords).toFixed(1)} mi`);}renderSidebar();}
+
+function handleClick(idOrPerson){const p=typeof idOrPerson==='string'?byId(idOrPerson):idOrPerson;if(!p)return;hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();if(interMode){handleInteractiveClick(p);return;}Object.keys(zipGroups).forEach(z=>refreshGroup(z,'normal'));if(p.type==='T'){if(selectedTech?.id===p.id){selectedTech=null;clearConnections();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();return;}selectedTech=p;const gz=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}showConnections(p);switchTab('distances');}else{const gz2=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz2){const gv2=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));setTimeout(()=>{const v3=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);}if(selectedTech?.coords&&p.coords)showToast(`${selectedTech.name} → ${p.name}: ${miles(selectedTech.coords,p.coords).toFixed(1)} mi`);}renderSidebar();}
+
 function handleInteractiveClick(p){if(!p?.coords){showToast('Location not found',true);return;}lastInterPerson=p;applyRadius(p,+document.getElementById('miles-select').value);}
 function applyRadius(p,radiusMi){clearConnections();clearRadius();hideClusterPopup();interHighlight=new Set();Object.keys(zipGroups).forEach(z=>{const g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(x=>!isVisible(x)).map(x=>x.id));refreshGroup(z,'normal');});const radiusM=radiusMi*1609.344;const setSelected=pp=>{const gz=zipGroups[pp.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(pp,'selected'):clusterIcon(gv,'selected'));}};if(p.type==='T'){selectedTech=p;setSelected(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map);const allC=people.filter(x=>x.type==='C'&&x.coords&&isVisible(x)),inC=allC.filter(c=>miles(p.coords,c.coords)<=radiusMi);allC.filter(c=>miles(p.coords,c.coords)>radiusMi).forEach(hidePerson);inC.forEach(c=>interHighlight.add(c.id));new Set(inC.map(c=>c.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='T'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inC.length} client${inC.length!==1?'s':''} inside`,'#a78bfa');const sortedC=inC.map(c=>({...c,dist:miles(p.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel(`Within ${radiusMi} mi of ${p.name}`,sortedC,inC.map(c=>c.id),true);renderSidebar(inC.map(c=>c.id));}else{setSelected(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map);const allT=people.filter(x=>x.type==='T'&&x.coords&&isVisible(x)),inT=allT.filter(t=>miles(p.coords,t.coords)<=radiusMi);allT.filter(t=>miles(p.coords,t.coords)>radiusMi).forEach(hidePerson);inT.forEach(t=>interHighlight.add(t.id));new Set(inT.map(t=>t.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='C'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inT.length} technician${inT.length!==1?'s':''} nearby`,'#fb923c');const sortedT=inT.map(t=>({...t,dist:miles(p.coords,t.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel(`Technicians within ${radiusMi} mi of ${p.name}`,sortedT,inT.map(t=>t.id),true);renderSidebar(inT.map(t=>t.id));}document.getElementById('legend-radius').style.display='flex';switchTab('distances');}
 function clearRadius(){if(radiusCircle){map.removeLayer(radiusCircle);radiusCircle=null;}document.getElementById('legend-radius').style.display='none';}
@@ -447,7 +503,8 @@ function showDistPanel(title,sorted,inRadiusIds,isInter){document.getElementById
 function clearConnections(){connLines.forEach(l=>map.removeLayer(l));connLabels.forEach(l=>map.removeLayer(l));connLines=[];connLabels=[];}
 function setBanner(html,c){const b=document.getElementById('conn-banner');b.innerHTML=html;b.style.borderColor=c;b.style.display='block';}
 function panTo(id){const p=byId(id);if(!p?.coords)return;map.setView([p.coords.lat,p.coords.lng],13,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'in-radius'):clusterIcon(v2,'in-radius'));},1500);}}
-function resetToDefault(){selectedTech=null;lastInterPerson=null;interHighlight=new Set();clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();applyVisFilter();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();}
+function resetToDefault(){selectedTech=null;lastInterPerson=null;interHighlight=new Set();clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();applyVisFilter();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();}
+
 document.getElementById('btn-inter').addEventListener('click',()=>{interMode=!interMode;document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode);document.getElementById('interactive-controls').style.display=interMode?'flex':'none';document.getElementById('inter-hint').style.display=interMode?'block':'none';if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on',false,'purple');});
 document.getElementById('miles-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;applyRadius(lastInterPerson,+this.value);});
 document.getElementById('btn-fit').addEventListener('click',()=>{const pts=people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length)map.fitBounds(pts,{padding:[50,50]});});
@@ -474,7 +531,8 @@ document.getElementById('btn-heat').addEventListener('click',()=>{heatOn=!heatOn
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let _tt;
 function showToast(msg,err=false,style=''){const t=document.getElementById('toast');t.textContent=msg;t.className=`show${err?' err':''}${style==='purple'?' purple':''}`;clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500);}
-window._app={handleClick,openTeamPicker,assignTeam,archivePerson,restorePerson,panTo,jumpToResult,hideClusterPopup};
+
+window._app={handleClick,openTeamPicker,assignTeam,archivePerson,restorePerson,deletePerson,openActionMenu,closeActionMenu,panTo,jumpToResult,hideClusterPopup};
 
 const SEED=[
   {name:"Agyemang, Pius",type:"T",zip:"02189",team:"Operations & SLT"},{name:"Anarfi, Abel",type:"T",zip:"02132",team:"Burgundy"},{name:"Andrea, Michael",type:"T",zip:"01701",team:"Service Desk"},{name:"Angoff, Jeremy",type:"T",zip:"02132",team:"Operations & SLT"},{name:"Armoo-Daniels, Aba",type:"T",zip:"01702",team:"Gold"},{name:"Atherley, Jonte",type:"T",zip:"01607",team:"Burgundy"},{name:"Baars, Freddy",type:"T",zip:"01760",team:"NCE"},{name:"Barnatt, Joshua",type:"T",zip:"01760",team:"NCE"},{name:"Brooks, Michelle",type:"T",zip:"01526",team:"Burgundy"},{name:"Brown, Louis",type:"T",zip:"01453",team:"Operations & SLT"},{name:"Busby, Henry",type:"T",zip:"02054",team:"Operations & SLT"},{name:"Corbin, Thomas",type:"T",zip:"01778",team:"Operations & SLT"},{name:"Delorme, Michael",type:"T",zip:"01520",team:"Gold"},{name:"Foster, Barry",type:"T",zip:"02301",team:"Service Desk"},{name:"Gorski, Brandon",type:"T",zip:"01923",team:"Slate"},{name:"Gray, Joseph",type:"T",zip:"02129",team:"Gold"},{name:"Green, Andrew",type:"T",zip:"01453",team:"NCE"},{name:"Hoang, David",type:"T",zip:"02368",team:"Burgundy"},{name:"Jamanka, Mamoudou",type:"T",zip:"02139",team:"Burgundy"},{name:"Kaplish, Nipun",type:"T",zip:"02451",team:"NCE"},{name:"Kaszycki, Julia",type:"T",zip:"01464",team:"Slate"},{name:"Lahue, Cameron",type:"T",zip:"01905",team:"NCE"},{name:"LeBlanc, Nathan",type:"T",zip:"01757",team:"Slate"},{name:"Lincoln, Scott",type:"T",zip:"03051",team:"Slate"},{name:"Matas, Jared",type:"T",zip:"02460",team:"Operations & SLT"},{name:"McCormack, John",type:"T",zip:"01545",team:"Gold"},{name:"McHugh, Amelia",type:"T",zip:"02472",team:"Operations & SLT"},{name:"Meilus, Antanas",type:"T",zip:"02148",team:"NCE"},{name:"Morgan, Susan",type:"T",zip:"01936",team:"Operations & SLT"},{name:"Oppong, Nicholas",type:"T",zip:"01543",team:"NCE"},{name:"Ovando, Harold",type:"T",zip:"01902",team:"Burgundy"},{name:"Parker, Dale",type:"T",zip:"02169",team:"Operations & SLT"},{name:"Pereira, Aaron",type:"T",zip:"02703",team:"Operations & SLT"},{name:"Pinto, Melinda",type:"T",zip:"02472",team:"Gold"},{name:"Poles, Nick",type:"T",zip:"01775",team:"Gold"},{name:"Prosper, Judens",type:"T",zip:"01902",team:"Slate"},{name:"Quartararo, Jordan",type:"T",zip:"01844",team:"Gold"},{name:"Rivera, George",type:"T",zip:"01524",team:"Slate"},{name:"Schmidt, Sean",type:"T",zip:"02135",team:"Slate"},{name:"Smith, Robert",type:"T",zip:"01460",team:"Operations & SLT"},{name:"Starkin, Paul",type:"T",zip:"01082",team:"Slate"},{name:"Thang, Sundy",type:"T",zip:"01460",team:"Slate"},{name:"White, Erik",type:"T",zip:"01568",team:"Gold"},{name:"William Addo",type:"T",zip:"02132",team:"Burgundy"},{name:"Zakarashvili, Georgy",type:"T",zip:"02478",team:"Service Desk"},
@@ -487,9 +545,7 @@ function setupRealtimeSync(){setStatus('connecting');onSnapshot(PEOPLE_COL,async
 try{
   initMap();
   setupAuth();
-  seedOnce()
-    .then(()=>loadSharedGeoCache())
-    .then(()=>setupRealtimeSync());
+  seedOnce().then(()=>loadSharedGeoCache()).then(()=>setupRealtimeSync());
 }catch(e){
   document.getElementById('err-overlay').style.display='flex';
   document.getElementById('err-msg').textContent=e.message;
