@@ -17,7 +17,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b;
 #err-overlay p { color:#94a3b8; font-size:13px; text-align:center; max-width:500px; }
 #err-overlay button { background:#0ea5e9; color:white; border:none; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; }
 
-header { background:#1e293b; padding:10px 16px; display:flex; align-items:center; gap:10px; border-bottom:2px solid #0ea5e9; flex-shrink:0; z-index:10; flex-wrap:wrap; }
+header { background:#1e293b; padding:10px 16px; display:flex; align-items:center; gap:10px; border-bottom:2px solid #0ea5e9; flex-shrink:0; z-index:200; position:relative; flex-wrap:wrap; }
 header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5px; }
 header h1 span { color:#38bdf8; }
 .subtitle { font-size:11px; color:#64748b; }
@@ -31,8 +31,7 @@ header h1 span { color:#38bdf8; }
 .sync-label { color:#64748b; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-/* ── Auth button + dropdown ── */
-#auth-container { position: relative; }
+/* ── Auth button ── */
 #auth-btn { display:flex; align-items:center; gap:6px; background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
 #auth-btn:hover { background:#475569; }
 #auth-btn.signed-in { background:#065f46; border-color:#10b981; color:#6ee7b7; }
@@ -40,44 +39,31 @@ header h1 span { color:#38bdf8; }
 .auth-dot { width:7px; height:7px; border-radius:50%; background:#64748b; flex-shrink:0; }
 #auth-btn.signed-in .auth-dot { background:#10b981; }
 
+/* ── Auth dropdown — position:fixed so it's always above the map ── */
 #auth-menu {
   display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  position: fixed;          /* ← fixed, not absolute */
+  z-index: 99000;           /* ← above everything */
   background: white;
   border: 1.5px solid #e2e8f0;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.22);
   padding: 8px;
-  min-width: 200px;
-  z-index: 1000;
+  min-width: 210px;
 }
 #auth-menu.open { display: block; }
 .auth-menu-email {
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
-  padding: 6px 10px 10px;
-  border-bottom: 1px solid #f1f5f9;
-  margin-bottom: 6px;
-  word-break: break-all;
+  font-size: 12px; font-weight: 600; color: #475569;
+  padding: 6px 10px 10px; border-bottom: 1px solid #f1f5f9; margin-bottom: 6px;
 }
 .auth-menu-email span { display:block; font-size:10px; font-weight:500; color:#94a3b8; margin-bottom:2px; }
+#auth-menu-email-addr { word-break:break-all; color:#1e293b; font-weight:700; }
 #auth-signout-btn {
-  width: 100%;
-  padding: 8px 10px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 7px;
-  color: #dc2626;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s;
+  width:100%; padding:9px 10px; background:#fef2f2; border:1px solid #fecaca;
+  border-radius:7px; color:#dc2626; font-size:12px; font-weight:700;
+  cursor:pointer; text-align:left; transition:background 0.15s;
 }
-#auth-signout-btn:hover { background: #fee2e2; }
+#auth-signout-btn:hover { background:#fee2e2; }
 
 #interactive-controls { display:none; align-items:center; gap:7px; background:#4c1d9533; border:1px solid #7c3aed88; border-radius:20px; padding:4px 11px 4px 9px; }
 #interactive-controls label { font-size:11px; font-weight:700; color:#c4b5fd; white-space:nowrap; }
@@ -236,23 +222,18 @@ header h1 span { color:#38bdf8; }
     </div>
     <button class="btn btn-dark" id="btn-fit">⤢ Fit All</button>
     <button class="btn btn-dark" id="btn-clear">✕ Clear</button>
-    <!-- Auth button wrapped in container for dropdown positioning -->
-    <div id="auth-container">
-      <button id="auth-btn" title="Sign in to edit">
-        <div class="auth-dot"></div>
-        <span id="auth-label">🔒 Sign In</span>
-      </button>
-      <!-- Dropdown — only visible when signed in and button is clicked -->
-      <div id="auth-menu">
-        <div class="auth-menu-email">
-          <span>Signed in as</span>
-          <span id="auth-menu-email-addr"></span>
-        </div>
-        <button id="auth-signout-btn">🚪 Sign Out</button>
-      </div>
-    </div>
+    <button id="auth-btn" title="Sign in to edit"><div class="auth-dot"></div><span id="auth-label">🔒 Sign In</span></button>
   </div>
 </header>
+
+<!-- Auth dropdown — appended to body, positioned via JS so it's always visible above the map -->
+<div id="auth-menu">
+  <div class="auth-menu-email">
+    <span>Signed in as</span>
+    <div id="auth-menu-email-addr"></div>
+  </div>
+  <button id="auth-signout-btn">🚪 Sign Out</button>
+</div>
 
 <!-- Login modal -->
 <div id="login-modal">
@@ -356,10 +337,8 @@ const fbApp = initializeApp({
   messagingSenderId:"719204107294",
   appId:"1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"
 });
-const db   = getFirestore(fbApp);
-const auth = getAuth(fbApp);
-const PEOPLE_COL = collection(db,'people');
-const SEED_FLAG  = doc(db,'_meta','seeded');
+const db=getFirestore(fbApp), auth=getAuth(fbApp);
+const PEOPLE_COL=collection(db,'people'), SEED_FLAG=doc(db,'_meta','seeded');
 
 const TEAMS=['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
 const TEAM_COLOR={'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
@@ -397,7 +376,7 @@ function setupAuth(){
     if(user){
       btn.className='signed-in';
       lbl.textContent='✓ '+user.email.split('@')[0];
-      btn.title='Click to see account options';
+      btn.title='Click for account options';
       document.getElementById('auth-menu-email-addr').textContent=user.email;
     } else {
       btn.className='';
@@ -407,27 +386,33 @@ function setupAuth(){
     }
   });
 
-  // ── Clicking the button: open login if signed out, open dropdown if signed in
   document.getElementById('auth-btn').addEventListener('click',e=>{
     e.stopPropagation();
     if(currentUser){
-      // Toggle the dropdown — do NOT sign out directly
-      document.getElementById('auth-menu').classList.toggle('open');
+      const menu=document.getElementById('auth-menu');
+      const isOpen=menu.classList.contains('open');
+      if(isOpen){ closeAuthMenu(); return; }
+      // Position the dropdown directly below the button using fixed coords
+      const rect=document.getElementById('auth-btn').getBoundingClientRect();
+      menu.style.top=(rect.bottom+6)+'px';
+      menu.style.right=(window.innerWidth-rect.right)+'px';
+      menu.style.left='auto';
+      menu.classList.add('open');
     } else {
       openLoginModal(null);
     }
   });
 
-  // ── Sign Out button inside the dropdown
   document.getElementById('auth-signout-btn').addEventListener('click',()=>{
-    signOut(auth);
-    closeAuthMenu();
-    showToast('Signed out successfully');
+    signOut(auth); closeAuthMenu(); showToast('Signed out successfully');
   });
 
-  // Close menu when clicking anywhere else
-  document.addEventListener('click',()=>closeAuthMenu());
-  document.getElementById('auth-menu').addEventListener('click',e=>e.stopPropagation());
+  // Close menu when clicking elsewhere
+  document.addEventListener('click',e=>{
+    if(!document.getElementById('auth-menu').contains(e.target) && e.target!==document.getElementById('auth-btn')){
+      closeAuthMenu();
+    }
+  });
 
   document.getElementById('login-submit').addEventListener('click',submitLogin);
   document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
@@ -435,9 +420,9 @@ function setupAuth(){
   document.getElementById('login-modal').addEventListener('click',e=>{if(e.target===document.getElementById('login-modal'))closeLoginModal();});
 }
 
-function closeAuthMenu(){ document.getElementById('auth-menu').classList.remove('open'); }
-function openLoginModal(cb){ pendingWriteCallback=cb; document.getElementById('login-email').value=''; document.getElementById('login-password').value=''; document.getElementById('login-error').style.display='none'; document.getElementById('login-modal').classList.add('open'); setTimeout(()=>document.getElementById('login-email').focus(),100); }
-function closeLoginModal(){ document.getElementById('login-modal').classList.remove('open'); pendingWriteCallback=null; }
+function closeAuthMenu(){document.getElementById('auth-menu').classList.remove('open');}
+function openLoginModal(cb){pendingWriteCallback=cb;document.getElementById('login-email').value='';document.getElementById('login-password').value='';document.getElementById('login-error').style.display='none';document.getElementById('login-modal').classList.add('open');setTimeout(()=>document.getElementById('login-email').focus(),100);}
+function closeLoginModal(){document.getElementById('login-modal').classList.remove('open');pendingWriteCallback=null;}
 
 async function submitLogin(){
   const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-password').value;
