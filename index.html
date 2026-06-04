@@ -31,11 +31,53 @@ header h1 span { color:#38bdf8; }
 .sync-label { color:#64748b; }
 @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
+/* ── Auth button + dropdown ── */
+#auth-container { position: relative; }
 #auth-btn { display:flex; align-items:center; gap:6px; background:#334155; border:1px solid #475569; color:#e2e8f0; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
 #auth-btn:hover { background:#475569; }
 #auth-btn.signed-in { background:#065f46; border-color:#10b981; color:#6ee7b7; }
+#auth-btn.signed-in:hover { background:#047857; }
 .auth-dot { width:7px; height:7px; border-radius:50%; background:#64748b; flex-shrink:0; }
 #auth-btn.signed-in .auth-dot { background:#10b981; }
+
+#auth-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  padding: 8px;
+  min-width: 200px;
+  z-index: 1000;
+}
+#auth-menu.open { display: block; }
+.auth-menu-email {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+.auth-menu-email span { display:block; font-size:10px; font-weight:500; color:#94a3b8; margin-bottom:2px; }
+#auth-signout-btn {
+  width: 100%;
+  padding: 8px 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+#auth-signout-btn:hover { background: #fee2e2; }
 
 #interactive-controls { display:none; align-items:center; gap:7px; background:#4c1d9533; border:1px solid #7c3aed88; border-radius:20px; padding:4px 11px 4px 9px; }
 #interactive-controls label { font-size:11px; font-weight:700; color:#c4b5fd; white-space:nowrap; }
@@ -61,10 +103,8 @@ header h1 span { color:#38bdf8; }
 .s-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:800; cursor:pointer; color:#94a3b8; background:#e2e8f0; border-radius:50%; width:16px; height:16px; display:none; align-items:center; justify-content:center; }
 #search-dropdown { display:none; position:absolute; top:100%; left:0; right:0; margin-top:4px; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.14); z-index:500; max-height:300px; overflow-y:auto; }
 .sd-item { display:flex; align-items:center; gap:9px; padding:9px 12px; cursor:pointer; transition:background 0.1s; border-bottom:1px solid #f8fafc; }
-.sd-item:last-child { border-bottom:none; }
-.sd-item:hover { background:#f0f9ff; }
-.sd-name { font-size:12px; font-weight:700; color:#1e293b; }
-.sd-meta { font-size:10px; color:#94a3b8; }
+.sd-item:last-child { border-bottom:none; } .sd-item:hover { background:#f0f9ff; }
+.sd-name { font-size:12px; font-weight:700; color:#1e293b; } .sd-meta { font-size:10px; color:#94a3b8; }
 .sd-badge { font-size:9px; font-weight:800; padding:2px 6px; border-radius:10px; color:white; flex-shrink:0; }
 .sd-empty { padding:14px; text-align:center; color:#94a3b8; font-size:12px; }
 .team-row { display:flex; align-items:center; gap:8px; }
@@ -150,7 +190,6 @@ header h1 span { color:#38bdf8; }
 .tp-item:hover { background:#f1f5f9; }
 .tp-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
 
-/* Login modal */
 #login-modal { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.75); z-index:10000; align-items:center; justify-content:center; backdrop-filter:blur(2px); }
 #login-modal.open { display:flex; }
 .login-box { background:white; border-radius:16px; padding:32px 28px; width:340px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
@@ -163,9 +202,7 @@ header h1 span { color:#38bdf8; }
 #login-error { font-size:12px; color:#ef4444; font-weight:600; margin-bottom:10px; display:none; }
 .login-actions { display:flex; gap:8px; margin-top:4px; }
 .login-actions button { flex:1; padding:10px; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; }
-#login-submit { background:#0ea5e9; color:white; }
-#login-submit:hover { background:#0284c7; }
-#login-submit:disabled { background:#94a3b8; cursor:default; }
+#login-submit { background:#0ea5e9; color:white; } #login-submit:hover { background:#0284c7; } #login-submit:disabled { background:#94a3b8; cursor:default; }
 #login-cancel { background:#f1f5f9; color:#64748b; }
 .login-note { font-size:11px; color:#94a3b8; margin-top:14px; text-align:center; line-height:1.5; }
 
@@ -199,7 +236,21 @@ header h1 span { color:#38bdf8; }
     </div>
     <button class="btn btn-dark" id="btn-fit">⤢ Fit All</button>
     <button class="btn btn-dark" id="btn-clear">✕ Clear</button>
-    <button id="auth-btn" title="Sign in to edit"><div class="auth-dot"></div><span id="auth-label">🔒 Sign In</span></button>
+    <!-- Auth button wrapped in container for dropdown positioning -->
+    <div id="auth-container">
+      <button id="auth-btn" title="Sign in to edit">
+        <div class="auth-dot"></div>
+        <span id="auth-label">🔒 Sign In</span>
+      </button>
+      <!-- Dropdown — only visible when signed in and button is clicked -->
+      <div id="auth-menu">
+        <div class="auth-menu-email">
+          <span>Signed in as</span>
+          <span id="auth-menu-email-addr"></span>
+        </div>
+        <button id="auth-signout-btn">🚪 Sign Out</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -297,227 +348,181 @@ import { getFirestore, collection, doc, addDoc, updateDoc,
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-// ── Firebase ──────────────────────────────────────────────────────────────────
 const fbApp = initializeApp({
-  apiKey:            "AIzaSyDkHCoxGzIQb1dobxlKgzkWRXAh7EWqn1A",
-  authDomain:        "fieldmap-18a48.firebaseapp.com",
-  projectId:         "fieldmap-18a48",
-  storageBucket:     "fieldmap-18a48.firebasestorage.app",
-  messagingSenderId: "719204107294",
-  appId:             "1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"
+  apiKey:"AIzaSyDkHCoxGzIQb1dobxlKgzkWRXAh7EWqn1A",
+  authDomain:"fieldmap-18a48.firebaseapp.com",
+  projectId:"fieldmap-18a48",
+  storageBucket:"fieldmap-18a48.firebasestorage.app",
+  messagingSenderId:"719204107294",
+  appId:"1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"
 });
 const db   = getFirestore(fbApp);
 const auth = getAuth(fbApp);
-const PEOPLE_COL = collection(db, 'people');
-// Flag doc — written once during seeding so it can never run again
-const SEED_FLAG  = doc(db, '_meta', 'seeded');
+const PEOPLE_COL = collection(db,'people');
+const SEED_FLAG  = doc(db,'_meta','seeded');
 
-// ── Constants ─────────────────────────────────────────────────────────────────
-const TEAMS = ['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
-const TEAM_COLOR = {'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
-const teamColor = t => TEAM_COLOR[t] || '#94a3b8';
-const teamShort = t => (t||'—').replace('Operations & SLT','Ops&SLT').replace('Service Desk','Svc Desk');
-const isOunceIT = p => p?.name?.toLowerCase().includes('ounceit');
-const personLabel = p => isOunceIT(p) ? 'O' : p.type;
-const personFill  = p => isOunceIT(p) ? '#0d9488' : (p.type==='T' ? '#0284c7' : '#ea580c');
+const TEAMS=['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
+const TEAM_COLOR={'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
+const teamColor=t=>TEAM_COLOR[t]||'#94a3b8';
+const teamShort=t=>(t||'—').replace('Operations & SLT','Ops&SLT').replace('Service Desk','Svc Desk');
+const isOunceIT=p=>p?.name?.toLowerCase().includes('ounceit');
+const personLabel=p=>isOunceIT(p)?'O':p.type;
+const personFill=p=>isOunceIT(p)?'#0d9488':(p.type==='T'?'#0284c7':'#ea580c');
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let people    = [];
-let geoCache  = JSON.parse(localStorage.getItem('fsmap_geo')  || '{}');
-let cityCache = JSON.parse(localStorage.getItem('fsmap_city') || '{}');
-let zipGroups={}, markers={}, connLines=[], connLabels=[];
-let heatCanvas=null, heatOn=false, interMode=false, radiusCircle=null;
-let selectedTech=null, lastInterPerson=null, interHighlight=new Set();
-let teamFilter='All', searchQuery='', popupCloseTimer=null;
-let sidebarOpen=true, archiveExpanded=false;
-let currentUser=null, pendingWriteCallback=null;
-let map, renderTimer;
+let people=[],geoCache=JSON.parse(localStorage.getItem('fsmap_geo')||'{}'),cityCache=JSON.parse(localStorage.getItem('fsmap_city')||'{}');
+let zipGroups={},markers={},connLines=[],connLabels=[];
+let heatCanvas=null,heatOn=false,interMode=false,radiusCircle=null;
+let selectedTech=null,lastInterPerson=null,interHighlight=new Set();
+let teamFilter='All',searchQuery='',popupCloseTimer=null;
+let sidebarOpen=true,archiveExpanded=false;
+let currentUser=null,pendingWriteCallback=null;
+let map,renderTimer;
 
-window.onerror = (msg,src,line)=>{
-  document.getElementById('err-overlay').style.display='flex';
-  document.getElementById('err-msg').textContent = msg+' (line '+line+')';
-};
+window.onerror=(msg,src,line)=>{document.getElementById('err-overlay').style.display='flex';document.getElementById('err-msg').textContent=msg+' (line '+line+')';};
 
-// ── Map ───────────────────────────────────────────────────────────────────────
 function initMap(){
-  map = L.map('map').setView([42.36,-71.06],10);
+  map=L.map('map').setView([42.36,-71.06],10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);
-  map.on('moveend zoomend',()=>{ if(heatOn) drawHeatCanvas(); });
-  map.on('click',()=>{ hideClusterPopup(); hideTeamPicker(); hideSearchDropdown(); });
+  map.on('moveend zoomend',()=>{if(heatOn)drawHeatCanvas();});
+  map.on('click',()=>{hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();});
 }
-
-function setStatus(s){
-  document.getElementById('sync-dot').className='sync-dot '+s;
-  document.getElementById('sync-label').textContent = s==='live'?'Live':s==='connecting'?'Connecting…':'Offline';
-}
-function setLoadingMsg(m){ document.getElementById('loading-msg').textContent=m; }
+function setStatus(s){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-label').textContent=s==='live'?'Live':s==='connecting'?'Connecting…':'Offline';}
+function setLoadingMsg(m){document.getElementById('loading-msg').textContent=m;}
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 function setupAuth(){
-  onAuthStateChanged(auth, user=>{
+  onAuthStateChanged(auth,user=>{
     currentUser=user;
-    const btn=document.getElementById('auth-btn');
-    const lbl=document.getElementById('auth-label');
-    if(user){ btn.className='signed-in'; lbl.textContent='✓ '+user.email.split('@')[0]; btn.title='Signed in as '+user.email+' — click to sign out'; }
-    else { btn.className=''; lbl.textContent='🔒 Sign In'; btn.title='Sign in to edit'; }
+    const btn=document.getElementById('auth-btn'),lbl=document.getElementById('auth-label');
+    if(user){
+      btn.className='signed-in';
+      lbl.textContent='✓ '+user.email.split('@')[0];
+      btn.title='Click to see account options';
+      document.getElementById('auth-menu-email-addr').textContent=user.email;
+    } else {
+      btn.className='';
+      lbl.textContent='🔒 Sign In';
+      btn.title='Sign in to edit';
+      closeAuthMenu();
+    }
   });
-  document.getElementById('auth-btn').addEventListener('click',()=>{
-    if(currentUser){ signOut(auth); showToast('Signed out'); } else openLoginModal(null);
+
+  // ── Clicking the button: open login if signed out, open dropdown if signed in
+  document.getElementById('auth-btn').addEventListener('click',e=>{
+    e.stopPropagation();
+    if(currentUser){
+      // Toggle the dropdown — do NOT sign out directly
+      document.getElementById('auth-menu').classList.toggle('open');
+    } else {
+      openLoginModal(null);
+    }
   });
-  document.getElementById('login-submit').addEventListener('click', submitLogin);
-  document.getElementById('login-password').addEventListener('keydown',e=>{ if(e.key==='Enter') submitLogin(); });
-  document.getElementById('login-cancel').addEventListener('click', closeLoginModal);
-  document.getElementById('login-modal').addEventListener('click',e=>{ if(e.target===document.getElementById('login-modal')) closeLoginModal(); });
+
+  // ── Sign Out button inside the dropdown
+  document.getElementById('auth-signout-btn').addEventListener('click',()=>{
+    signOut(auth);
+    closeAuthMenu();
+    showToast('Signed out successfully');
+  });
+
+  // Close menu when clicking anywhere else
+  document.addEventListener('click',()=>closeAuthMenu());
+  document.getElementById('auth-menu').addEventListener('click',e=>e.stopPropagation());
+
+  document.getElementById('login-submit').addEventListener('click',submitLogin);
+  document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
+  document.getElementById('login-cancel').addEventListener('click',closeLoginModal);
+  document.getElementById('login-modal').addEventListener('click',e=>{if(e.target===document.getElementById('login-modal'))closeLoginModal();});
 }
+
+function closeAuthMenu(){ document.getElementById('auth-menu').classList.remove('open'); }
 function openLoginModal(cb){ pendingWriteCallback=cb; document.getElementById('login-email').value=''; document.getElementById('login-password').value=''; document.getElementById('login-error').style.display='none'; document.getElementById('login-modal').classList.add('open'); setTimeout(()=>document.getElementById('login-email').focus(),100); }
 function closeLoginModal(){ document.getElementById('login-modal').classList.remove('open'); pendingWriteCallback=null; }
+
 async function submitLogin(){
-  const email=document.getElementById('login-email').value.trim();
-  const password=document.getElementById('login-password').value;
-  const errEl=document.getElementById('login-error');
-  const btn=document.getElementById('login-submit');
-  if(!email||!password){ errEl.textContent='Please enter email and password.'; errEl.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='Signing in…'; errEl.style.display='none';
+  const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-password').value;
+  const errEl=document.getElementById('login-error'),btn=document.getElementById('login-submit');
+  if(!email||!password){errEl.textContent='Please enter email and password.';errEl.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Signing in…';errEl.style.display='none';
   try{
     await signInWithEmailAndPassword(auth,email,password);
-    closeLoginModal(); showToast('Signed in!');
-    if(pendingWriteCallback){ pendingWriteCallback(); pendingWriteCallback=null; }
+    closeLoginModal();showToast('Signed in!');
+    if(pendingWriteCallback){pendingWriteCallback();pendingWriteCallback=null;}
   }catch(e){
-    errEl.textContent = (e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found') ? 'Incorrect email or password.' : 'Sign-in failed: '+e.message;
+    errEl.textContent=(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found')?'Incorrect email or password.':'Sign-in failed: '+e.message;
     errEl.style.display='block';
   }
-  btn.disabled=false; btn.textContent='Sign In';
+  btn.disabled=false;btn.textContent='Sign In';
 }
-function requireAuth(fn){ if(currentUser) fn(); else openLoginModal(fn); }
+function requireAuth(fn){if(currentUser)fn();else openLoginModal(fn);}
 
 // ── Geocoding ─────────────────────────────────────────────────────────────────
-async function geocodeZip(zip){
-  const key=zip.toString().trim().padStart(5,'0');
-  if(geoCache[key]) return geoCache[key];
-  try{
-    const r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${key}&country=US&format=json&limit=1&addressdetails=1`,{headers:{'Accept-Language':'en'}});
-    const d=await r.json();
-    if(d&&d[0]){ const c={lat:+d[0].lat,lng:+d[0].lon}; geoCache[key]=c; const addr=d[0].address||{}; cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||''; localStorage.setItem('fsmap_geo',JSON.stringify(geoCache)); localStorage.setItem('fsmap_city',JSON.stringify(cityCache)); return c; }
-  }catch(e){}
-  return null;
-}
-const getCity = zip => zip ? (cityCache[zip.toString().trim().padStart(5,'0')]||'') : '';
-const metaLine = p => { if(!p.zip)return''; const c=getCity(p.zip); return c?`${p.zip} · ${c}`:p.zip; };
-
-// ── Distance ──────────────────────────────────────────────────────────────────
-function miles(a,b){ const R=3958.8,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180; const x=Math.sin(dLat/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2; return R*2*Math.asin(Math.sqrt(x)); }
-
-// ── Visibility ────────────────────────────────────────────────────────────────
-function isVisible(p){ if(p.archived)return false; if(teamFilter!=='All'&&p.team!==teamFilter)return false; if(!searchQuery)return true; const q=searchQuery.toLowerCase(); return p.name.toLowerCase().includes(q)||(p.zip||'').includes(q)||getCity(p.zip).toLowerCase().includes(q); }
+async function geocodeZip(zip){const key=zip.toString().trim().padStart(5,'0');if(geoCache[key])return geoCache[key];try{const r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${key}&country=US&format=json&limit=1&addressdetails=1`,{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]){const c={lat:+d[0].lat,lng:+d[0].lon};geoCache[key]=c;const addr=d[0].address||{};cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));return c;}}catch(e){}return null;}
+const getCity=zip=>zip?(cityCache[zip.toString().trim().padStart(5,'0')]||''):'';
+const metaLine=p=>{if(!p.zip)return'';const c=getCity(p.zip);return c?`${p.zip} · ${c}`:p.zip;};
+function miles(a,b){const R=3958.8,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180;const x=Math.sin(dLat/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.asin(Math.sqrt(x));}
+function isVisible(p){if(p.archived)return false;if(teamFilter!=='All'&&p.team!==teamFilter)return false;if(!searchQuery)return true;const q=searchQuery.toLowerCase();return p.name.toLowerCase().includes(q)||(p.zip||'').includes(q)||getCity(p.zip).toLowerCase().includes(q);}
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
-function singleIcon(p,state='normal'){
-  const fill=personFill(p),label=personLabel(p);
-  const ring=state==='selected'?`<circle cx="20" cy="20" r="17" fill="none" stroke="${fill}" stroke-width="3" opacity="0.5"/>`:'';
-  const glow=state==='in-radius'?`<circle cx="20" cy="20" r="17" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>`:'';
-  const r=(state==='selected'||state==='in-radius')?13:11;
-  return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/></filter>${ring}${glow}<circle cx="20" cy="20" r="${r}" fill="${fill}" stroke="white" stroke-width="2.5" filter="url(#sh)"/><text x="20" y="${r>11?25:24}" text-anchor="middle" font-size="10" font-weight="800" fill="white" font-family="sans-serif">${label}</text></svg>`,iconSize:[40,40],iconAnchor:[20,20],className:''});
-}
-function clusterIcon(vis,state='normal'){
-  const nT=vis.filter(p=>p.type==='T').length,nC=vis.length-nT,n=vis.length;
-  const fill=(nT>0&&nC>0)?'#7c3aed':nT>0?'#0284c7':'#ea580c';
-  const ring=state==='selected'?`<circle cx="22" cy="22" r="19" fill="none" stroke="${fill}" stroke-width="3" opacity="0.45"/>`:'';
-  const glow=state==='in-radius'?`<circle cx="22" cy="22" r="19" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>`:'';
-  const inner=(nT>0&&nC>0)?`<path d="M22,8 A14,14 0 0,1 36,22 L22,22 Z" fill="#0284c7"/><path d="M36,22 A14,14 0 0,1 8,22 L22,22 Z" fill="#ea580c"/><path d="M8,22 A14,14 0 0,1 22,8 L22,22 Z" fill="#7c3aed"/>`:`<circle cx="22" cy="22" r="14" fill="${fill}"/>`;
-  return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"><filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/></filter>${ring}${glow}<g filter="url(#sh2)">${inner}<circle cx="22" cy="22" r="14" fill="none" stroke="white" stroke-width="2.5"/></g><text x="22" y="27" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="sans-serif">${n}</text></svg>`,iconSize:[44,44],iconAnchor:[22,22],className:''});
-}
+function singleIcon(p,state='normal'){const fill=personFill(p),label=personLabel(p);const ring=state==='selected'?`<circle cx="20" cy="20" r="17" fill="none" stroke="${fill}" stroke-width="3" opacity="0.5"/>`:'';const glow=state==='in-radius'?`<circle cx="20" cy="20" r="17" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>`:'';const r=(state==='selected'||state==='in-radius')?13:11;return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/></filter>${ring}${glow}<circle cx="20" cy="20" r="${r}" fill="${fill}" stroke="white" stroke-width="2.5" filter="url(#sh)"/><text x="20" y="${r>11?25:24}" text-anchor="middle" font-size="10" font-weight="800" fill="white" font-family="sans-serif">${label}</text></svg>`,iconSize:[40,40],iconAnchor:[20,20],className:''});}
+function clusterIcon(vis,state='normal'){const nT=vis.filter(p=>p.type==='T').length,nC=vis.length-nT,n=vis.length;const fill=(nT>0&&nC>0)?'#7c3aed':nT>0?'#0284c7':'#ea580c';const ring=state==='selected'?`<circle cx="22" cy="22" r="19" fill="none" stroke="${fill}" stroke-width="3" opacity="0.45"/>`:'';const glow=state==='in-radius'?`<circle cx="22" cy="22" r="19" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>`:'';const inner=(nT>0&&nC>0)?`<path d="M22,8 A14,14 0 0,1 36,22 L22,22 Z" fill="#0284c7"/><path d="M36,22 A14,14 0 0,1 8,22 L22,22 Z" fill="#ea580c"/><path d="M8,22 A14,14 0 0,1 22,8 L22,22 Z" fill="#7c3aed"/>`:`<circle cx="22" cy="22" r="14" fill="${fill}"/>`;return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"><filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/></filter>${ring}${glow}<g filter="url(#sh2)">${inner}<circle cx="22" cy="22" r="14" fill="none" stroke="white" stroke-width="2.5"/></g><text x="22" y="27" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="sans-serif">${n}</text></svg>`,iconSize:[44,44],iconAnchor:[22,22],className:''});}
 
-// ── Render all ────────────────────────────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────────────────────
 async function renderAll(){
-  Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});
-  zipGroups={}; markers={};
-  clearConnections(); clearRadius(); hideClusterPopup(); hideTeamPicker();
-
+  Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});zipGroups={};markers={};clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();
   const missing=[...new Set(people.filter(p=>p.zip&&!p.archived&&!geoCache[p.zip.toString().trim().padStart(5,'0')]).map(p=>p.zip.toString().trim()))];
-  if(missing.length){
-    setLoadingMsg(`Geocoding ${missing.length} new location${missing.length>1?'s':''}…`);
-    document.getElementById('loading').style.display='flex';
-    for(const z of missing){ await geocodeZip(z); await sleep(300); }
-    document.getElementById('loading').style.display='none';
-  }
-
-  people.forEach(p=>{ if(!p.zip)return; const c=geoCache[p.zip.toString().trim().padStart(5,'0')]; if(c)p.coords=c; });
-
-  const grouped={};
-  people.filter(p=>p.coords&&!p.archived).forEach(p=>{ const k=p.zip.toString().trim().padStart(5,'0'); if(!grouped[k])grouped[k]=[]; grouped[k].push(p); });
-  Object.entries(grouped).forEach(([zip,group])=>{
-    const m=createGroupMarker(zip,group,geoCache[zip]);
-    zipGroups[zip]={marker:m,people:group,hiddenIds:new Set()};
-    group.forEach(p=>{markers[p.id]=m;});
-  });
-
-  applyVisFilter(); renderSidebar(); if(heatOn)drawHeatCanvas();
+  if(missing.length){setLoadingMsg(`Geocoding ${missing.length} new location${missing.length>1?'s':''}…`);document.getElementById('loading').style.display='flex';for(const z of missing){await geocodeZip(z);await sleep(300);}document.getElementById('loading').style.display='none';}
+  people.forEach(p=>{if(!p.zip)return;const c=geoCache[p.zip.toString().trim().padStart(5,'0')];if(c)p.coords=c;});
+  const grouped={};people.filter(p=>p.coords&&!p.archived).forEach(p=>{const k=p.zip.toString().trim().padStart(5,'0');if(!grouped[k])grouped[k]=[];grouped[k].push(p);});
+  Object.entries(grouped).forEach(([zip,group])=>{const m=createGroupMarker(zip,group,geoCache[zip]);zipGroups[zip]={marker:m,people:group,hiddenIds:new Set()};group.forEach(p=>{markers[p.id]=m;});});
+  applyVisFilter();renderSidebar();if(heatOn)drawHeatCanvas();
 }
+function applyVisFilter(){Object.entries(zipGroups).forEach(([zip,g])=>{g.hiddenIds=new Set(g.people.filter(p=>!isVisible(p)).map(p=>p.id));refreshGroup(zip,'normal');});}
+function createGroupMarker(zip,group,coords,state='normal'){const isSolo=group.length===1;const m=L.marker([coords.lat,coords.lng],{icon:isSolo?singleIcon(group[0],state):clusterIcon(group,state)}).addTo(map);if(isSolo){const p=group[0],city=getCity(zip);m.bindTooltip(`<b>${p.name}</b><br>${p.type==='T'?'Technician':'Client'} · ${zip}${city?' · '+city:''}`,{direction:'top',offset:[0,-14]});m.on('click',()=>handleClick(p));}else{m.on('mouseover',()=>openClusterPopup(zip));m.on('mouseout',()=>schedulePopupClose());m.on('click',()=>openClusterPopup(zip,true));}return m;}
+function refreshGroup(zip,state='normal'){const g=zipGroups[zip];if(!g)return;const vis=g.people.filter(p=>!g.hiddenIds.has(p.id));if(!vis.length){if(map.hasLayer(g.marker))map.removeLayer(g.marker);return;}if(!map.hasLayer(g.marker))g.marker.addTo(map);g.marker.setIcon(vis.length===1?singleIcon(vis[0],state):clusterIcon(vis,state));}
+function hidePerson(p){const zip=p.zip?.toString().trim().padStart(5,'0');const g=zip?zipGroups[zip]:null;if(!g)return;g.hiddenIds.add(p.id);refreshGroup(zip,'normal');}
 
-function applyVisFilter(){ Object.entries(zipGroups).forEach(([zip,g])=>{ g.hiddenIds=new Set(g.people.filter(p=>!isVisible(p)).map(p=>p.id)); refreshGroup(zip,'normal'); }); }
+function openClusterPopup(zip,force=false){clearTimeout(popupCloseTimer);const g=zipGroups[zip];if(!g)return;const vis=g.people.filter(p=>!g.hiddenIds.has(p.id));if(!vis.length)return;const popup=document.getElementById('cluster-popup');const coords=map.latLngToContainerPoint(g.marker.getLatLng());popup.style.left=coords.x+'px';popup.style.top=(coords.y-6)+'px';const nT=vis.filter(p=>p.type==='T').length,nC=vis.length-nT,city=getCity(zip);let title=(nT&&nC)?`${nT} tech${nT>1?'s':''}+${nC} client${nC>1?'s':''} · ${zip}`:nT?`${nT} technician${nT>1?'s':''} · ${zip}`:`${nC} client${nC>1?'s':''} · ${zip}`;if(city)title+=` · ${city}`;popup.innerHTML=`<div class="cluster-popup-title">${title}</div>`+vis.map(p=>`<div class="cluster-popup-item ${interHighlight.has(p.id)?'in-radius-item':''}" onclick="window._app.handleClick('${p.id}');window._app.hideClusterPopup()"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="${personFill(p)}" stroke="white" stroke-width="1.5"/></svg><span style="flex:1">${p.name}</span><span style="font-size:10px;color:#94a3b8;font-weight:600">${p.type==='T'?'Tech':'Client'}</span></div>`).join('');popup.style.display='block';popup.onmouseenter=()=>clearTimeout(popupCloseTimer);popup.onmouseleave=()=>schedulePopupClose();}
+function schedulePopupClose(){popupCloseTimer=setTimeout(hideClusterPopup,300);}
+function hideClusterPopup(){clearTimeout(popupCloseTimer);document.getElementById('cluster-popup').style.display='none';}
 
-function createGroupMarker(zip,group,coords,state='normal'){
-  const isSolo=group.length===1;
-  const m=L.marker([coords.lat,coords.lng],{icon:isSolo?singleIcon(group[0],state):clusterIcon(group,state)}).addTo(map);
-  if(isSolo){ const p=group[0],city=getCity(zip); m.bindTooltip(`<b>${p.name}</b><br>${p.type==='T'?'Technician':'Client'} · ${zip}${city?' · '+city:''}`,{direction:'top',offset:[0,-14]}); m.on('click',()=>handleClick(p)); }
-  else { m.on('mouseover',()=>openClusterPopup(zip)); m.on('mouseout',()=>schedulePopupClose()); m.on('click',()=>openClusterPopup(zip,true)); }
-  return m;
-}
-function refreshGroup(zip,state='normal'){ const g=zipGroups[zip];if(!g)return; const vis=g.people.filter(p=>!g.hiddenIds.has(p.id)); if(!vis.length){if(map.hasLayer(g.marker))map.removeLayer(g.marker);return;} if(!map.hasLayer(g.marker))g.marker.addTo(map); g.marker.setIcon(vis.length===1?singleIcon(vis[0],state):clusterIcon(vis,state)); }
-function hidePerson(p){ const zip=p.zip?.toString().trim().padStart(5,'0'); const g=zip?zipGroups[zip]:null; if(!g)return; g.hiddenIds.add(p.id); refreshGroup(zip,'normal'); }
+function openTeamPicker(event,personId){event.stopPropagation();const picker=document.getElementById('team-picker');const rect=event.target.getBoundingClientRect(),sbRect=document.getElementById('sidebar').getBoundingClientRect();document.getElementById('sidebar').style.position='relative';document.getElementById('sidebar').appendChild(picker);picker.style.cssText=`display:block;position:absolute;left:${rect.left-sbRect.left}px;top:${rect.bottom-sbRect.top+4}px;z-index:3000;`;picker.innerHTML=TEAMS.map(t=>`<div class="tp-item" onclick="window._app.assignTeam('${personId}','${t.replace(/'/g,"\\'")}')"><div class="tp-dot" style="background:${teamColor(t)}"></div><span style="color:${teamColor(t)}">${t}</span></div>`).join('');setTimeout(()=>document.addEventListener('click',hideTeamPicker,{once:true}),0);}
+function hideTeamPicker(){document.getElementById('team-picker').style.display='none';}
+function assignTeam(personId,team){const p=byId(personId);if(!p)return;hideTeamPicker();requireAuth(async()=>{try{await updateDoc(doc(db,'people',personId),{team});showToast(`${p.name} → ${team}`);}catch(e){showToast('Update failed',true);}});}
 
-// ── Cluster popup ─────────────────────────────────────────────────────────────
-function openClusterPopup(zip,force=false){ clearTimeout(popupCloseTimer); const g=zipGroups[zip];if(!g)return; const vis=g.people.filter(p=>!g.hiddenIds.has(p.id));if(!vis.length)return; const popup=document.getElementById('cluster-popup'); const coords=map.latLngToContainerPoint(g.marker.getLatLng()); popup.style.left=coords.x+'px'; popup.style.top=(coords.y-6)+'px'; const nT=vis.filter(p=>p.type==='T').length,nC=vis.length-nT,city=getCity(zip); let title=(nT&&nC)?`${nT} tech${nT>1?'s':''}+${nC} client${nC>1?'s':''} · ${zip}`:nT?`${nT} technician${nT>1?'s':''} · ${zip}`:`${nC} client${nC>1?'s':''} · ${zip}`; if(city)title+=` · ${city}`; popup.innerHTML=`<div class="cluster-popup-title">${title}</div>`+vis.map(p=>`<div class="cluster-popup-item ${interHighlight.has(p.id)?'in-radius-item':''}" onclick="window._app.handleClick('${p.id}');window._app.hideClusterPopup()"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="${personFill(p)}" stroke="white" stroke-width="1.5"/></svg><span style="flex:1">${p.name}</span><span style="font-size:10px;color:#94a3b8;font-weight:600">${p.type==='T'?'Tech':'Client'}</span></div>`).join(''); popup.style.display='block'; popup.onmouseenter=()=>clearTimeout(popupCloseTimer); popup.onmouseleave=()=>schedulePopupClose(); }
-function schedulePopupClose(){ popupCloseTimer=setTimeout(hideClusterPopup,300); }
-function hideClusterPopup(){ clearTimeout(popupCloseTimer); document.getElementById('cluster-popup').style.display='none'; }
-
-// ── Team picker ───────────────────────────────────────────────────────────────
-function openTeamPicker(event,personId){ event.stopPropagation(); const picker=document.getElementById('team-picker'); const rect=event.target.getBoundingClientRect(),sbRect=document.getElementById('sidebar').getBoundingClientRect(); document.getElementById('sidebar').style.position='relative'; document.getElementById('sidebar').appendChild(picker); picker.style.cssText=`display:block;position:absolute;left:${rect.left-sbRect.left}px;top:${rect.bottom-sbRect.top+4}px;z-index:3000;`; picker.innerHTML=TEAMS.map(t=>`<div class="tp-item" onclick="window._app.assignTeam('${personId}','${t.replace(/'/g,"\\'")}')"><div class="tp-dot" style="background:${teamColor(t)}"></div><span style="color:${teamColor(t)}">${t}</span></div>`).join(''); setTimeout(()=>document.addEventListener('click',hideTeamPicker,{once:true}),0); }
-function hideTeamPicker(){ document.getElementById('team-picker').style.display='none'; }
-function assignTeam(personId,team){ const p=byId(personId);if(!p)return; hideTeamPicker(); requireAuth(async()=>{ try{ await updateDoc(doc(db,'people',personId),{team}); showToast(`${p.name} → ${team}`); }catch(e){ showToast('Update failed',true); } }); }
-
-// ── Archive ───────────────────────────────────────────────────────────────────
-function archivePerson(id){ const p=byId(id);if(!p)return; requireAuth(async()=>{ try{ await updateDoc(doc(db,'people',id),{archived:true}); showToast(`${p.name} archived`); }catch(e){ showToast('Archive failed',true); } }); }
-function restorePerson(id){ const p=byId(id);if(!p)return; requireAuth(async()=>{ try{ await updateDoc(doc(db,'people',id),{archived:false}); showToast(`${p.name} restored!`); }catch(e){ showToast('Restore failed',true); } }); }
-function renderArchive(){ const archived=people.filter(p=>p.archived); const sec=document.getElementById('archive-section'); if(!archived.length){sec.style.display='none';return;} sec.style.display='block'; document.getElementById('archive-count').textContent=archived.length; document.getElementById('archive-chevron').className='archive-chevron'+(archiveExpanded?' open':''); const list=document.getElementById('archive-list'); list.className='archive-list'+(archiveExpanded?' open':''); list.innerHTML=archived.map(p=>`<div class="archive-card"><div class="pdot ${p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c'}" style="margin-top:3px;flex-shrink:0;"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><button class="restore-btn" onclick="window._app.restorePerson('${p.id}')">↩ Restore</button></div>`).join(''); }
+function archivePerson(id){const p=byId(id);if(!p)return;requireAuth(async()=>{try{await updateDoc(doc(db,'people',id),{archived:true});showToast(`${p.name} archived`);}catch(e){showToast('Archive failed',true);}});}
+function restorePerson(id){const p=byId(id);if(!p)return;requireAuth(async()=>{try{await updateDoc(doc(db,'people',id),{archived:false});showToast(`${p.name} restored!`);}catch(e){showToast('Restore failed',true);}});}
+function renderArchive(){const archived=people.filter(p=>p.archived);const sec=document.getElementById('archive-section');if(!archived.length){sec.style.display='none';return;}sec.style.display='block';document.getElementById('archive-count').textContent=archived.length;document.getElementById('archive-chevron').className='archive-chevron'+(archiveExpanded?' open':'');const list=document.getElementById('archive-list');list.className='archive-list'+(archiveExpanded?' open':'');list.innerHTML=archived.map(p=>`<div class="archive-card"><div class="pdot ${p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c'}" style="margin-top:3px;flex-shrink:0;"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><button class="restore-btn" onclick="window._app.restorePerson('${p.id}')">↩ Restore</button></div>`).join('');}
 document.getElementById('archive-toggle').addEventListener('click',()=>{archiveExpanded=!archiveExpanded;renderArchive();});
 
-// ── Search dropdown ───────────────────────────────────────────────────────────
-function renderSearchDropdown(){ const q=searchQuery.trim(),dd=document.getElementById('search-dropdown'); if(!q){dd.style.display='none';return;} const ql=q.toLowerCase(),matches=people.filter(p=>!p.archived&&(p.name.toLowerCase().includes(ql)||(p.zip||'').includes(ql)||getCity(p.zip).toLowerCase().includes(ql))).slice(0,10); if(!matches.length){dd.innerHTML=`<div class="sd-empty">No results for "${q}"</div>`;dd.style.display='block';return;} dd.innerHTML=matches.map(p=>`<div class="sd-item" onclick="window._app.jumpToResult('${p.id}')"><svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0"><circle cx="5" cy="5" r="4" fill="${personFill(p)}" stroke="white" stroke-width="1.5"/></svg><div><div class="sd-name">${p.name}</div>${metaLine(p)?`<div class="sd-meta">${metaLine(p)}</div>`:''}</div><div class="sd-badge" style="background:${teamColor(p.team)}">${teamShort(p.team)}</div></div>`).join(''); dd.style.display='block'; }
-function hideSearchDropdown(){ document.getElementById('search-dropdown').style.display='none'; }
-function jumpToResult(id){ const p=byId(id);if(!p)return; hideSearchDropdown(); document.getElementById('search-input').value=''; searchQuery=''; document.getElementById('search-clear').style.display='none'; applyVisFilter(); renderSidebar(); if(p.coords)map.setView([p.coords.lat,p.coords.lng],14,{animate:true}); const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip]; if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'normal'):clusterIcon(v2,'normal'));},2000);} switchTab('people'); }
+function renderSearchDropdown(){const q=searchQuery.trim(),dd=document.getElementById('search-dropdown');if(!q){dd.style.display='none';return;}const ql=q.toLowerCase(),matches=people.filter(p=>!p.archived&&(p.name.toLowerCase().includes(ql)||(p.zip||'').includes(ql)||getCity(p.zip).toLowerCase().includes(ql))).slice(0,10);if(!matches.length){dd.innerHTML=`<div class="sd-empty">No results for "${q}"</div>`;dd.style.display='block';return;}dd.innerHTML=matches.map(p=>`<div class="sd-item" onclick="window._app.jumpToResult('${p.id}')"><svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0"><circle cx="5" cy="5" r="4" fill="${personFill(p)}" stroke="white" stroke-width="1.5"/></svg><div><div class="sd-name">${p.name}</div>${metaLine(p)?`<div class="sd-meta">${metaLine(p)}</div>`:''}</div><div class="sd-badge" style="background:${teamColor(p.team)}">${teamShort(p.team)}</div></div>`).join('');dd.style.display='block';}
+function hideSearchDropdown(){document.getElementById('search-dropdown').style.display='none';}
+function jumpToResult(id){const p=byId(id);if(!p)return;hideSearchDropdown();document.getElementById('search-input').value='';searchQuery='';document.getElementById('search-clear').style.display='none';applyVisFilter();renderSidebar();if(p.coords)map.setView([p.coords.lat,p.coords.lng],14,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'normal'):clusterIcon(v2,'normal'));},2000);}switchTab('people');}
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
-function renderSidebar(highlightIds=[]){ const techs=people.filter(p=>p.type==='T'&&isVisible(p)),clients=people.filter(p=>p.type==='C'&&isVisible(p)); document.getElementById('tech-list').innerHTML=techs.length?techs.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No technicians'); document.getElementById('client-list').innerHTML=clients.length?clients.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No clients'); renderArchive(); }
-function emptyMsg(m){ return `<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">${m}</div>`; }
-function cardHTML(p,highlightIds){ const sel=selectedTech?.id===p.id?'selected':'',inR=highlightIds.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c'; return `<div class="person-card ${sel} ${inR}" onclick="window._app.handleClick('${p.id}')"><div class="pdot ${dot}"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><div class="card-right"><div class="team-badge" style="background:${teamColor(p.team)}" onclick="window._app.openTeamPicker(event,'${p.id}')" title="Change team">${teamShort(p.team)}</div><button class="btn btn-red del-btn" onclick="event.stopPropagation();window._app.archivePerson('${p.id}')" title="Archive">🗄</button></div></div>`; }
-function byId(id){ return people.find(p=>p.id===id); }
+function renderSidebar(highlightIds=[]){const techs=people.filter(p=>p.type==='T'&&isVisible(p)),clients=people.filter(p=>p.type==='C'&&isVisible(p));document.getElementById('tech-list').innerHTML=techs.length?techs.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No technicians');document.getElementById('client-list').innerHTML=clients.length?clients.map(p=>cardHTML(p,highlightIds)).join(''):emptyMsg('No clients');renderArchive();}
+function emptyMsg(m){return`<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">${m}</div>`;}
+function cardHTML(p,highlightIds){const sel=selectedTech?.id===p.id?'selected':'',inR=highlightIds.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';return`<div class="person-card ${sel} ${inR}" onclick="window._app.handleClick('${p.id}')"><div class="pdot ${dot}"></div><div class="pinfo"><div class="pname">${p.name}</div>${metaLine(p)?`<div class="pmeta">${metaLine(p)}</div>`:''}</div><div class="card-right"><div class="team-badge" style="background:${teamColor(p.team)}" onclick="window._app.openTeamPicker(event,'${p.id}')" title="Change team">${teamShort(p.team)}</div><button class="btn btn-red del-btn" onclick="event.stopPropagation();window._app.archivePerson('${p.id}')" title="Archive">🗄</button></div></div>`;}
+function byId(id){return people.find(p=>p.id===id);}
 
-// ── Click handler ─────────────────────────────────────────────────────────────
-function handleClick(idOrPerson){ const p=typeof idOrPerson==='string'?byId(idOrPerson):idOrPerson;if(!p)return; hideTeamPicker();hideSearchDropdown(); if(interMode){handleInteractiveClick(p);return;} Object.keys(zipGroups).forEach(z=>refreshGroup(z,'normal')); if(p.type==='T'){ if(selectedTech?.id===p.id){selectedTech=null;clearConnections();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();return;} selectedTech=p; const gz=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));} showConnections(p);switchTab('distances'); }else{ const gz2=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz2){const gv2=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));setTimeout(()=>{const v3=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);} if(selectedTech?.coords&&p.coords)showToast(`${selectedTech.name} → ${p.name}: ${miles(selectedTech.coords,p.coords).toFixed(1)} mi`); } renderSidebar(); }
+function handleClick(idOrPerson){const p=typeof idOrPerson==='string'?byId(idOrPerson):idOrPerson;if(!p)return;hideTeamPicker();hideSearchDropdown();closeAuthMenu();if(interMode){handleInteractiveClick(p);return;}Object.keys(zipGroups).forEach(z=>refreshGroup(z,'normal'));if(p.type==='T'){if(selectedTech?.id===p.id){selectedTech=null;clearConnections();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();return;}selectedTech=p;const gz=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}showConnections(p);switchTab('distances');}else{const gz2=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz2){const gv2=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));setTimeout(()=>{const v3=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);}if(selectedTech?.coords&&p.coords)showToast(`${selectedTech.name} → ${p.name}: ${miles(selectedTech.coords,p.coords).toFixed(1)} mi`);}renderSidebar();}
 
-// ── Interactive mode ──────────────────────────────────────────────────────────
-function handleInteractiveClick(p){ if(!p?.coords){showToast('Location not found',true);return;} lastInterPerson=p;applyRadius(p,+document.getElementById('miles-select').value); }
-function applyRadius(p,radiusMi){ clearConnections();clearRadius();hideClusterPopup();interHighlight=new Set(); Object.keys(zipGroups).forEach(z=>{const g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(x=>!isVisible(x)).map(x=>x.id));refreshGroup(z,'normal');}); const radiusM=radiusMi*1609.344; const setSelected=pp=>{const gz=zipGroups[pp.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(pp,'selected'):clusterIcon(gv,'selected'));}}; if(p.type==='T'){ selectedTech=p;setSelected(p); radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map); const allC=people.filter(x=>x.type==='C'&&x.coords&&isVisible(x)),inC=allC.filter(c=>miles(p.coords,c.coords)<=radiusMi); allC.filter(c=>miles(p.coords,c.coords)>radiusMi).forEach(hidePerson); inC.forEach(c=>interHighlight.add(c.id)); new Set(inC.map(c=>c.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius')); people.filter(x=>x.type==='T'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson); map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true}); setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inC.length} client${inC.length!==1?'s':''} inside`,'#a78bfa'); const sortedC=inC.map(c=>({...c,dist:miles(p.coords,c.coords)})).sort((a,b)=>a.dist-b.dist); showDistPanel(`Within ${radiusMi} mi of ${p.name}`,sortedC,inC.map(c=>c.id),true); renderSidebar(inC.map(c=>c.id)); }else{ setSelected(p); radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map); const allT=people.filter(x=>x.type==='T'&&x.coords&&isVisible(x)),inT=allT.filter(t=>miles(p.coords,t.coords)<=radiusMi); allT.filter(t=>miles(p.coords,t.coords)>radiusMi).forEach(hidePerson); inT.forEach(t=>interHighlight.add(t.id)); new Set(inT.map(t=>t.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius')); people.filter(x=>x.type==='C'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson); map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true}); setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inT.length} technician${inT.length!==1?'s':''} nearby`,'#fb923c'); const sortedT=inT.map(t=>({...t,dist:miles(p.coords,t.coords)})).sort((a,b)=>a.dist-b.dist); showDistPanel(`Technicians within ${radiusMi} mi of ${p.name}`,sortedT,inT.map(t=>t.id),true); renderSidebar(inT.map(t=>t.id)); } document.getElementById('legend-radius').style.display='flex';switchTab('distances'); }
+function handleInteractiveClick(p){if(!p?.coords){showToast('Location not found',true);return;}lastInterPerson=p;applyRadius(p,+document.getElementById('miles-select').value);}
+function applyRadius(p,radiusMi){clearConnections();clearRadius();hideClusterPopup();interHighlight=new Set();Object.keys(zipGroups).forEach(z=>{const g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(x=>!isVisible(x)).map(x=>x.id));refreshGroup(z,'normal');});const radiusM=radiusMi*1609.344;const setSelected=pp=>{const gz=zipGroups[pp.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(pp,'selected'):clusterIcon(gv,'selected'));}};if(p.type==='T'){selectedTech=p;setSelected(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map);const allC=people.filter(x=>x.type==='C'&&x.coords&&isVisible(x)),inC=allC.filter(c=>miles(p.coords,c.coords)<=radiusMi);allC.filter(c=>miles(p.coords,c.coords)>radiusMi).forEach(hidePerson);inC.forEach(c=>interHighlight.add(c.id));new Set(inC.map(c=>c.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='T'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inC.length} client${inC.length!==1?'s':''} inside`,'#a78bfa');const sortedC=inC.map(c=>({...c,dist:miles(p.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel(`Within ${radiusMi} mi of ${p.name}`,sortedC,inC.map(c=>c.id),true);renderSidebar(inC.map(c=>c.id));}else{setSelected(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:radiusM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map);const allT=people.filter(x=>x.type==='T'&&x.coords&&isVisible(x)),inT=allT.filter(t=>miles(p.coords,t.coords)<=radiusMi);allT.filter(t=>miles(p.coords,t.coords)>radiusMi).forEach(hidePerson);inT.forEach(t=>interHighlight.add(t.id));new Set(inT.map(t=>t.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='C'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner(`🎯 ${p.name} · ${radiusMi} mi · ${inT.length} technician${inT.length!==1?'s':''} nearby`,'#fb923c');const sortedT=inT.map(t=>({...t,dist:miles(p.coords,t.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel(`Technicians within ${radiusMi} mi of ${p.name}`,sortedT,inT.map(t=>t.id),true);renderSidebar(inT.map(t=>t.id));}document.getElementById('legend-radius').style.display='flex';switchTab('distances');}
+function clearRadius(){if(radiusCircle){map.removeLayer(radiusCircle);radiusCircle=null;}document.getElementById('legend-radius').style.display='none';}
 
-function clearRadius(){ if(radiusCircle){map.removeLayer(radiusCircle);radiusCircle=null;} document.getElementById('legend-radius').style.display='none'; }
+function showConnections(tech){clearConnections();clearRadius();if(!tech.coords){showToast('Location not found',true);return;}const clients=people.filter(p=>p.type==='C'&&p.coords&&isVisible(p));if(!clients.length){showToast('No visible clients',true);return;}const sorted=clients.map(c=>({...c,dist:miles(tech.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);const lc=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];sorted.forEach((c,i)=>{const color=lc[i%lc.length];const line=L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]],{color,weight:i===0?5:i<3?4:3,opacity:0.9}).addTo(map);const mid=[(tech.coords.lat+c.coords.lat)/2,(tech.coords.lng+c.coords.lng)/2];const label=L.marker(mid,{icon:L.divIcon({html:`<div class="dist-label-el" style="border-color:${color};color:${color};">${c.dist.toFixed(1)} mi</div>`,className:'',iconAnchor:[24,10]}),interactive:false,zIndexOffset:500}).addTo(map);connLines.push(line);connLabels.push(label);});map.fitBounds([[tech.coords.lat,tech.coords.lng],...sorted.map(c=>[c.coords.lat,c.coords.lng])],{padding:[70,70],maxZoom:13,animate:true});setBanner(`📍 ${tech.name} — ${sorted.length} clients`,'#38bdf8');showDistPanel(`${tech.name} → Clients`,sorted,[],false);}
+function showDistPanel(title,sorted,inRadiusIds,isInter){document.getElementById('dist-empty').style.display='none';const body=document.getElementById('dist-body');body.style.cssText='display:flex;flex-direction:column;gap:6px;';document.getElementById('dist-title').textContent=title;document.getElementById('dist-list').innerHTML=sorted.length?sorted.map((x,i)=>`<div class="dist-item ${isInter?'inter':''}" onclick="window._app.panTo('${x.id}')"><div class="dist-rank ${i<3?'r'+(i+1):''}">${i+1}</div><div class="dname">${x.name}<small>${x.zip||''}${getCity(x.zip)?' · '+getCity(x.zip):''}</small></div><div class="dmiles ${isInter?'inside':''}">${x.dist.toFixed(1)} mi</div></div>`).join(''):'<div style="color:#94a3b8;font-size:12px;padding:8px 2px;">None within this radius.</div>';}
+function clearConnections(){connLines.forEach(l=>map.removeLayer(l));connLabels.forEach(l=>map.removeLayer(l));connLines=[];connLabels=[];}
+function setBanner(html,c){const b=document.getElementById('conn-banner');b.innerHTML=html;b.style.borderColor=c;b.style.display='block';}
+function panTo(id){const p=byId(id);if(!p?.coords)return;map.setView([p.coords.lat,p.coords.lng],13,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'in-radius'):clusterIcon(v2,'in-radius'));},1500);}}
+function resetToDefault(){selectedTech=null;lastInterPerson=null;interHighlight=new Set();clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();applyVisFilter();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();}
 
-// ── Connections ───────────────────────────────────────────────────────────────
-function showConnections(tech){ clearConnections();clearRadius(); if(!tech.coords){showToast('Location not found',true);return;} const clients=people.filter(p=>p.type==='C'&&p.coords&&isVisible(p));if(!clients.length){showToast('No visible clients',true);return;} const sorted=clients.map(c=>({...c,dist:miles(tech.coords,c.coords)})).sort((a,b)=>a.dist-b.dist); const lc=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899']; sorted.forEach((c,i)=>{ const color=lc[i%lc.length]; const line=L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]],{color,weight:i===0?5:i<3?4:3,opacity:0.9}).addTo(map); const mid=[(tech.coords.lat+c.coords.lat)/2,(tech.coords.lng+c.coords.lng)/2]; const label=L.marker(mid,{icon:L.divIcon({html:`<div class="dist-label-el" style="border-color:${color};color:${color};">${c.dist.toFixed(1)} mi</div>`,className:'',iconAnchor:[24,10]}),interactive:false,zIndexOffset:500}).addTo(map); connLines.push(line);connLabels.push(label); }); map.fitBounds([[tech.coords.lat,tech.coords.lng],...sorted.map(c=>[c.coords.lat,c.coords.lng])],{padding:[70,70],maxZoom:13,animate:true}); setBanner(`📍 ${tech.name} — ${sorted.length} clients`,'#38bdf8'); showDistPanel(`${tech.name} → Clients`,sorted,[],false); }
-function showDistPanel(title,sorted,inRadiusIds,isInter){ document.getElementById('dist-empty').style.display='none'; const body=document.getElementById('dist-body');body.style.cssText='display:flex;flex-direction:column;gap:6px;'; document.getElementById('dist-title').textContent=title; document.getElementById('dist-list').innerHTML=sorted.length?sorted.map((x,i)=>`<div class="dist-item ${isInter?'inter':''}" onclick="window._app.panTo('${x.id}')"><div class="dist-rank ${i<3?'r'+(i+1):''}">${i+1}</div><div class="dname">${x.name}<small>${x.zip||''}${getCity(x.zip)?' · '+getCity(x.zip):''}</small></div><div class="dmiles ${isInter?'inside':''}">${x.dist.toFixed(1)} mi</div></div>`).join(''):'<div style="color:#94a3b8;font-size:12px;padding:8px 2px;">None within this radius.</div>'; }
-function clearConnections(){ connLines.forEach(l=>map.removeLayer(l));connLabels.forEach(l=>map.removeLayer(l));connLines=[];connLabels=[]; }
-function setBanner(html,c){ const b=document.getElementById('conn-banner');b.innerHTML=html;b.style.borderColor=c;b.style.display='block'; }
-function panTo(id){ const p=byId(id);if(!p?.coords)return; map.setView([p.coords.lat,p.coords.lng],13,{animate:true}); const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'in-radius'):clusterIcon(v2,'in-radius'));},1500);} }
-
-function resetToDefault(){ selectedTech=null;lastInterPerson=null;interHighlight=new Set(); clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();hideSearchDropdown(); applyVisFilter(); document.getElementById('conn-banner').style.display='none'; document.getElementById('dist-empty').style.display=''; document.getElementById('dist-body').style.display='none'; renderSidebar(); }
-
-// ── Controls ──────────────────────────────────────────────────────────────────
-document.getElementById('btn-inter').addEventListener('click',()=>{ interMode=!interMode; document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode); document.getElementById('interactive-controls').style.display=interMode?'flex':'none'; document.getElementById('inter-hint').style.display=interMode?'block':'none'; if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on',false,'purple'); });
+document.getElementById('btn-inter').addEventListener('click',()=>{interMode=!interMode;document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode);document.getElementById('interactive-controls').style.display=interMode?'flex':'none';document.getElementById('inter-hint').style.display=interMode?'block':'none';if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on',false,'purple');});
 document.getElementById('miles-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;applyRadius(lastInterPerson,+this.value);});
 document.getElementById('btn-fit').addEventListener('click',()=>{const pts=people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length)map.fitBounds(pts,{padding:[50,50]});});
 document.getElementById('btn-clear').addEventListener('click',()=>{resetToDefault();showToast('Cleared');});
 document.getElementById('team-filter').addEventListener('change',function(){teamFilter=this.value;resetToDefault();});
-document.getElementById('sidebar-toggle').addEventListener('click',()=>{ sidebarOpen=!sidebarOpen; document.getElementById('sidebar').classList.toggle('collapsed',!sidebarOpen); document.getElementById('sidebar-toggle').textContent=sidebarOpen?'‹':'›'; setTimeout(()=>map&&map.invalidateSize(),260); });
+document.getElementById('sidebar-toggle').addEventListener('click',()=>{sidebarOpen=!sidebarOpen;document.getElementById('sidebar').classList.toggle('collapsed',!sidebarOpen);document.getElementById('sidebar-toggle').textContent=sidebarOpen?'‹':'›';setTimeout(()=>map&&map.invalidateSize(),260);});
 
 const searchInput=document.getElementById('search-input'),searchClear=document.getElementById('search-clear');
 searchInput.addEventListener('input',function(){searchQuery=this.value.trim();searchClear.style.display=searchQuery?'flex':'none';renderSearchDropdown();applyVisFilter();renderSidebar();});
@@ -525,110 +530,37 @@ searchInput.addEventListener('focus',()=>{if(searchQuery)renderSearchDropdown();
 searchInput.addEventListener('keydown',e=>{if(e.key==='Escape'){hideSearchDropdown();searchInput.blur();}});
 searchClear.addEventListener('click',()=>{searchInput.value='';searchQuery='';searchClear.style.display='none';hideSearchDropdown();resetToDefault();});
 document.addEventListener('click',e=>{if(!document.getElementById('search-wrap').contains(e.target))hideSearchDropdown();});
-
 function switchTab(name){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.id==='tab-'+name));}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
-// ── Add person ────────────────────────────────────────────────────────────────
-document.getElementById('btn-add').addEventListener('click',()=>{
-  const name=document.getElementById('f-name').value.trim();
-  if(!name){showToast('Name is required',true);return;}
-  requireAuth(async()=>{
-    const type=document.getElementById('f-type').value,zip=document.getElementById('f-zip').value.trim(),team=document.getElementById('f-team').value;
-    const btn=document.getElementById('btn-add'); btn.disabled=true; btn.textContent='Saving…';
-    try{ await addDoc(PEOPLE_COL,{name,type,zip:zip||'',team,archived:false}); document.getElementById('f-name').value=''; document.getElementById('f-zip').value=''; showToast(`${name} added — live on everyone's map!`); switchTab('people'); }
-    catch(e){ showToast('Save failed: '+e.message,true); }
-    btn.disabled=false; btn.textContent='Add to Map';
-  });
-});
+document.getElementById('btn-add').addEventListener('click',()=>{const name=document.getElementById('f-name').value.trim();if(!name){showToast('Name is required',true);return;}requireAuth(async()=>{const type=document.getElementById('f-type').value,zip=document.getElementById('f-zip').value.trim(),team=document.getElementById('f-team').value;const btn=document.getElementById('btn-add');btn.disabled=true;btn.textContent='Saving…';try{await addDoc(PEOPLE_COL,{name,type,zip:zip||'',team,archived:false});document.getElementById('f-name').value='';document.getElementById('f-zip').value='';showToast(`${name} added — live on everyone's map!`);switchTab('people');}catch(e){showToast('Save failed: '+e.message,true);}btn.disabled=false;btn.textContent='Add to Map';});});
 
-// ── CSV import ────────────────────────────────────────────────────────────────
-const normalizeTeam = raw=>{ if(!raw)return'Unassigned'; const r=raw.trim(); return TEAMS.find(t=>t.toLowerCase()===r.toLowerCase())||TEAMS.find(t=>t.toLowerCase().includes(r.toLowerCase()))||'Unassigned'; };
-async function importCSVToFirestore(text){ const rows=Papa.parse(text,{header:true,skipEmptyLines:true}).data; let added=0; const existing=new Set(people.map(p=>p.name+'|'+p.zip)); const batch=writeBatch(db); rows.forEach(row=>{ const name=(row['Names']||row['Name']||row['name']||'').trim(),type=(row['Type']||row['Label']||row['label']||row['type']||'').trim().toUpperCase(),zip=(row['zipcode']||row['Zipcode']||row['ZipCode']||row['zip']||'').toString().trim(),team=normalizeTeam(row['Team']||row['team']||''),key=name+'|'+zip; if(name&&(type==='T'||type==='C')&&!existing.has(key)){batch.set(doc(PEOPLE_COL),{name,type,zip,team,archived:false});existing.add(key);added++;} }); if(added)await batch.commit(); return added; }
+const normalizeTeam=raw=>{if(!raw)return'Unassigned';const r=raw.trim();return TEAMS.find(t=>t.toLowerCase()===r.toLowerCase())||TEAMS.find(t=>t.toLowerCase().includes(r.toLowerCase()))||'Unassigned';};
+async function importCSVToFirestore(text){const rows=Papa.parse(text,{header:true,skipEmptyLines:true}).data;let added=0;const existing=new Set(people.map(p=>p.name+'|'+p.zip));const batch=writeBatch(db);rows.forEach(row=>{const name=(row['Names']||row['Name']||row['name']||'').trim(),type=(row['Type']||row['Label']||row['label']||row['type']||'').trim().toUpperCase(),zip=(row['zipcode']||row['Zipcode']||row['ZipCode']||row['zip']||'').toString().trim(),team=normalizeTeam(row['Team']||row['team']||''),key=name+'|'+zip;if(name&&(type==='T'||type==='C')&&!existing.has(key)){batch.set(doc(PEOPLE_COL),{name,type,zip,team,archived:false});existing.add(key);added++;}});if(added)await batch.commit();return added;}
 document.getElementById('drop-zone').addEventListener('click',()=>document.getElementById('csv-file').click());
-document.getElementById('csv-file').addEventListener('change',async e=>{ const f=e.target.files[0];if(!f)return; const text=await f.text(); e.target.value=''; requireAuth(async()=>{ const n=await importCSVToFirestore(text); showToast(`Imported ${n} records to cloud`); }); });
-const dz=document.getElementById('drop-zone');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
-dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
-dz.addEventListener('drop',async e=>{ e.preventDefault();dz.classList.remove('over'); const f=e.dataTransfer.files[0];if(!f)return; const text=await f.text(); requireAuth(async()=>{ const n=await importCSVToFirestore(text); showToast(`Imported ${n} records to cloud`); }); });
+document.getElementById('csv-file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;const text=await f.text();e.target.value='';requireAuth(async()=>{const n=await importCSVToFirestore(text);showToast(`Imported ${n} records to cloud`);});});
+const dz=document.getElementById('drop-zone');dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});dz.addEventListener('dragleave',()=>dz.classList.remove('over'));dz.addEventListener('drop',async e=>{e.preventDefault();dz.classList.remove('over');const f=e.dataTransfer.files[0];if(!f)return;const text=await f.text();requireAuth(async()=>{const n=await importCSVToFirestore(text);showToast(`Imported ${n} records to cloud`);});});
 
-// ── Heat map ──────────────────────────────────────────────────────────────────
-function drawHeatCanvas(){ if(heatCanvas){heatCanvas.remove();heatCanvas=null;} if(!heatOn)return; const pts=people.filter(p=>p.coords&&isVisible(p));if(!pts.length)return; const pane=map.getPanes().overlayPane,canvas=document.createElement('canvas'),size=map.getSize(); canvas.width=size.x;canvas.height=size.y; canvas.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:400;opacity:0.75;'; pane.appendChild(canvas);heatCanvas=canvas; const ctx=canvas.getContext('2d'),R=70,tmp=document.createElement('canvas');tmp.width=size.x;tmp.height=size.y;const tctx=tmp.getContext('2d'); pts.forEach(p=>{const pt=map.latLngToContainerPoint([p.coords.lat,p.coords.lng]),intensity=p.type==='C'?0.45:0.35;for(let i=0;i<3;i++){const r=R-i*15,g2=tctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,r);g2.addColorStop(0,`rgba(0,0,0,${intensity})`);g2.addColorStop(1,'rgba(0,0,0,0)');tctx.fillStyle=g2;tctx.beginPath();tctx.arc(pt.x,pt.y,r,0,Math.PI*2);tctx.fill();}}); const id=tctx.getImageData(0,0,size.x,size.y),d=id.data,pal=buildPalette(); for(let i=0;i<d.length;i+=4){const a=d[i+3];if(a>0){const c=pal[Math.min(a,255)];d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=Math.min(230,a*2.5);}} tctx.putImageData(id,0,0);ctx.clearRect(0,0,size.x,size.y);ctx.drawImage(tmp,0,0); L.DomUtil.setPosition(canvas,map.containerPointToLayerPoint([0,0])); }
-function buildPalette(){ const stops=[[0,[59,130,246]],[80,[34,197,94]],[140,[250,204,21]],[200,[249,115,22]],[255,[239,68,68]]]; const pal=new Array(256); for(let i=0;i<256;i++){let lo=stops[0],hi=stops[stops.length-1];for(let j=0;j<stops.length-1;j++){if(i>=stops[j][0]&&i<=stops[j+1][0]){lo=stops[j];hi=stops[j+1];break;}} const t=lo[0]===hi[0]?0:(i-lo[0])/(hi[0]-lo[0]);pal[i]=[Math.round(lo[1][0]+t*(hi[1][0]-lo[1][0])),Math.round(lo[1][1]+t*(hi[1][1]-lo[1][1])),Math.round(lo[1][2]+t*(hi[1][2]-lo[1][2]))];}return pal; }
-document.getElementById('btn-heat').addEventListener('click',()=>{ heatOn=!heatOn; document.getElementById('btn-heat').classList.toggle('btn-heat-on',heatOn); document.getElementById('heat-legend').style.display=heatOn?'block':'none'; if(!heatOn&&heatCanvas){heatCanvas.remove();heatCanvas=null;}else drawHeatCanvas(); });
+function drawHeatCanvas(){if(heatCanvas){heatCanvas.remove();heatCanvas=null;}if(!heatOn)return;const pts=people.filter(p=>p.coords&&isVisible(p));if(!pts.length)return;const pane=map.getPanes().overlayPane,canvas=document.createElement('canvas'),size=map.getSize();canvas.width=size.x;canvas.height=size.y;canvas.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:400;opacity:0.75;';pane.appendChild(canvas);heatCanvas=canvas;const ctx=canvas.getContext('2d'),R=70,tmp=document.createElement('canvas');tmp.width=size.x;tmp.height=size.y;const tctx=tmp.getContext('2d');pts.forEach(p=>{const pt=map.latLngToContainerPoint([p.coords.lat,p.coords.lng]),intensity=p.type==='C'?0.45:0.35;for(let i=0;i<3;i++){const r=R-i*15,g2=tctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,r);g2.addColorStop(0,`rgba(0,0,0,${intensity})`);g2.addColorStop(1,'rgba(0,0,0,0)');tctx.fillStyle=g2;tctx.beginPath();tctx.arc(pt.x,pt.y,r,0,Math.PI*2);tctx.fill();}});const id=tctx.getImageData(0,0,size.x,size.y),d=id.data,pal=buildPalette();for(let i=0;i<d.length;i+=4){const a=d[i+3];if(a>0){const c=pal[Math.min(a,255)];d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2];d[i+3]=Math.min(230,a*2.5);}}tctx.putImageData(id,0,0);ctx.clearRect(0,0,size.x,size.y);ctx.drawImage(tmp,0,0);L.DomUtil.setPosition(canvas,map.containerPointToLayerPoint([0,0]));}
+function buildPalette(){const stops=[[0,[59,130,246]],[80,[34,197,94]],[140,[250,204,21]],[200,[249,115,22]],[255,[239,68,68]]];const pal=new Array(256);for(let i=0;i<256;i++){let lo=stops[0],hi=stops[stops.length-1];for(let j=0;j<stops.length-1;j++){if(i>=stops[j][0]&&i<=stops[j+1][0]){lo=stops[j];hi=stops[j+1];break;}}const t=lo[0]===hi[0]?0:(i-lo[0])/(hi[0]-lo[0]);pal[i]=[Math.round(lo[1][0]+t*(hi[1][0]-lo[1][0])),Math.round(lo[1][1]+t*(hi[1][1]-lo[1][1])),Math.round(lo[1][2]+t*(hi[1][2]-lo[1][2]))];}return pal;}
+document.getElementById('btn-heat').addEventListener('click',()=>{heatOn=!heatOn;document.getElementById('btn-heat').classList.toggle('btn-heat-on',heatOn);document.getElementById('heat-legend').style.display=heatOn?'block':'none';if(!heatOn&&heatCanvas){heatCanvas.remove();heatCanvas=null;}else drawHeatCanvas();});
 
-// ── Utils ─────────────────────────────────────────────────────────────────────
-const sleep = ms=>new Promise(r=>setTimeout(r,ms));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let _tt;
-function showToast(msg,err=false,style=''){ const t=document.getElementById('toast');t.textContent=msg;t.className=`show${err?' err':''}${style==='purple'?' purple':''}`;clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500); }
+function showToast(msg,err=false,style=''){const t=document.getElementById('toast');t.textContent=msg;t.className=`show${err?' err':''}${style==='purple'?' purple':''}`;clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500);}
 
-// ── Expose to onclick handlers ────────────────────────────────────────────────
-window._app = { handleClick, openTeamPicker, assignTeam, archivePerson, restorePerson, panTo, jumpToResult, hideClusterPopup };
+window._app={handleClick,openTeamPicker,assignTeam,archivePerson,restorePerson,panTo,jumpToResult,hideClusterPopup};
 
-// ── Seed data ─────────────────────────────────────────────────────────────────
 const SEED=[
   {name:"Agyemang, Pius",type:"T",zip:"02189",team:"Operations & SLT"},{name:"Anarfi, Abel",type:"T",zip:"02132",team:"Burgundy"},{name:"Andrea, Michael",type:"T",zip:"01701",team:"Service Desk"},{name:"Angoff, Jeremy",type:"T",zip:"02132",team:"Operations & SLT"},{name:"Armoo-Daniels, Aba",type:"T",zip:"01702",team:"Gold"},{name:"Atherley, Jonte",type:"T",zip:"01607",team:"Burgundy"},{name:"Baars, Freddy",type:"T",zip:"01760",team:"NCE"},{name:"Barnatt, Joshua",type:"T",zip:"01760",team:"NCE"},{name:"Brooks, Michelle",type:"T",zip:"01526",team:"Burgundy"},{name:"Brown, Louis",type:"T",zip:"01453",team:"Operations & SLT"},{name:"Busby, Henry",type:"T",zip:"02054",team:"Operations & SLT"},{name:"Corbin, Thomas",type:"T",zip:"01778",team:"Operations & SLT"},{name:"Delorme, Michael",type:"T",zip:"01520",team:"Gold"},{name:"Foster, Barry",type:"T",zip:"02301",team:"Service Desk"},{name:"Gorski, Brandon",type:"T",zip:"01923",team:"Slate"},{name:"Gray, Joseph",type:"T",zip:"02129",team:"Gold"},{name:"Green, Andrew",type:"T",zip:"01453",team:"NCE"},{name:"Hoang, David",type:"T",zip:"02368",team:"Burgundy"},{name:"Jamanka, Mamoudou",type:"T",zip:"02139",team:"Burgundy"},{name:"Kaplish, Nipun",type:"T",zip:"02451",team:"NCE"},{name:"Kaszycki, Julia",type:"T",zip:"01464",team:"Slate"},{name:"Lahue, Cameron",type:"T",zip:"01905",team:"NCE"},{name:"LeBlanc, Nathan",type:"T",zip:"01757",team:"Slate"},{name:"Lincoln, Scott",type:"T",zip:"03051",team:"Slate"},{name:"Matas, Jared",type:"T",zip:"02460",team:"Operations & SLT"},{name:"McCormack, John",type:"T",zip:"01545",team:"Gold"},{name:"McHugh, Amelia",type:"T",zip:"02472",team:"Operations & SLT"},{name:"Meilus, Antanas",type:"T",zip:"02148",team:"NCE"},{name:"Morgan, Susan",type:"T",zip:"01936",team:"Operations & SLT"},{name:"Oppong, Nicholas",type:"T",zip:"01543",team:"NCE"},{name:"Ovando, Harold",type:"T",zip:"01902",team:"Burgundy"},{name:"Parker, Dale",type:"T",zip:"02169",team:"Operations & SLT"},{name:"Pereira, Aaron",type:"T",zip:"02703",team:"Operations & SLT"},{name:"Pinto, Melinda",type:"T",zip:"02472",team:"Gold"},{name:"Poles, Nick",type:"T",zip:"01775",team:"Gold"},{name:"Prosper, Judens",type:"T",zip:"01902",team:"Slate"},{name:"Quartararo, Jordan",type:"T",zip:"01844",team:"Gold"},{name:"Rivera, George",type:"T",zip:"01524",team:"Slate"},{name:"Schmidt, Sean",type:"T",zip:"02135",team:"Slate"},{name:"Smith, Robert",type:"T",zip:"01460",team:"Operations & SLT"},{name:"Starkin, Paul",type:"T",zip:"01082",team:"Slate"},{name:"Thang, Sundy",type:"T",zip:"01460",team:"Slate"},{name:"White, Erik",type:"T",zip:"01568",team:"Gold"},{name:"William Addo",type:"T",zip:"02132",team:"Burgundy"},{name:"Zakarashvili, Georgy",type:"T",zip:"02478",team:"Service Desk"},
   {name:"Acera School",type:"C",zip:"02476",team:"Service Desk"},{name:"ACS",type:"C",zip:"02141",team:"Service Desk"},{name:"Asha Patel",type:"C",zip:"02138",team:"Service Desk"},{name:"Atrium School",type:"C",zip:"02472",team:"Burgundy"},{name:"Bancroft School",type:"C",zip:"01605",team:"Gold"},{name:"BCM",type:"C",zip:"02210",team:"Service Desk"},{name:"BHNS",type:"C",zip:"02114",team:"Burgundy"},{name:"Beaver Country Day School",type:"C",zip:"02467",team:"Service Desk"},{name:"Berkman",type:"C",zip:"02445",team:"Service Desk"},{name:"Bourell",type:"C",zip:"02090",team:"Service Desk"},{name:"Bridge",type:"C",zip:"02119",team:"Burgundy"},{name:"Broder Properties",type:"C",zip:"02116",team:"Service Desk"},{name:"CMS",type:"C",zip:"02138",team:"Burgundy"},{name:"CSW",type:"C",zip:"02493",team:"Gold"},{name:"Carroll Pierce",type:"C",zip:"02108",team:"Service Desk"},{name:"CNS",type:"C",zip:"02129",team:"Service Desk"},{name:"Children's Own School",type:"C",zip:"01890",team:"Service Desk"},{name:"Cliff Briggin",type:"C",zip:"02467",team:"Service Desk"},{name:"CTAC",type:"C",zip:"02108",team:"Service Desk"},{name:"Concord Academy",type:"C",zip:"01742",team:"Slate"},{name:"Concord Museum",type:"C",zip:"01742",team:"Service Desk"},{name:"CPW",type:"C",zip:"02151",team:"Service Desk"},{name:"Curio Spice",type:"C",zip:"01803",team:"Service Desk"},{name:"DCD",type:"C",zip:"02026",team:"Burgundy"},{name:"Discovery Museum",type:"C",zip:"01720",team:"Service Desk"},{name:"Donelan Contracting, Inc",type:"C",zip:"02130",team:"Service Desk"},{name:"EHS",type:"C",zip:"01945",team:"Slate"},{name:"Fayerweather",type:"C",zip:"02138",team:"Service Desk"},{name:"Figur8",type:"C",zip:"02116",team:"Service Desk"},{name:"Fred Maynard",type:"C",zip:"02116",team:"Service Desk"},{name:"FreshComm",type:"C",zip:"01864",team:"Service Desk"},{name:"Gann Academy",type:"C",zip:"02452",team:"NCE"},{name:"GUS",type:"C",zip:"01915",team:"Slate"},{name:"Harborlight",type:"C",zip:"01915",team:"Service Desk"},{name:"Hardy+Man",type:"C",zip:"02189",team:"Service Desk"},{name:"Harrington Heep",type:"C",zip:"02482",team:"Service Desk"},{name:"Henshon Klein LLP",type:"C",zip:"02481",team:"Service Desk"},{name:"HOPe",type:"C",zip:"02356",team:"Service Desk"},{name:"JWP",type:"C",zip:"02458",team:"Burgundy"},{name:"Jason & Fischer",type:"C",zip:"02108",team:"Service Desk"},{name:"Jim Donovan",type:"C",zip:"02467",team:"Service Desk"},{name:"Joan Weinsten",type:"C",zip:"02493",team:"Service Desk"},{name:"Kingsley",type:"C",zip:"02116",team:"Burgundy"},{name:"Lili Banani",type:"C",zip:"02110",team:"Service Desk"},{name:"Mary Kane",type:"C",zip:"02115",team:"Service Desk"},{name:"Material Impact",type:"C",zip:"02116",team:"Service Desk"},{name:"MMLaw",type:"C",zip:"02151",team:"Service Desk"},{name:"NEIA",type:"C",zip:"01752",team:"Gold"},{name:"Nobles",type:"C",zip:"02026",team:"Gold"},{name:"Oak Meadow",type:"C",zip:"01460",team:"Service Desk"},{name:"OunceIT, LLC",type:"C",zip:"01760",team:"Operations & SLT"},{name:"Park School",type:"C",zip:"02445",team:"Gold"},{name:"Pike School",type:"C",zip:"01810",team:"Slate"},{name:"Plymouth center",type:"C",zip:"02360",team:"Service Desk"},{name:"Princeton Properties",type:"C",zip:"01851",team:"Service Desk"},{name:"Promoboxx",type:"C",zip:"02118",team:"Service Desk"},{name:"Quality Graphics",type:"C",zip:"02145",team:"Service Desk"},{name:"Roxbury Latin",type:"C",zip:"02132",team:"Service Desk"},{name:"Russo",type:"C",zip:"02459",team:"Service Desk"},{name:"Sisters of Notre Dame",type:"C",zip:"01938",team:"Service Desk"},{name:"Smarter Health Care",type:"C",zip:"01772",team:"Service Desk"},{name:"SmarterWisdom Consulting",type:"C",zip:"02459",team:"Service Desk"},{name:"St. Mark's School",type:"C",zip:"01772",team:"NCE"},{name:"St. Sebastian's School",type:"C",zip:"02492",team:"Service Desk"},{name:"Tenacre Country Day School",type:"C",zip:"02482",team:"Burgundy"},{name:"Thacher Montessori School",type:"C",zip:"02186",team:"NCE"},{name:"The Chestnut Hill School",type:"C",zip:"02467",team:"Burgundy"},{name:"The Fenn School",type:"C",zip:"01742",team:"Service Desk"},{name:"The Fessenden School",type:"C",zip:"02465",team:"Slate"},{name:"The Rashi School",type:"C",zip:"02026",team:"Burgundy"},{name:"The Waring School",type:"C",zip:"01915",team:"Slate"},{name:"Tremont School",type:"C",zip:"01742",team:"Service Desk"},{name:"Walnut Hill School",type:"C",zip:"01760",team:"Gold"},{name:"Wellesley Historical Society",type:"C",zip:"02481",team:"Service Desk"},{name:"Worcester Academy",type:"C",zip:"01604",team:"Service Desk"},{name:"YWBoston",type:"C",zip:"02116",team:"Service Desk"},{name:"YWCA Cambridge",type:"C",zip:"02139",team:"Service Desk"}
 ];
 
-// ── ★ Seeding — uses a flag doc so it can NEVER run more than once ─────────────
-async function seedOnce(){
-  try {
-    const flag = await getDoc(SEED_FLAG);
-    if (flag.exists()) return; // Already seeded — stop immediately
+async function seedOnce(){try{const flag=await getDoc(SEED_FLAG);if(flag.exists())return;setLoadingMsg('Setting up database for the first time…');document.getElementById('loading').style.display='flex';const batch=writeBatch(db);SEED.forEach(s=>{batch.set(doc(PEOPLE_COL),{...s,archived:false});});batch.set(SEED_FLAG,{seededAt:new Date().toISOString(),count:SEED.length});await batch.commit();document.getElementById('loading').style.display='none';}catch(e){document.getElementById('loading').style.display='none';console.error('Seed error:',e);if(e.code==='permission-denied')showToast('Database rules are blocking writes. Check Firebase rules.',true);}}
 
-    setLoadingMsg('Setting up database for the first time…');
-    document.getElementById('loading').style.display = 'flex';
+function setupRealtimeSync(){setStatus('connecting');onSnapshot(PEOPLE_COL,async snapshot=>{people=snapshot.docs.map(d=>({id:d.id,...d.data()}));clearTimeout(renderTimer);renderTimer=setTimeout(async()=>{await renderAll();if(people.filter(p=>p.coords&&isVisible(p)).length>0&&Object.keys(zipGroups).length>0){const pts=people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length&&!selectedTech&&!lastInterPerson){try{map.fitBounds(pts,{padding:[50,50]});}catch(e){}}}},300);setStatus('live');},error=>{console.error('Firestore:',error);setStatus('error');showToast('Database error — check connection',true);});}
 
-    const batch = writeBatch(db);
-    SEED.forEach(s => { batch.set(doc(PEOPLE_COL), {...s, archived:false}); });
-    // Write the flag in the same batch — atomic, all-or-nothing
-    batch.set(SEED_FLAG, { seededAt: new Date().toISOString(), count: SEED.length });
-    await batch.commit();
-
-    document.getElementById('loading').style.display = 'none';
-  } catch(e) {
-    document.getElementById('loading').style.display = 'none';
-    console.error('Seed error:', e);
-    if (e.code === 'permission-denied') {
-      showToast('Database rules are blocking writes. Check Firebase rules.', true);
-    }
-  }
-}
-
-// ── Real-time sync ────────────────────────────────────────────────────────────
-function setupRealtimeSync(){
-  setStatus('connecting');
-  onSnapshot(
-    PEOPLE_COL,
-    async snapshot => {
-      people = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
-      clearTimeout(renderTimer);
-      renderTimer = setTimeout(async () => {
-        await renderAll();
-        if (people.filter(p=>p.coords&&isVisible(p)).length > 0 && Object.keys(zipGroups).length > 0) {
-          const pts = people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);
-          if (pts.length && !selectedTech && !lastInterPerson) {
-            try { map.fitBounds(pts, {padding:[50,50]}); } catch(e) {}
-          }
-        }
-      }, 300);
-      setStatus('live');
-    },
-    error => { console.error('Firestore:', error); setStatus('error'); showToast('Database error — check connection', true); }
-  );
-}
-
-// ── Boot ──────────────────────────────────────────────────────────────────────
-try {
-  initMap();
-  setupAuth();
-  // Seed first (checks flag — instant if already done), then start live sync
-  seedOnce().then(() => setupRealtimeSync());
-} catch(e) {
-  document.getElementById('err-overlay').style.display='flex';
-  document.getElementById('err-msg').textContent = e.message;
-}
+try{initMap();setupAuth();seedOnce().then(()=>setupRealtimeSync());}catch(e){document.getElementById('err-overlay').style.display='flex';document.getElementById('err-msg').textContent=e.message;}
 </script>
 </body>
 </html>
