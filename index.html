@@ -34,9 +34,9 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 #auth-menu-email-addr { word-break:break-all; color:#1e293b; font-weight:700; }
 #auth-signout-btn { width:100%; padding:9px 10px; background:#fef2f2; border:1px solid #fecaca; border-radius:7px; color:#dc2626; font-size:12px; font-weight:700; cursor:pointer; text-align:left; }
 #auth-signout-btn:hover { background:#fee2e2; }
-#interactive-controls { display:none; align-items:center; gap:7px; background:#4c1d9533; border:1px solid #7c3aed88; border-radius:20px; padding:4px 11px 4px 9px; }
+#interactive-controls { display:none; align-items:center; gap:7px; background:#4c1d9533; border:1px solid #7c3aed88; border-radius:20px; padding:4px 11px 4px 9px; flex-wrap:wrap; }
 #interactive-controls label { font-size:11px; font-weight:700; color:#c4b5fd; white-space:nowrap; }
-#miles-select { background:#4c1d95; color:white; border:1px solid #7c3aed; border-radius:7px; padding:4px 7px; font-size:12px; font-weight:700; cursor:pointer; outline:none; }
+#miles-select, #find-select { background:#4c1d95; color:white; border:1px solid #7c3aed; border-radius:7px; padding:4px 7px; font-size:11px; font-weight:700; cursor:pointer; outline:none; }
 .btn { padding:6px 12px; border:none; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.15s; white-space:nowrap; }
 .btn-dark { background:#334155; color:#e2e8f0; } .btn-dark:hover { background:#475569; }
 .btn-green { background:#10b981; color:white; } .btn-green:hover { background:#059669; }
@@ -91,6 +91,15 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .archive-card { background:#fffbeb; border:1.5px solid #fde68a; border-radius:8px; padding:7px 10px; display:flex; align-items:center; gap:8px; }
 .archive-card .pname { font-size:11px; font-weight:600; color:#78350f; } .archive-card .pmeta { font-size:10px; color:#a16207; }
 .restore-btn { background:#f59e0b; color:white; border:none; border-radius:5px; font-size:10px; font-weight:700; padding:3px 7px; cursor:pointer; flex-shrink:0; }
+/* ── POI result items in distances tab ── */
+.poi-item { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:9px; cursor:pointer; transition:all 0.15s; font-size:12px; }
+.poi-item:hover { border-color:#7c3aed; background:#f5f3ff; }
+.poi-emoji { font-size:18px; flex-shrink:0; }
+.poi-name { flex:1; font-weight:700; color:#1e293b; } .poi-addr { font-size:10px; color:#94a3b8; display:block; margin-top:1px; }
+.poi-dist { color:#7c3aed; font-weight:800; font-size:13px; flex-shrink:0; }
+/* loading spinner for POI search */
+.poi-searching { display:flex; align-items:center; gap:8px; padding:16px 10px; color:#64748b; font-size:12px; font-weight:600; }
+.poi-spin { width:16px; height:16px; border:2px solid #e2e8f0; border-top-color:#7c3aed; border-radius:50%; animation:spin 0.7s linear infinite; flex-shrink:0; }
 #dist-empty { color:#94a3b8; font-size:12px; text-align:center; padding:28px 10px; line-height:1.7; }
 .dist-header { font-size:12px; font-weight:800; color:#0ea5e9; padding-bottom:7px; border-bottom:2px solid #e0f2fe; margin-bottom:2px; }
 .dist-item { background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:8px; cursor:pointer; transition:all 0.15s; font-size:12px; }
@@ -120,15 +129,11 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 #team-picker { position:absolute; z-index:3000; background:white; border:1.5px solid #e2e8f0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.18); padding:6px; min-width:170px; display:none; }
 .tp-item { padding:7px 10px; border-radius:7px; cursor:pointer; font-size:12px; font-weight:700; display:flex; align-items:center; gap:8px; } .tp-item:hover { background:#f1f5f9; }
 .tp-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-
-/* ── Login / Edit modals share base styles ── */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.75); z-index:10000; align-items:center; justify-content:center; backdrop-filter:blur(2px); }
 .modal-overlay.open { display:flex; }
 .modal-box { background:white; border-radius:16px; padding:28px 28px 24px; width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
-.modal-box h2 { font-size:17px; font-weight:800; color:#1e293b; margin-bottom:4px; }
-.modal-box p { font-size:13px; color:#64748b; margin-bottom:18px; }
-.modal-field { display:flex; flex-direction:column; gap:4px; margin-bottom:13px; }
-.modal-field label { font-size:11px; font-weight:700; color:#64748b; }
+.modal-box h2 { font-size:17px; font-weight:800; color:#1e293b; margin-bottom:4px; } .modal-box p { font-size:13px; color:#64748b; margin-bottom:18px; }
+.modal-field { display:flex; flex-direction:column; gap:4px; margin-bottom:13px; } .modal-field label { font-size:11px; font-weight:700; color:#64748b; }
 .modal-field input, .modal-field select { border:1.5px solid #e2e8f0; border-radius:8px; padding:9px 12px; font-size:13px; outline:none; color:#1e293b; background:#f8fafc; font-weight:500; }
 .modal-field input:focus, .modal-field select:focus { border-color:#0ea5e9; background:white; }
 .modal-error { font-size:12px; color:#ef4444; font-weight:600; margin-bottom:10px; display:none; }
@@ -137,7 +142,6 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 .modal-save { background:#0ea5e9; color:white; } .modal-save:hover { background:#0284c7; } .modal-save:disabled { background:#94a3b8; cursor:default; }
 .modal-cancel { background:#f1f5f9; color:#64748b; } .modal-cancel:hover { background:#e2e8f0; }
 .modal-note { font-size:11px; color:#94a3b8; margin-top:12px; text-align:center; line-height:1.5; }
-
 #toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%) translateY(60px); background:#10b981; color:white; padding:9px 18px; border-radius:20px; font-size:12px; font-weight:700; z-index:9999; transition:transform 0.25s; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
 #toast.show { transform:translateX(-50%) translateY(0); } #toast.err { background:#ef4444; } #toast.purple { background:#7c3aed; }
 #loading { position:fixed; inset:0; background:rgba(15,23,42,0.7); display:none; align-items:center; justify-content:center; z-index:9998; flex-direction:column; gap:12px; }
@@ -163,55 +167,46 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
         <option value="15">15 mi</option><option value="20">20 mi</option>
         <option value="25">25 mi</option><option value="50">50 mi</option>
       </select>
+      <label>Find:</label>
+      <select id="find-select">
+        <option value="People">People</option>
+        <option value="Restaurant">🍽 Restaurant</option>
+        <option value="Fast Food">🍔 Fast Food</option>
+        <option value="Café">☕ Café</option>
+        <option value="Hospital">🏥 Hospital</option>
+        <option value="Pharmacy">💊 Pharmacy</option>
+        <option value="Auto Shop">🔧 Auto Shop</option>
+        <option value="Gas Station">⛽ Gas Station</option>
+        <option value="Parking">🅿 Parking</option>
+        <option value="Hotel">🏨 Hotel</option>
+        <option value="Bank">🏦 Bank</option>
+      </select>
     </div>
     <button class="btn btn-dark" id="btn-fit">⤢ Fit All</button>
     <button class="btn btn-dark" id="btn-clear">✕ Clear</button>
     <button id="auth-btn"><div class="auth-dot"></div><span id="auth-label">🔒 Sign In</span></button>
   </div>
 </header>
-
 <div id="auth-menu">
   <div class="auth-menu-email"><span>Signed in as</span><div id="auth-menu-email-addr"></div></div>
   <button id="auth-signout-btn">🚪 Sign Out</button>
 </div>
 <div id="action-menu"></div>
-
-<!-- ── Edit modal ── -->
+<!-- Edit modal -->
 <div id="edit-modal" class="modal-overlay">
   <div class="modal-box">
     <h2>✏️ Edit entry</h2>
     <p>Update the details below and save.</p>
-    <div class="modal-field"><label>Name</label><input type="text" id="edit-name" placeholder="Full name"></div>
-    <div class="modal-field">
-      <label>Type</label>
-      <select id="edit-type">
-        <option value="T">Technician</option>
-        <option value="C">Client</option>
-      </select>
-    </div>
-    <div class="modal-field"><label>Zipcode</label><input type="text" id="edit-zip" placeholder="e.g. 02139" maxlength="10"></div>
-    <div class="modal-field">
-      <label>Team</label>
-      <select id="edit-team">
-        <option value="Unassigned">Unassigned</option>
-        <option value="Burgundy">Burgundy</option>
-        <option value="Slate">Slate</option>
-        <option value="Gold">Gold</option>
-        <option value="NCE">NCE</option>
-        <option value="Service Desk">Service Desk</option>
-        <option value="Operations & SLT">Operations &amp; SLT</option>
-      </select>
-    </div>
+    <div class="modal-field"><label>Name</label><input type="text" id="edit-name"></div>
+    <div class="modal-field"><label>Type</label><select id="edit-type"><option value="T">Technician</option><option value="C">Client</option></select></div>
+    <div class="modal-field"><label>Zipcode</label><input type="text" id="edit-zip" maxlength="10"></div>
+    <div class="modal-field"><label>Team</label><select id="edit-team"><option value="Unassigned">Unassigned</option><option value="Burgundy">Burgundy</option><option value="Slate">Slate</option><option value="Gold">Gold</option><option value="NCE">NCE</option><option value="Service Desk">Service Desk</option><option value="Operations & SLT">Operations &amp; SLT</option></select></div>
     <div class="modal-error" id="edit-error"></div>
-    <div class="modal-actions">
-      <button class="modal-cancel" id="edit-cancel">Cancel</button>
-      <button class="modal-save" id="edit-save">Save Changes</button>
-    </div>
-    <p class="modal-note">If you change the zipcode, the pin will move to the new location automatically.</p>
+    <div class="modal-actions"><button class="modal-cancel" id="edit-cancel">Cancel</button><button class="modal-save" id="edit-save">Save Changes</button></div>
+    <p class="modal-note">If you change the zipcode, the pin moves automatically.</p>
   </div>
 </div>
-
-<!-- ── Login modal ── -->
+<!-- Login modal -->
 <div id="login-modal" class="modal-overlay">
   <div class="modal-box">
     <h2>Sign in to edit</h2>
@@ -219,14 +214,10 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
     <div class="modal-field"><label>Email</label><input type="email" id="login-email" placeholder="your@email.com" autocomplete="email"></div>
     <div class="modal-field"><label>Password</label><input type="password" id="login-password" placeholder="Password" autocomplete="current-password"></div>
     <div class="modal-error" id="login-error"></div>
-    <div class="modal-actions">
-      <button class="modal-cancel" id="login-cancel">Cancel</button>
-      <button class="modal-save" id="login-submit">Sign In</button>
-    </div>
+    <div class="modal-actions"><button class="modal-cancel" id="login-cancel">Cancel</button><button class="modal-save" id="login-submit">Sign In</button></div>
     <p class="modal-note">Contact your admin to get access credentials.</p>
   </div>
 </div>
-
 <div class="app-body">
   <div id="sidebar">
     <div class="sidebar-controls">
@@ -236,55 +227,20 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
         <div class="s-clear" id="search-clear">✕</div>
         <div id="search-dropdown"></div>
       </div>
-      <div class="ctrl-row">
-        <label>Team:</label>
-        <select id="team-filter">
-          <option value="All">All Teams</option>
-          <option value="Burgundy">Burgundy</option><option value="Slate">Slate</option>
-          <option value="Gold">Gold</option><option value="NCE">NCE</option>
-          <option value="Service Desk">Service Desk</option>
-          <option value="Operations &amp; SLT">Operations &amp; SLT</option>
-          <option value="Unassigned">Unassigned</option>
-        </select>
+      <div class="ctrl-row"><label>Team:</label>
+        <select id="team-filter"><option value="All">All Teams</option><option value="Burgundy">Burgundy</option><option value="Slate">Slate</option><option value="Gold">Gold</option><option value="NCE">NCE</option><option value="Service Desk">Service Desk</option><option value="Operations &amp; SLT">Operations &amp; SLT</option><option value="Unassigned">Unassigned</option></select>
       </div>
-      <div class="ctrl-row">
-        <label>📍 State:</label>
+      <div class="ctrl-row"><label>📍 State:</label>
         <select id="state-select">
           <option value="">All States (US)</option>
-          <option value="Alabama">Alabama</option><option value="Alaska">Alaska</option>
-          <option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option>
-          <option value="California">California</option><option value="Colorado">Colorado</option>
-          <option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option>
-          <option value="District of Columbia">DC</option>
-          <option value="Florida">Florida</option><option value="Georgia">Georgia</option>
-          <option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option>
-          <option value="Illinois">Illinois</option><option value="Indiana">Indiana</option>
-          <option value="Iowa">Iowa</option><option value="Kansas">Kansas</option>
-          <option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option>
-          <option value="Maine">Maine</option><option value="Maryland">Maryland</option>
-          <option value="Massachusetts">Massachusetts</option>
-          <option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option>
-          <option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option>
-          <option value="Montana">Montana</option><option value="Nebraska">Nebraska</option>
-          <option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option>
-          <option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option>
-          <option value="New York">New York</option><option value="North Carolina">North Carolina</option>
-          <option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option>
-          <option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option>
-          <option value="Pennsylvania">Pennsylvania</option><option value="Puerto Rico">Puerto Rico</option>
-          <option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option>
-          <option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option>
-          <option value="Texas">Texas</option><option value="Utah">Utah</option>
-          <option value="Vermont">Vermont</option><option value="Virginia">Virginia</option>
-          <option value="Washington">Washington</option><option value="West Virginia">West Virginia</option>
-          <option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option>
+          <option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="District of Columbia">DC</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Puerto Rico">Puerto Rico</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option>
         </select>
       </div>
     </div>
-    <div id="inter-hint">🎯 <strong>Interactive Mode ON</strong><br>Click a <strong>Technician</strong> → radius + clients inside<br>Click a <strong>Client</strong> → technicians within range</div>
+    <div id="inter-hint">🎯 <strong>Interactive Mode ON</strong><br>Click a pin — use <strong>Find:</strong> to search places nearby</div>
     <div class="sidebar-tabs">
       <div class="tab active" data-tab="people">👥 PEOPLE</div>
-      <div class="tab" data-tab="distances">📏 DISTANCES</div>
+      <div class="tab" data-tab="distances">📏 RESULTS</div>
       <div class="tab" data-tab="add">➕ ADD</div>
     </div>
     <div class="tab-content active" id="tab-people">
@@ -296,7 +252,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
       </div>
     </div>
     <div class="tab-content" id="tab-distances">
-      <div id="dist-empty">👆 Click a <strong style="color:#0284c7">Technician</strong> or <strong style="color:#ea580c">Client</strong> pin to see proximity.</div>
+      <div id="dist-empty">👆 Click a pin in Interactive Mode to see results here.</div>
       <div id="dist-body" style="display:none;flex-direction:column;gap:6px;"><div class="dist-header" id="dist-title"></div><div id="dist-list"></div></div>
     </div>
     <div class="tab-content" id="tab-add">
@@ -307,9 +263,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
       <div class="form-group"><label>Name</label><input id="f-name" type="text" placeholder="e.g. John Smith"></div>
       <div class="form-group"><label>Type</label><select id="f-type"><option value="T">Technician</option><option value="C">Client</option></select></div>
       <div class="form-group"><label>Zipcode (optional)</label><input id="f-zip" type="text" placeholder="e.g. 02139" maxlength="10"></div>
-      <div class="form-group"><label>Team</label>
-        <select id="f-team"><option value="Unassigned">Unassigned</option><option value="Burgundy">Burgundy</option><option value="Slate">Slate</option><option value="Gold">Gold</option><option value="NCE">NCE</option><option value="Service Desk">Service Desk</option><option value="Operations & SLT">Operations &amp; SLT</option></select>
-      </div>
+      <div class="form-group"><label>Team</label><select id="f-team"><option value="Unassigned">Unassigned</option><option value="Burgundy">Burgundy</option><option value="Slate">Slate</option><option value="Gold">Gold</option><option value="NCE">NCE</option><option value="Service Desk">Service Desk</option><option value="Operations & SLT">Operations &amp; SLT</option></select></div>
       <button class="btn btn-green" id="btn-add">Add to Map</button>
     </div>
   </div>
@@ -323,6 +277,7 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
       <div class="li"><div class="ldot" style="background:#0284c7"></div>Technician</div>
       <div class="li"><div class="ldot" style="background:#ea580c"></div>Client</div>
       <div class="li"><div class="ldot" style="background:#0d9488"></div>OunceIT</div>
+      <div class="li" id="legend-poi" style="display:none"><div style="width:10px;height:10px;background:#7c3aed;border-radius:3px;transform:rotate(45deg);flex-shrink:0;"></div>Place</div>
       <div class="li" id="legend-radius" style="display:none"><div style="width:10px;height:10px;border-radius:50%;border:2px solid #7c3aed;background:#7c3aed22;flex-shrink:0;"></div>Radius</div>
     </div>
     <div id="heat-legend"><div style="font-weight:800;color:#1e293b;margin-bottom:2px;">Concentration</div><div class="heat-bar"></div><div class="heat-labels"><span>Low</span><span>High</span></div></div>
@@ -331,64 +286,32 @@ header h1 { font-size:17px; font-weight:800; color:#f8fafc; letter-spacing:-0.5p
 <div id="err-overlay"><h2>⚠️ Something went wrong</h2><p id="err-msg">An error occurred.</p><button onclick="location.reload()">Reload</button></div>
 <div id="toast"></div>
 <div id="loading"><div class="spinner"></div><div id="loading-msg">Loading…</div></div>
-
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc,
-         onSnapshot, writeBatch, getDoc, setDoc }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, writeBatch, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-const fbApp = initializeApp({
-  apiKey:"AIzaSyDkHCoxGzIQb1dobxlKgzkWRXAh7EWqn1A",
-  authDomain:"fieldmap-18a48.firebaseapp.com",
-  projectId:"fieldmap-18a48",
-  storageBucket:"fieldmap-18a48.firebasestorage.app",
-  messagingSenderId:"719204107294",
-  appId:"1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"
-});
-const db=getFirestore(fbApp), auth=getAuth(fbApp);
-const PEOPLE_COL=collection(db,'people');
-const SEED_FLAG =doc(db,'_meta','seeded');
-const GEO_DOC   =doc(db,'_geocache','coords');
+const fbApp=initializeApp({apiKey:"AIzaSyDkHCoxGzIQb1dobxlKgzkWRXAh7EWqn1A",authDomain:"fieldmap-18a48.firebaseapp.com",projectId:"fieldmap-18a48",storageBucket:"fieldmap-18a48.firebasestorage.app",messagingSenderId:"719204107294",appId:"1:719204107294:web:f8b5b14bf8d5c13b4c9a0f"});
+const db=getFirestore(fbApp),auth=getAuth(fbApp);
+const PEOPLE_COL=collection(db,'people'),SEED_FLAG=doc(db,'_meta','seeded'),GEO_DOC=doc(db,'_geocache','coords');
 
-function inUSA(lat,lng){ return lat>=17&&lat<=72&&lng>=-180&&lng<=-65; }
+function inUSA(lat,lng){return lat>=17&&lat<=72&&lng>=-180&&lng<=-65;}
+const STATE_BBOX={'Alabama':'-88.473,35.008,-84.888,30.144','Alaska':'-179.149,71.365,-129.979,51.214','Arizona':'-114.817,37.004,-109.045,31.332','Arkansas':'-94.618,36.500,-89.644,33.004','California':'-124.410,42.010,-114.131,32.534','Colorado':'-109.060,41.003,-102.042,36.992','Connecticut':'-73.728,42.051,-71.787,40.980','Delaware':'-75.789,39.839,-75.049,38.451','District of Columbia':'-77.120,38.996,-76.909,38.792','Florida':'-87.635,31.001,-80.031,24.523','Georgia':'-85.605,35.001,-80.840,30.358','Hawaii':'-160.250,22.236,-154.807,18.910','Idaho':'-117.243,49.001,-111.044,41.988','Illinois':'-91.513,42.508,-87.495,36.970','Indiana':'-88.098,41.761,-84.785,37.772','Iowa':'-96.640,43.501,-90.140,40.376','Kansas':'-102.052,40.003,-94.588,36.993','Kentucky':'-89.572,39.147,-81.965,36.497','Louisiana':'-94.043,33.019,-88.817,28.929','Maine':'-71.084,47.460,-66.950,42.978','Maryland':'-79.488,39.723,-75.049,37.912','Massachusetts':'-73.508,42.887,-69.859,41.238','Michigan':'-90.418,48.306,-82.413,41.696','Minnesota':'-97.239,49.384,-89.492,43.499','Mississippi':'-91.655,35.008,-88.098,30.174','Missouri':'-95.775,40.614,-89.099,35.996','Montana':'-116.049,49.001,-104.039,44.358','Nebraska':'-104.054,43.002,-95.308,40.000','Nevada':'-120.006,42.002,-114.040,35.002','New Hampshire':'-72.557,45.305,-70.611,42.697','New Jersey':'-75.560,41.357,-73.894,38.929','New Mexico':'-109.050,37.000,-103.002,31.332','New York':'-79.762,45.016,-71.856,40.496','North Carolina':'-84.322,36.588,-75.461,33.842','North Dakota':'-104.049,49.001,-96.555,45.935','Ohio':'-84.820,41.978,-80.519,38.403','Oklahoma':'-103.003,37.002,-94.431,33.616','Oregon':'-124.566,46.292,-116.464,41.992','Pennsylvania':'-80.520,42.270,-74.690,39.720','Rhode Island':'-71.863,42.019,-71.121,41.146','South Carolina':'-83.354,35.215,-78.542,32.035','South Dakota':'-104.058,45.945,-96.437,42.480','Tennessee':'-90.310,36.678,-81.647,34.983','Texas':'-106.646,36.501,-93.508,25.837','Utah':'-114.053,42.002,-109.041,36.998','Vermont':'-73.438,45.017,-71.465,42.727','Virginia':'-83.675,39.466,-75.242,36.541','Washington':'-124.763,49.002,-116.916,45.544','West Virginia':'-82.645,40.639,-77.720,37.201','Wisconsin':'-92.888,47.081,-86.805,42.492','Wyoming':'-111.057,45.006,-104.052,40.995','Puerto Rico':'-67.272,18.516,-65.221,17.927'};
+function inSelectedState(lat,lng){if(!selectedState||!STATE_BBOX[selectedState])return true;const p=STATE_BBOX[selectedState].split(',').map(Number);return lat>=p[3]&&lat<=p[1]&&lng>=p[0]&&lng<=p[2];}
 
-const STATE_BBOX={
-  'Alabama':'-88.473,35.008,-84.888,30.144','Alaska':'-179.149,71.365,-129.979,51.214',
-  'Arizona':'-114.817,37.004,-109.045,31.332','Arkansas':'-94.618,36.500,-89.644,33.004',
-  'California':'-124.410,42.010,-114.131,32.534','Colorado':'-109.060,41.003,-102.042,36.992',
-  'Connecticut':'-73.728,42.051,-71.787,40.980','Delaware':'-75.789,39.839,-75.049,38.451',
-  'District of Columbia':'-77.120,38.996,-76.909,38.792',
-  'Florida':'-87.635,31.001,-80.031,24.523','Georgia':'-85.605,35.001,-80.840,30.358',
-  'Hawaii':'-160.250,22.236,-154.807,18.910','Idaho':'-117.243,49.001,-111.044,41.988',
-  'Illinois':'-91.513,42.508,-87.495,36.970','Indiana':'-88.098,41.761,-84.785,37.772',
-  'Iowa':'-96.640,43.501,-90.140,40.376','Kansas':'-102.052,40.003,-94.588,36.993',
-  'Kentucky':'-89.572,39.147,-81.965,36.497','Louisiana':'-94.043,33.019,-88.817,28.929',
-  'Maine':'-71.084,47.460,-66.950,42.978','Maryland':'-79.488,39.723,-75.049,37.912',
-  'Massachusetts':'-73.508,42.887,-69.859,41.238','Michigan':'-90.418,48.306,-82.413,41.696',
-  'Minnesota':'-97.239,49.384,-89.492,43.499','Mississippi':'-91.655,35.008,-88.098,30.174',
-  'Missouri':'-95.775,40.614,-89.099,35.996','Montana':'-116.049,49.001,-104.039,44.358',
-  'Nebraska':'-104.054,43.002,-95.308,40.000','Nevada':'-120.006,42.002,-114.040,35.002',
-  'New Hampshire':'-72.557,45.305,-70.611,42.697','New Jersey':'-75.560,41.357,-73.894,38.929',
-  'New Mexico':'-109.050,37.000,-103.002,31.332','New York':'-79.762,45.016,-71.856,40.496',
-  'North Carolina':'-84.322,36.588,-75.461,33.842','North Dakota':'-104.049,49.001,-96.555,45.935',
-  'Ohio':'-84.820,41.978,-80.519,38.403','Oklahoma':'-103.003,37.002,-94.431,33.616',
-  'Oregon':'-124.566,46.292,-116.464,41.992','Pennsylvania':'-80.520,42.270,-74.690,39.720',
-  'Rhode Island':'-71.863,42.019,-71.121,41.146','South Carolina':'-83.354,35.215,-78.542,32.035',
-  'South Dakota':'-104.058,45.945,-96.437,42.480','Tennessee':'-90.310,36.678,-81.647,34.983',
-  'Texas':'-106.646,36.501,-93.508,25.837','Utah':'-114.053,42.002,-109.041,36.998',
-  'Vermont':'-73.438,45.017,-71.465,42.727','Virginia':'-83.675,39.466,-75.242,36.541',
-  'Washington':'-124.763,49.002,-116.916,45.544','West Virginia':'-82.645,40.639,-77.720,37.201',
-  'Wisconsin':'-92.888,47.081,-86.805,42.492','Wyoming':'-111.057,45.006,-104.052,40.995',
-  'Puerto Rico':'-67.272,18.516,-65.221,17.927'
+// ── ★ POI categories ───────────────────────────────────────────────────────────
+const POI_CAT={
+  'Restaurant':  {tag:'amenity=restaurant', emoji:'🍽', color:'#ef4444'},
+  'Fast Food':   {tag:'amenity=fast_food',  emoji:'🍔', color:'#f97316'},
+  'Café':        {tag:'amenity=cafe',       emoji:'☕', color:'#92400e'},
+  'Hospital':    {tag:'amenity=hospital',   emoji:'🏥', color:'#dc2626'},
+  'Pharmacy':    {tag:'amenity=pharmacy',   emoji:'💊', color:'#059669'},
+  'Auto Shop':   {tag:'shop=car_repair',    emoji:'🔧', color:'#475569'},
+  'Gas Station': {tag:'amenity=fuel',       emoji:'⛽', color:'#ca8a04'},
+  'Parking':     {tag:'amenity=parking',    emoji:'🅿', color:'#1d4ed8'},
+  'Hotel':       {tag:'amenity=hotel',      emoji:'🏨', color:'#7c3aed'},
+  'Bank':        {tag:'amenity=bank',       emoji:'🏦', color:'#065f46'}
 };
-function inSelectedState(lat,lng){
-  if(!selectedState||!STATE_BBOX[selectedState]) return true;
-  const p=STATE_BBOX[selectedState].split(',').map(Number);
-  return lat>=p[3]&&lat<=p[1]&&lng>=p[0]&&lng<=p[2];
-}
 
 const TEAMS=['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
 const TEAM_COLOR={'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
@@ -401,148 +324,80 @@ const personFill=p=>isOunceIT(p)?'#0d9488':(p.type==='T'?'#0284c7':'#ea580c');
 let people=[],geoCache=JSON.parse(localStorage.getItem('fsmap_geo')||'{}'),cityCache=JSON.parse(localStorage.getItem('fsmap_city')||'{}');
 let selectedState=localStorage.getItem('fsmap_state')||'Massachusetts';
 let zipGroups={},markers={},connLines=[],connLabels=[];
+let poiMarkers=[], poiMode='People'; // ★ POI state
 let heatCanvas=null,heatOn=false,interMode=false,radiusCircle=null;
 let selectedTech=null,lastInterPerson=null,interHighlight=new Set();
 let teamFilter='All',searchQuery='',popupCloseTimer=null;
 let sidebarOpen=true,archiveExpanded=false;
-let currentUser=null,pendingWriteCallback=null;
-let editingPersonId=null; // ← tracks which person is being edited
+let currentUser=null,pendingWriteCallback=null,editingPersonId=null;
 let map,renderTimer;
 
 window.onerror=(msg,src,line)=>{document.getElementById('err-overlay').style.display='flex';document.getElementById('err-msg').textContent=msg+' (line '+line+')';};
 
-function initMap(){
-  map=L.map('map').setView([42.36,-71.06],10);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);
-  map.on('moveend zoomend',()=>{if(heatOn)drawHeatCanvas();});
-  map.on('click',()=>{hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();});
-}
+function initMap(){map=L.map('map').setView([42.36,-71.06],10);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);map.on('moveend zoomend',()=>{if(heatOn)drawHeatCanvas();});map.on('click',()=>{hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();});}
 function setStatus(s){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-label').textContent=s==='live'?'Live':s==='connecting'?'Connecting…':'Offline';}
 function setLoadingMsg(m){document.getElementById('loading-msg').textContent=m;}
 
 async function loadSharedGeoCache(){
   setLoadingMsg('Loading location data…');document.getElementById('loading').style.display='flex';
-  try{
-    const snap=await getDoc(GEO_DOC);
-    if(snap.exists()){
-      const data=snap.data();
-      Object.keys(data).forEach(zip=>{const d=data[zip];if(inUSA(d.lat,d.lng)&&!geoCache[zip]){geoCache[zip]={lat:d.lat,lng:d.lng};cityCache[zip]=d.city||'';}});
-      const fsZ=new Set(Object.keys(data));
-      const loc=Object.keys(geoCache).filter(z=>!fsZ.has(z)&&inUSA(geoCache[z].lat,geoCache[z].lng));
-      if(loc.length){const u={};loc.forEach(z=>{u[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});try{await setDoc(GEO_DOC,u,{merge:true});}catch(e){}}
-    } else if(Object.keys(geoCache).length>0){
-      const d={};Object.keys(geoCache).filter(z=>inUSA(geoCache[z].lat,geoCache[z].lng)).forEach(z=>{d[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});try{await setDoc(GEO_DOC,d);}catch(e){}
-    }
-    localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));
-  }catch(e){console.warn('Geocache:',e.code||e.message);}
+  try{const snap=await getDoc(GEO_DOC);if(snap.exists()){const data=snap.data();Object.keys(data).forEach(z=>{const d=data[z];if(inUSA(d.lat,d.lng)&&!geoCache[z]){geoCache[z]={lat:d.lat,lng:d.lng};cityCache[z]=d.city||'';}});const fsZ=new Set(Object.keys(data));const loc=Object.keys(geoCache).filter(z=>!fsZ.has(z)&&inUSA(geoCache[z].lat,geoCache[z].lng));if(loc.length){const u={};loc.forEach(z=>{u[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});try{await setDoc(GEO_DOC,u,{merge:true});}catch(e){}}}else if(Object.keys(geoCache).length>0){const d={};Object.keys(geoCache).filter(z=>inUSA(geoCache[z].lat,geoCache[z].lng)).forEach(z=>{d[z]={lat:geoCache[z].lat,lng:geoCache[z].lng,city:cityCache[z]||''};});try{await setDoc(GEO_DOC,d);}catch(e){}}localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));}catch(e){console.warn('Geocache:',e.code||e.message);}
   document.getElementById('loading').style.display='none';
 }
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
 function setupAuth(){
   onAuthStateChanged(auth,user=>{currentUser=user;const btn=document.getElementById('auth-btn'),lbl=document.getElementById('auth-label');if(user){btn.className='signed-in';lbl.textContent='✓ '+user.email.split('@')[0];document.getElementById('auth-menu-email-addr').textContent=user.email;}else{btn.className='';lbl.textContent='🔒 Sign In';closeAuthMenu();}});
   document.getElementById('auth-btn').addEventListener('click',e=>{e.stopPropagation();if(currentUser){const menu=document.getElementById('auth-menu'),isOpen=menu.classList.contains('open');if(isOpen){closeAuthMenu();return;}const rect=document.getElementById('auth-btn').getBoundingClientRect();menu.style.top=(rect.bottom+6)+'px';menu.style.right=(window.innerWidth-rect.right)+'px';menu.style.left='auto';menu.classList.add('open');}else openLoginModal(null);});
   document.getElementById('auth-signout-btn').addEventListener('click',()=>{signOut(auth);closeAuthMenu();showToast('Signed out successfully');});
   document.addEventListener('click',e=>{if(!document.getElementById('auth-menu').contains(e.target)&&e.target!==document.getElementById('auth-btn'))closeAuthMenu();if(!document.getElementById('action-menu').contains(e.target))closeActionMenu();});
-  document.getElementById('login-submit').addEventListener('click',submitLogin);
-  document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
-  document.getElementById('login-cancel').addEventListener('click',closeLoginModal);
-  document.getElementById('login-modal').addEventListener('click',e=>{if(e.target===document.getElementById('login-modal'))closeLoginModal();});
+  document.getElementById('login-submit').addEventListener('click',submitLogin);document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});document.getElementById('login-cancel').addEventListener('click',closeLoginModal);document.getElementById('login-modal').addEventListener('click',e=>{if(e.target===document.getElementById('login-modal'))closeLoginModal();});
 }
 function closeAuthMenu(){document.getElementById('auth-menu').classList.remove('open');}
 function openLoginModal(cb){pendingWriteCallback=cb;document.getElementById('login-email').value='';document.getElementById('login-password').value='';document.getElementById('login-error').style.display='none';document.getElementById('login-modal').classList.add('open');setTimeout(()=>document.getElementById('login-email').focus(),100);}
 function closeLoginModal(){document.getElementById('login-modal').classList.remove('open');pendingWriteCallback=null;}
-async function submitLogin(){
-  const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-password').value;
-  const errEl=document.getElementById('login-error'),btn=document.getElementById('login-submit');
-  if(!email||!password){errEl.textContent='Please enter email and password.';errEl.style.display='block';return;}
-  btn.disabled=true;btn.textContent='Signing in…';errEl.style.display='none';
-  try{await signInWithEmailAndPassword(auth,email,password);closeLoginModal();showToast('Signed in!');if(pendingWriteCallback){pendingWriteCallback();pendingWriteCallback=null;}}
-  catch(e){errEl.textContent=(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found')?'Incorrect email or password.':'Sign-in failed: '+e.message;errEl.style.display='block';}
-  btn.disabled=false;btn.textContent='Sign In';
-}
+async function submitLogin(){const email=document.getElementById('login-email').value.trim(),password=document.getElementById('login-password').value;const errEl=document.getElementById('login-error'),btn=document.getElementById('login-submit');if(!email||!password){errEl.textContent='Please enter email and password.';errEl.style.display='block';return;}btn.disabled=true;btn.textContent='Signing in…';errEl.style.display='none';try{await signInWithEmailAndPassword(auth,email,password);closeLoginModal();showToast('Signed in!');if(pendingWriteCallback){pendingWriteCallback();pendingWriteCallback=null;}}catch(e){errEl.textContent=(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found')?'Incorrect email or password.':'Sign-in failed: '+e.message;errEl.style.display='block';}btn.disabled=false;btn.textContent='Sign In';}
 function requireAuth(fn){if(currentUser)fn();else openLoginModal(fn);}
 
-// ── ★ Edit modal ──────────────────────────────────────────────────────────────
-function openEditModal(personId){
-  const p=byId(personId); if(!p) return;
-  editingPersonId=personId;
-  document.getElementById('edit-name').value=p.name||'';
-  document.getElementById('edit-type').value=p.type||'T';
-  document.getElementById('edit-zip').value=p.zip||'';
-  document.getElementById('edit-team').value=p.team||'Unassigned';
-  document.getElementById('edit-error').style.display='none';
-  document.getElementById('edit-save').disabled=false;
-  document.getElementById('edit-save').textContent='Save Changes';
-  document.getElementById('edit-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('edit-name').focus(),100);
-}
-function closeEditModal(){
-  document.getElementById('edit-modal').classList.remove('open');
-  editingPersonId=null;
-}
-async function saveEdit(){
-  const p=byId(editingPersonId); if(!p) return;
-  const name=document.getElementById('edit-name').value.trim();
-  const type=document.getElementById('edit-type').value;
-  const zip=document.getElementById('edit-zip').value.trim();
-  const team=document.getElementById('edit-team').value;
-  const errEl=document.getElementById('edit-error');
-  if(!name){errEl.textContent='Name cannot be empty.';errEl.style.display='block';return;}
-  const btn=document.getElementById('edit-save');
-  btn.disabled=true;btn.textContent='Saving…';errEl.style.display='none';
-  try{
-    const oldZip=(p.zip||'').toString().trim().padStart(5,'0');
-    const newZip=zip.padStart(5,'0');
-    // ★ If zip changed, clear old geocache entry for this zip
-    // (only if no other active person still uses the old zip)
-    if(oldZip!==newZip&&oldZip!=='00000'){
-      const othersUseOldZip=people.some(x=>x.id!==p.id&&!x.archived&&(x.zip||'').toString().trim().padStart(5,'0')===oldZip);
-      if(!othersUseOldZip){
-        delete geoCache[oldZip];delete cityCache[oldZip];
-        localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));
-        localStorage.setItem('fsmap_city',JSON.stringify(cityCache));
-      }
-    }
-    await updateDoc(doc(db,'people',editingPersonId),{name,type,zip:zip||'',team});
-    closeEditModal();
-    showToast(name+' updated!');
-  }catch(e){errEl.textContent='Save failed: '+e.message;errEl.style.display='block';}
-  btn.disabled=false;btn.textContent='Save Changes';
-}
-// Wire up edit modal buttons
-document.getElementById('edit-save').addEventListener('click',saveEdit);
-document.getElementById('edit-cancel').addEventListener('click',closeEditModal);
-document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target===document.getElementById('edit-modal'))closeEditModal();});
-document.getElementById('edit-name').addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();});
+// ── Edit modal ────────────────────────────────────────────────────────────────
+function openEditModal(personId){const p=byId(personId);if(!p)return;editingPersonId=personId;document.getElementById('edit-name').value=p.name||'';document.getElementById('edit-type').value=p.type||'T';document.getElementById('edit-zip').value=p.zip||'';document.getElementById('edit-team').value=p.team||'Unassigned';document.getElementById('edit-error').style.display='none';document.getElementById('edit-save').disabled=false;document.getElementById('edit-save').textContent='Save Changes';document.getElementById('edit-modal').classList.add('open');setTimeout(()=>document.getElementById('edit-name').focus(),100);}
+function closeEditModal(){document.getElementById('edit-modal').classList.remove('open');editingPersonId=null;}
+async function saveEdit(){const p=byId(editingPersonId);if(!p)return;const name=document.getElementById('edit-name').value.trim(),type=document.getElementById('edit-type').value,zip=document.getElementById('edit-zip').value.trim(),team=document.getElementById('edit-team').value,errEl=document.getElementById('edit-error');if(!name){errEl.textContent='Name cannot be empty.';errEl.style.display='block';return;}const btn=document.getElementById('edit-save');btn.disabled=true;btn.textContent='Saving…';errEl.style.display='none';try{const oldZip=(p.zip||'').toString().trim().padStart(5,'0'),newZip=zip.padStart(5,'0');if(oldZip!==newZip&&oldZip!=='00000'){const others=people.some(x=>x.id!==p.id&&!x.archived&&(x.zip||'').toString().trim().padStart(5,'0')===oldZip);if(!others){delete geoCache[oldZip];delete cityCache[oldZip];localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));}}await updateDoc(doc(db,'people',editingPersonId),{name,type,zip:zip||'',team});closeEditModal();showToast(name+' updated!');}catch(e){errEl.textContent='Save failed: '+e.message;errEl.style.display='block';}btn.disabled=false;btn.textContent='Save Changes';}
+document.getElementById('edit-save').addEventListener('click',saveEdit);document.getElementById('edit-cancel').addEventListener('click',closeEditModal);document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target===document.getElementById('edit-modal'))closeEditModal();});document.getElementById('edit-name').addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();});
 
-// ── Action menu — now includes Edit ──────────────────────────────────────────
-function openActionMenu(event,personId){
-  event.stopPropagation();closeActionMenu();
-  const menu=document.getElementById('action-menu');
-  const rect=event.currentTarget.getBoundingClientRect();
-  menu.style.cssText='display:block;position:fixed;top:'+(rect.bottom+4)+'px;right:'+(window.innerWidth-rect.right)+'px;left:auto;';
-  menu.innerHTML=
-    '<div class="action-item" onclick="window._app.openEditModal(\''+personId+'\');window._app.closeActionMenu()">✏️ Edit</div>'+
-    '<div class="action-item" onclick="window._app.archivePerson(\''+personId+'\');window._app.closeActionMenu()">🗄 Archive</div>'+
-    '<div class="action-item danger" onclick="window._app.deletePerson(\''+personId+'\');window._app.closeActionMenu()">🗑 Delete permanently</div>';
-}
+// ── Action menu ───────────────────────────────────────────────────────────────
+function openActionMenu(event,personId){event.stopPropagation();closeActionMenu();const menu=document.getElementById('action-menu');const rect=event.currentTarget.getBoundingClientRect();menu.style.cssText='display:block;position:fixed;top:'+(rect.bottom+4)+'px;right:'+(window.innerWidth-rect.right)+'px;left:auto;';menu.innerHTML='<div class="action-item" onclick="window._app.openEditModal(\''+personId+'\');window._app.closeActionMenu()">✏️ Edit</div><div class="action-item" onclick="window._app.archivePerson(\''+personId+'\');window._app.closeActionMenu()">🗄 Archive</div><div class="action-item danger" onclick="window._app.deletePerson(\''+personId+'\');window._app.closeActionMenu()">🗑 Delete permanently</div>';}
 function closeActionMenu(){document.getElementById('action-menu').style.display='none';}
 
-// ── Geocoding ─────────────────────────────────────────────────────────────────
-async function geocodeZip(zip){
-  const key=zip.toString().trim().padStart(5,'0');
-  if(geoCache[key]){if(!inSelectedState(geoCache[key].lat,geoCache[key].lng)){delete geoCache[key];delete cityCache[key];}else return geoCache[key];}
-  let coords=null;
-  const bbox=selectedState&&STATE_BBOX[selectedState]?STATE_BBOX[selectedState]:null;
-  const base='https://nominatim.openstreetmap.org/search?postalcode='+key+'&country=US&format=json&limit=1&addressdetails=1';
-  try{
-    if(bbox){const r=await fetch(base+'&viewbox='+bbox+'&bounded=1',{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)&&inSelectedState(+d[0].lat,+d[0].lon)){coords={lat:+d[0].lat,lng:+d[0].lon};const addr=d[0].address||{};cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';}}
-    else{const r=await fetch(base,{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)){coords={lat:+d[0].lat,lng:+d[0].lon};const addr=d[0].address||{};cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';}}
-    if(coords){geoCache[key]=coords;localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));const u={};u[key]={lat:coords.lat,lng:coords.lng,city:cityCache[key]||''};try{await setDoc(GEO_DOC,u,{merge:true});}catch(e){}}
-  }catch(e){}
-  return coords;
+// ── ★ POI: Overpass query + pin ───────────────────────────────────────────────
+function clearPoiMarkers(){poiMarkers.forEach(m=>map.removeLayer(m));poiMarkers=[];document.getElementById('legend-poi').style.display='none';}
+
+function poiIcon(category){
+  const cat=POI_CAT[category]||{emoji:'📍',color:'#7c3aed'};
+  return L.divIcon({
+    html:'<div style="background:'+cat.color+';border:3px solid white;border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.4);font-size:15px;transform:rotate(45deg)"><span style="transform:rotate(-45deg)">'+cat.emoji+'</span></div>',
+    iconSize:[30,30],iconAnchor:[15,15],className:''
+  });
 }
+
+async function queryOverpass(lat,lng,radiusM,category){
+  const cat=POI_CAT[category];if(!cat)return[];
+  const[key,val]=cat.tag.split('=');
+  const q='[out:json][timeout:25];(node(around:'+Math.round(radiusM)+','+lat+','+lng+')['+key+'='+val+'];way(around:'+Math.round(radiusM)+','+lat+','+lng+')['+key+'='+val+'];);out center 20;';
+  try{
+    const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});
+    const d=await r.json();
+    return(d.elements||[]).map(el=>({
+      id:'poi_'+el.id,
+      name:el.tags?.name||el.tags?.['name:en']||category,
+      lat:el.lat||el.center?.lat,
+      lng:el.lon||el.center?.lon,
+      addr:(el.tags?.['addr:housenumber']?el.tags['addr:housenumber']+' ':'')+( el.tags?.['addr:street']||''),
+      category
+    })).filter(p=>p.lat&&p.lng);
+  }catch(e){return[];}
+}
+
+// ── Geocoding ─────────────────────────────────────────────────────────────────
+async function geocodeZip(zip){const key=zip.toString().trim().padStart(5,'0');if(geoCache[key]){if(!inSelectedState(geoCache[key].lat,geoCache[key].lng)){delete geoCache[key];delete cityCache[key];}else return geoCache[key];}let coords=null;const bbox=selectedState&&STATE_BBOX[selectedState]?STATE_BBOX[selectedState]:null;const base='https://nominatim.openstreetmap.org/search?postalcode='+key+'&country=US&format=json&limit=1&addressdetails=1';try{if(bbox){const r=await fetch(base+'&viewbox='+bbox+'&bounded=1',{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)&&inSelectedState(+d[0].lat,+d[0].lon)){coords={lat:+d[0].lat,lng:+d[0].lon};const addr=d[0].address||{};cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';}}else{const r=await fetch(base,{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)){coords={lat:+d[0].lat,lng:+d[0].lon};const addr=d[0].address||{};cityCache[key]=addr.city||addr.town||addr.village||addr.suburb||addr.county||'';}}if(coords){geoCache[key]=coords;localStorage.setItem('fsmap_geo',JSON.stringify(geoCache));localStorage.setItem('fsmap_city',JSON.stringify(cityCache));const u={};u[key]={lat:coords.lat,lng:coords.lng,city:cityCache[key]||''};try{await setDoc(GEO_DOC,u,{merge:true});}catch(e){}}}catch(e){}return coords;}
 const getCity=zip=>zip?(cityCache[zip.toString().trim().padStart(5,'0')]||''):'';
 const metaLine=p=>{if(!p.zip)return'';const c=getCity(p.zip);return c?p.zip+' · '+c:p.zip;};
 function miles(a,b){const R=3958.8,dLat=(b.lat-a.lat)*Math.PI/180,dLng=(b.lng-a.lng)*Math.PI/180;const x=Math.sin(dLat/2)**2+Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.asin(Math.sqrt(x));}
@@ -551,15 +406,7 @@ function isVisible(p){if(p.archived)return false;if(teamFilter!=='All'&&p.team!=
 function singleIcon(p,state='normal'){const fill=personFill(p),label=personLabel(p);const ring=state==='selected'?'<circle cx="20" cy="20" r="17" fill="none" stroke="'+fill+'" stroke-width="3" opacity="0.5"/>':'';const glow=state==='in-radius'?'<circle cx="20" cy="20" r="17" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>':'';const r=(state==='selected'||state==='in-radius')?13:11;return L.divIcon({html:'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/></filter>'+ring+glow+'<circle cx="20" cy="20" r="'+r+'" fill="'+fill+'" stroke="white" stroke-width="2.5" filter="url(#sh)"/><text x="20" y="'+(r>11?25:24)+'" text-anchor="middle" font-size="10" font-weight="800" fill="white" font-family="sans-serif">'+label+'</text></svg>',iconSize:[40,40],iconAnchor:[20,20],className:''});}
 function clusterIcon(vis,state='normal'){const nT=vis.filter(p=>p.type==='T').length,nC=vis.length-nT,n=vis.length;const fill=(nT>0&&nC>0)?'#7c3aed':nT>0?'#0284c7':'#ea580c';const ring=state==='selected'?'<circle cx="22" cy="22" r="19" fill="none" stroke="'+fill+'" stroke-width="3" opacity="0.45"/>':'';const glow=state==='in-radius'?'<circle cx="22" cy="22" r="19" fill="none" stroke="#7c3aed" stroke-width="3" opacity="0.8"/>':'';const inner=(nT>0&&nC>0)?'<path d="M22,8 A14,14 0 0,1 36,22 L22,22 Z" fill="#0284c7"/><path d="M36,22 A14,14 0 0,1 8,22 L22,22 Z" fill="#ea580c"/><path d="M8,22 A14,14 0 0,1 22,8 L22,22 Z" fill="#7c3aed"/>':'<circle cx="22" cy="22" r="14" fill="'+fill+'"/>';return L.divIcon({html:'<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"><filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/></filter>'+ring+glow+'<g filter="url(#sh2)">'+inner+'<circle cx="22" cy="22" r="14" fill="none" stroke="white" stroke-width="2.5"/></g><text x="22" y="27" text-anchor="middle" font-size="13" font-weight="900" fill="white" font-family="sans-serif">'+n+'</text></svg>',iconSize:[44,44],iconAnchor:[22,22],className:''});}
 
-async function renderAll(){
-  Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});zipGroups={};markers={};clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();closeActionMenu();
-  const missing=[...new Set(people.filter(p=>p.zip&&!p.archived&&!geoCache[p.zip.toString().trim().padStart(5,'0')]).map(p=>p.zip.toString().trim()))];
-  if(missing.length){setLoadingMsg('Geocoding '+missing.length+' new zip'+(missing.length>1?'s':'')+'…');document.getElementById('loading').style.display='flex';for(const z of missing){await geocodeZip(z);await sleep(300);}document.getElementById('loading').style.display='none';}
-  people.forEach(p=>{if(!p.zip){p.coords=null;return;}const c=geoCache[p.zip.toString().trim().padStart(5,'0')];p.coords=(c&&inSelectedState(c.lat,c.lng))?c:null;});
-  const grouped={};people.filter(p=>p.coords&&!p.archived).forEach(p=>{const k=p.zip.toString().trim().padStart(5,'0');if(!grouped[k])grouped[k]=[];grouped[k].push(p);});
-  Object.entries(grouped).forEach(([zip,group])=>{const m=createGroupMarker(zip,group,geoCache[zip]);zipGroups[zip]={marker:m,people:group,hiddenIds:new Set()};group.forEach(p=>{markers[p.id]=m;});});
-  applyVisFilter();renderSidebar();if(heatOn)drawHeatCanvas();
-}
+async function renderAll(){Object.values(zipGroups).forEach(g=>{if(g.marker)map.removeLayer(g.marker);});zipGroups={};markers={};clearConnections();clearRadius();clearPoiMarkers();hideClusterPopup();hideTeamPicker();closeActionMenu();const missing=[...new Set(people.filter(p=>p.zip&&!p.archived&&!geoCache[p.zip.toString().trim().padStart(5,'0')]).map(p=>p.zip.toString().trim()))];if(missing.length){setLoadingMsg('Geocoding '+missing.length+' new zip'+(missing.length>1?'s':'')+'…');document.getElementById('loading').style.display='flex';for(const z of missing){await geocodeZip(z);await sleep(300);}document.getElementById('loading').style.display='none';}people.forEach(p=>{if(!p.zip){p.coords=null;return;}const c=geoCache[p.zip.toString().trim().padStart(5,'0')];p.coords=(c&&inSelectedState(c.lat,c.lng))?c:null;});const grouped={};people.filter(p=>p.coords&&!p.archived).forEach(p=>{const k=p.zip.toString().trim().padStart(5,'0');if(!grouped[k])grouped[k]=[];grouped[k].push(p);});Object.entries(grouped).forEach(([zip,group])=>{const m=createGroupMarker(zip,group,geoCache[zip]);zipGroups[zip]={marker:m,people:group,hiddenIds:new Set()};group.forEach(p=>{markers[p.id]=m;});});applyVisFilter();renderSidebar();if(heatOn)drawHeatCanvas();}
 function applyVisFilter(){Object.entries(zipGroups).forEach(([zip,g])=>{g.hiddenIds=new Set(g.people.filter(p=>!isVisible(p)).map(p=>p.id));refreshGroup(zip,'normal');});}
 function createGroupMarker(zip,group,coords,state='normal'){const isSolo=group.length===1;const m=L.marker([coords.lat,coords.lng],{icon:isSolo?singleIcon(group[0],state):clusterIcon(group,state)}).addTo(map);if(isSolo){const p=group[0],city=getCity(zip);m.bindTooltip('<b>'+p.name+'</b><br>'+(p.type==='T'?'Technician':'Client')+' · '+zip+(city?' · '+city:''),{direction:'top',offset:[0,-14]});m.on('click',()=>handleClick(p));}else{m.on('mouseover',()=>openClusterPopup(zip));m.on('mouseout',()=>schedulePopupClose());m.on('click',()=>openClusterPopup(zip,true));}return m;}
 function refreshGroup(zip,state='normal'){const g=zipGroups[zip];if(!g)return;const vis=g.people.filter(p=>!g.hiddenIds.has(p.id));if(!vis.length){if(map.hasLayer(g.marker))map.removeLayer(g.marker);return;}if(!map.hasLayer(g.marker))g.marker.addTo(map);g.marker.setIcon(vis.length===1?singleIcon(vis[0],state):clusterIcon(vis,state));}
@@ -580,22 +427,75 @@ function hideSearchDropdown(){document.getElementById('search-dropdown').style.d
 function jumpToResult(id){const p=byId(id);if(!p)return;hideSearchDropdown();document.getElementById('search-input').value='';searchQuery='';document.getElementById('search-clear').style.display='none';applyVisFilter();renderSidebar();if(p.coords)map.setView([p.coords.lat,p.coords.lng],14,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'normal'):clusterIcon(v2,'normal'));},2000);}switchTab('people');}
 function renderSidebar(hl=[]){const t=people.filter(p=>p.type==='T'&&isVisible(p)),c=people.filter(p=>p.type==='C'&&isVisible(p));document.getElementById('tech-list').innerHTML=t.length?t.map(p=>cardHTML(p,hl)).join(''):emptyMsg('No technicians');document.getElementById('client-list').innerHTML=c.length?c.map(p=>cardHTML(p,hl)).join(''):emptyMsg('No clients');renderArchive();}
 function emptyMsg(m){return'<div style="color:#94a3b8;font-size:11px;padding:6px 2px;">'+m+'</div>';}
-function cardHTML(p,hl){const sel=selectedTech?.id===p.id?'selected':'',inR=hl.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';return'<div class="person-card '+sel+' '+inR+'" onclick="window._app.handleClick(\''+p.id+'\')">'+'<div class="pdot '+dot+'"></div>'+'<div class="pinfo"><div class="pname">'+p.name+'</div>'+(metaLine(p)?'<div class="pmeta">'+metaLine(p)+'</div>':'')+'</div>'+'<div class="card-right"><div class="team-badge" style="background:'+teamColor(p.team)+'" onclick="window._app.openTeamPicker(event,\''+p.id+'\')" title="Change team">'+teamShort(p.team)+'</div><button class="action-btn" onclick="window._app.openActionMenu(event,\''+p.id+'\')" title="Edit, archive or delete">⋮</button></div></div>';}
+function cardHTML(p,hl){const sel=selectedTech?.id===p.id?'selected':'',inR=hl.includes(p.id)?'in-radius':'',dot=p.type==='T'?'pdot-t':isOunceIT(p)?'pdot-o':'pdot-c';return'<div class="person-card '+sel+' '+inR+'" onclick="window._app.handleClick(\''+p.id+'\')">'+'<div class="pdot '+dot+'"></div>'+'<div class="pinfo"><div class="pname">'+p.name+'</div>'+(metaLine(p)?'<div class="pmeta">'+metaLine(p)+'</div>':'')+'</div>'+'<div class="card-right"><div class="team-badge" style="background:'+teamColor(p.team)+'" onclick="window._app.openTeamPicker(event,\''+p.id+'\')" title="Change team">'+teamShort(p.team)+'</div><button class="action-btn" onclick="window._app.openActionMenu(event,\''+p.id+'\')" title="Options">⋮</button></div></div>';}
 function byId(id){return people.find(p=>p.id===id);}
+
 function handleClick(idOrPerson){const p=typeof idOrPerson==='string'?byId(idOrPerson):idOrPerson;if(!p)return;hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();if(interMode){handleInteractiveClick(p);return;}Object.keys(zipGroups).forEach(z=>refreshGroup(z,'normal'));if(p.type==='T'){if(selectedTech?.id===p.id){selectedTech=null;clearConnections();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();return;}selectedTech=p;const gz=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(p,'selected'):clusterIcon(gv,'selected'));}showConnections(p);switchTab('distances');}else{const gz2=zipGroups[p.zip?.toString().trim().padStart(5,'0')];if(gz2){const gv2=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'selected'):clusterIcon(gv2,'selected'));setTimeout(()=>{const v3=gz2.people.filter(x=>!gz2.hiddenIds.has(x.id));gz2.marker.setIcon(gz2.people.length===1?singleIcon(p,'normal'):clusterIcon(v3,'normal'));},1800);}if(selectedTech?.coords&&p.coords)showToast(selectedTech.name+' → '+p.name+': '+miles(selectedTech.coords,p.coords).toFixed(1)+' mi');}renderSidebar();}
-function handleInteractiveClick(p){if(!p?.coords){showToast('Location not found',true);return;}lastInterPerson=p;applyRadius(p,+document.getElementById('miles-select').value);}
-function applyRadius(p,radiusMi){clearConnections();clearRadius();hideClusterPopup();interHighlight=new Set();Object.keys(zipGroups).forEach(z=>{const g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(x=>!isVisible(x)).map(x=>x.id));refreshGroup(z,'normal');});const rM=radiusMi*1609.344;const setSel=pp=>{const gz=zipGroups[pp.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(pp,'selected'):clusterIcon(gv,'selected'));}};if(p.type==='T'){selectedTech=p;setSel(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:rM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map);const allC=people.filter(x=>x.type==='C'&&x.coords&&isVisible(x)),inC=allC.filter(c=>miles(p.coords,c.coords)<=radiusMi);allC.filter(c=>miles(p.coords,c.coords)>radiusMi).forEach(hidePerson);inC.forEach(c=>interHighlight.add(c.id));new Set(inC.map(c=>c.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='T'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inC.length+' client'+(inC.length!==1?'s':'')+' inside','#a78bfa');const sC=inC.map(c=>({...c,dist:miles(p.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel('Within '+radiusMi+' mi of '+p.name,sC,inC.map(c=>c.id),true);renderSidebar(inC.map(c=>c.id));}else{setSel(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:rM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map);const allT=people.filter(x=>x.type==='T'&&x.coords&&isVisible(x)),inT=allT.filter(t=>miles(p.coords,t.coords)<=radiusMi);allT.filter(t=>miles(p.coords,t.coords)>radiusMi).forEach(hidePerson);inT.forEach(t=>interHighlight.add(t.id));new Set(inT.map(t=>t.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='C'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inT.length+' technician'+(inT.length!==1?'s':'')+' nearby','#fb923c');const sT=inT.map(t=>({...t,dist:miles(p.coords,t.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel('Technicians within '+radiusMi+' mi of '+p.name,sT,inT.map(t=>t.id),true);renderSidebar(inT.map(t=>t.id));}document.getElementById('legend-radius').style.display='flex';switchTab('distances');}
+
+// ── ★ Interactive mode — handles both People and POI modes ────────────────────
+function handleInteractiveClick(p){if(!p?.coords){showToast('Location not found',true);return;}lastInterPerson=p;const radiusMi=+document.getElementById('miles-select').value;poiMode=document.getElementById('find-select').value;if(poiMode==='People'){applyRadius(p,radiusMi);}else{applyPoiRadius(p,radiusMi,poiMode);}}
+
+// ── People radius mode ────────────────────────────────────────────────────────
+function applyRadius(p,radiusMi){clearConnections();clearRadius();clearPoiMarkers();hideClusterPopup();interHighlight=new Set();Object.keys(zipGroups).forEach(z=>{const g=zipGroups[z];g.hiddenIds=new Set(g.people.filter(x=>!isVisible(x)).map(x=>x.id));refreshGroup(z,'normal');});const rM=radiusMi*1609.344;const setSel=pp=>{const gz=zipGroups[pp.zip?.toString().trim().padStart(5,'0')];if(gz){const gv=gz.people.filter(x=>!gz.hiddenIds.has(x.id));gz.marker.setIcon(gz.people.length===1?singleIcon(pp,'selected'):clusterIcon(gv,'selected'));}};if(p.type==='T'){selectedTech=p;setSel(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:rM,color:'#7c3aed',weight:2.5,opacity:0.9,fillColor:'#7c3aed',fillOpacity:0.08,dashArray:'6 4'}).addTo(map);const allC=people.filter(x=>x.type==='C'&&x.coords&&isVisible(x)),inC=allC.filter(c=>miles(p.coords,c.coords)<=radiusMi);allC.filter(c=>miles(p.coords,c.coords)>radiusMi).forEach(hidePerson);inC.forEach(c=>interHighlight.add(c.id));new Set(inC.map(c=>c.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='T'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inC.length+' client'+(inC.length!==1?'s':'')+' inside','#a78bfa');const sC=inC.map(c=>({...c,dist:miles(p.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel('Within '+radiusMi+' mi of '+p.name,sC,inC.map(c=>c.id),true);renderSidebar(inC.map(c=>c.id));}else{setSel(p);radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:rM,color:'#ea580c',weight:2.5,opacity:0.9,fillColor:'#ea580c',fillOpacity:0.07,dashArray:'6 4'}).addTo(map);const allT=people.filter(x=>x.type==='T'&&x.coords&&isVisible(x)),inT=allT.filter(t=>miles(p.coords,t.coords)<=radiusMi);allT.filter(t=>miles(p.coords,t.coords)>radiusMi).forEach(hidePerson);inT.forEach(t=>interHighlight.add(t.id));new Set(inT.map(t=>t.zip?.toString().trim().padStart(5,'0'))).forEach(z=>refreshGroup(z,'in-radius'));people.filter(x=>x.type==='C'&&x.id!==p.id&&isVisible(x)).forEach(hidePerson);map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});setBanner('🎯 '+p.name+' · '+radiusMi+' mi · '+inT.length+' technician'+(inT.length!==1?'s':'')+' nearby','#fb923c');const sT=inT.map(t=>({...t,dist:miles(p.coords,t.coords)})).sort((a,b)=>a.dist-b.dist);showDistPanel('Technicians within '+radiusMi+' mi of '+p.name,sT,inT.map(t=>t.id),true);renderSidebar(inT.map(t=>t.id));}document.getElementById('legend-radius').style.display='flex';switchTab('distances');}
+
+// ── ★ POI radius mode ─────────────────────────────────────────────────────────
+async function applyPoiRadius(p,radiusMi,category){
+  clearConnections();clearRadius();clearPoiMarkers();hideClusterPopup();
+  const cat=POI_CAT[category];
+  const rM=radiusMi*1609.344;
+  // Draw radius circle
+  radiusCircle=L.circle([p.coords.lat,p.coords.lng],{radius:rM,color:cat.color,weight:2,opacity:0.8,fillColor:cat.color,fillOpacity:0.06,dashArray:'6 4'}).addTo(map);
+  document.getElementById('legend-radius').style.display='flex';
+  map.fitBounds(radiusCircle.getBounds(),{padding:[40,40],animate:true});
+  // Show searching state
+  setBanner('🔍 Searching '+cat.emoji+' '+category+' within '+radiusMi+' mi…',cat.color);
+  document.getElementById('dist-empty').style.display='none';
+  const body=document.getElementById('dist-body');body.style.cssText='display:flex;flex-direction:column;gap:6px;';
+  document.getElementById('dist-title').textContent=cat.emoji+' '+category+' near '+p.name;
+  document.getElementById('dist-list').innerHTML='<div class="poi-searching"><div class="poi-spin"></div>Querying OpenStreetMap…</div>';
+  switchTab('distances');
+  // Query Overpass
+  const results=await queryOverpass(p.coords.lat,p.coords.lng,rM,category);
+  if(!results.length){
+    document.getElementById('dist-list').innerHTML='<div style="color:#94a3b8;font-size:12px;padding:16px 4px;text-align:center;">No '+category.toLowerCase()+' found within '+radiusMi+' mi.</div>';
+    setBanner(cat.emoji+' No '+category+' found within '+radiusMi+' mi',cat.color);
+    return;
+  }
+  // Add distance and sort
+  const sorted=results.map(r=>({...r,distMi:miles(p.coords,{lat:r.lat,lng:r.lng})})).sort((a,b)=>a.distMi-b.distMi);
+  // Plot POI pins on map
+  sorted.forEach(r=>{
+    const m=L.marker([r.lat,r.lng],{icon:poiIcon(category)}).addTo(map);
+    m.bindTooltip('<b>'+r.name+'</b>'+(r.addr?'<br>'+r.addr:''),{direction:'top',offset:[0,-14]});
+    m.on('click',()=>{map.setView([r.lat,r.lng],16,{animate:true});});
+    poiMarkers.push(m);
+  });
+  document.getElementById('legend-poi').style.display='flex';
+  // Render list
+  document.getElementById('dist-list').innerHTML=sorted.map((r,i)=>{
+    const rnk=i<3?'r'+(i+1):'';
+    return '<div class="poi-item" onclick="window._app.panToPoi('+r.lat+','+r.lng+')">'
+      +'<div class="poi-emoji">'+cat.emoji+'</div>'
+      +'<div style="flex:1"><div class="poi-name">'+r.name+'</div>'+(r.addr?'<small class="poi-addr">'+r.addr+'</small>':'')+'</div>'
+      +'<div class="poi-dist">'+r.distMi.toFixed(1)+' mi</div>'
+      +'</div>';
+  }).join('');
+  setBanner(cat.emoji+' '+sorted.length+' '+category+(sorted.length!==1?'s':'')+' within '+radiusMi+' mi of '+p.name,cat.color);
+}
+
 function clearRadius(){if(radiusCircle){map.removeLayer(radiusCircle);radiusCircle=null;}document.getElementById('legend-radius').style.display='none';}
-function showConnections(tech){clearConnections();clearRadius();if(!tech.coords){showToast('Location not found',true);return;}const clients=people.filter(p=>p.type==='C'&&p.coords&&isVisible(p));if(!clients.length){showToast('No visible clients',true);return;}const sorted=clients.map(c=>({...c,dist:miles(tech.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);const lc=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];sorted.forEach((c,i)=>{const color=lc[i%lc.length];const line=L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]],{color,weight:i===0?5:i<3?4:3,opacity:0.9}).addTo(map);const mid=[(tech.coords.lat+c.coords.lat)/2,(tech.coords.lng+c.coords.lng)/2];const label=L.marker(mid,{icon:L.divIcon({html:'<div class="dist-label-el" style="border-color:'+color+';color:'+color+';">'+c.dist.toFixed(1)+' mi</div>',className:'',iconAnchor:[24,10]}),interactive:false,zIndexOffset:500}).addTo(map);connLines.push(line);connLabels.push(label);});map.fitBounds([[tech.coords.lat,tech.coords.lng],...sorted.map(c=>[c.coords.lat,c.coords.lng])],{padding:[70,70],maxZoom:13,animate:true});setBanner('📍 '+tech.name+' — '+sorted.length+' clients','#38bdf8');showDistPanel(tech.name+' → Clients',sorted,[],false);}
+function showConnections(tech){clearConnections();clearRadius();clearPoiMarkers();if(!tech.coords){showToast('Location not found',true);return;}const clients=people.filter(p=>p.type==='C'&&p.coords&&isVisible(p));if(!clients.length){showToast('No visible clients',true);return;}const sorted=clients.map(c=>({...c,dist:miles(tech.coords,c.coords)})).sort((a,b)=>a.dist-b.dist);const lc=['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];sorted.forEach((c,i)=>{const color=lc[i%lc.length];const line=L.polyline([[tech.coords.lat,tech.coords.lng],[c.coords.lat,c.coords.lng]],{color,weight:i===0?5:i<3?4:3,opacity:0.9}).addTo(map);const mid=[(tech.coords.lat+c.coords.lat)/2,(tech.coords.lng+c.coords.lng)/2];const label=L.marker(mid,{icon:L.divIcon({html:'<div class="dist-label-el" style="border-color:'+color+';color:'+color+';">'+c.dist.toFixed(1)+' mi</div>',className:'',iconAnchor:[24,10]}),interactive:false,zIndexOffset:500}).addTo(map);connLines.push(line);connLabels.push(label);});map.fitBounds([[tech.coords.lat,tech.coords.lng],...sorted.map(c=>[c.coords.lat,c.coords.lng])],{padding:[70,70],maxZoom:13,animate:true});setBanner('📍 '+tech.name+' — '+sorted.length+' clients','#38bdf8');showDistPanel(tech.name+' → Clients',sorted,[],false);}
 function showDistPanel(title,sorted,inRI,isInter){document.getElementById('dist-empty').style.display='none';const body=document.getElementById('dist-body');body.style.cssText='display:flex;flex-direction:column;gap:6px;';document.getElementById('dist-title').textContent=title;document.getElementById('dist-list').innerHTML=sorted.length?sorted.map((x,i)=>'<div class="dist-item '+(isInter?'inter':'')+'" onclick="window._app.panTo(\''+x.id+'\')"><div class="dist-rank '+(i<3?'r'+(i+1):'')+'"> '+(i+1)+'</div><div class="dname">'+x.name+'<small>'+(x.zip||'')+(getCity(x.zip)?' · '+getCity(x.zip):'')+' </small></div><div class="dmiles '+(isInter?'inside':'')+'">'+x.dist.toFixed(1)+' mi</div></div>').join(''):'<div style="color:#94a3b8;font-size:12px;padding:8px 2px;">None within this radius.</div>';}
 function clearConnections(){connLines.forEach(l=>map.removeLayer(l));connLabels.forEach(l=>map.removeLayer(l));connLines=[];connLabels=[];}
 function setBanner(html,c){const b=document.getElementById('conn-banner');b.innerHTML=html;b.style.borderColor=c;b.style.display='block';}
 function panTo(id){const p=byId(id);if(!p?.coords)return;map.setView([p.coords.lat,p.coords.lng],13,{animate:true});const zip=p.zip?.toString().trim().padStart(5,'0'),g=zipGroups[zip];if(g){const vis=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'selected'):clusterIcon(vis,'selected'));setTimeout(()=>{const v2=g.people.filter(x=>!g.hiddenIds.has(x.id));g.marker.setIcon(g.people.length===1?singleIcon(p,'in-radius'):clusterIcon(v2,'in-radius'));},1500);}}
-function resetToDefault(){selectedTech=null;lastInterPerson=null;interHighlight=new Set();clearConnections();clearRadius();hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();applyVisFilter();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();}
+function panToPoi(lat,lng){map.setView([lat,lng],16,{animate:true});}
+function resetToDefault(){selectedTech=null;lastInterPerson=null;interHighlight=new Set();clearConnections();clearRadius();clearPoiMarkers();hideClusterPopup();hideTeamPicker();hideSearchDropdown();closeAuthMenu();closeActionMenu();applyVisFilter();document.getElementById('conn-banner').style.display='none';document.getElementById('dist-empty').style.display='';document.getElementById('dist-body').style.display='none';renderSidebar();}
 
-document.getElementById('sidebar-toggle').addEventListener('click',function(){sidebarOpen=!sidebarOpen;const sb=document.getElementById('sidebar');if(sidebarOpen){sb.classList.remove('collapsed');this.textContent='‹';this.title='Hide panel';}else{sb.classList.add('collapsed');this.textContent='›';this.title='Show panel';}setTimeout(()=>{if(map)map.invalidateSize();},280);});
-document.getElementById('btn-inter').addEventListener('click',()=>{interMode=!interMode;document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode);document.getElementById('interactive-controls').style.display=interMode?'flex':'none';document.getElementById('inter-hint').style.display=interMode?'block':'none';if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on',false,'purple');});
-document.getElementById('miles-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;applyRadius(lastInterPerson,+this.value);});
+document.getElementById('sidebar-toggle').addEventListener('click',function(){sidebarOpen=!sidebarOpen;const sb=document.getElementById('sidebar');if(sidebarOpen){sb.classList.remove('collapsed');this.textContent='‹';}else{sb.classList.add('collapsed');this.textContent='›';}setTimeout(()=>{if(map)map.invalidateSize();},280);});
+document.getElementById('btn-inter').addEventListener('click',()=>{interMode=!interMode;document.getElementById('btn-inter').classList.toggle('btn-inter-on',interMode);document.getElementById('interactive-controls').style.display=interMode?'flex':'none';document.getElementById('inter-hint').style.display=interMode?'block':'none';if(!interMode){resetToDefault();showToast('Interactive mode off');}else showToast('Interactive mode on — select radius & find, then click a pin',false,'purple');});
+document.getElementById('miles-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;const pm=document.getElementById('find-select').value;if(pm==='People')applyRadius(lastInterPerson,+this.value);else applyPoiRadius(lastInterPerson,+this.value,pm);});
+document.getElementById('find-select').addEventListener('change',function(){if(!interMode||!lastInterPerson)return;const pm=this.value;if(pm==='People')applyRadius(lastInterPerson,+document.getElementById('miles-select').value);else applyPoiRadius(lastInterPerson,+document.getElementById('miles-select').value,pm);});
 document.getElementById('btn-fit').addEventListener('click',()=>{const pts=people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length)map.fitBounds(pts,{padding:[50,50]});});
 document.getElementById('btn-clear').addEventListener('click',()=>{resetToDefault();showToast('Cleared');});
 document.getElementById('team-filter').addEventListener('change',function(){teamFilter=this.value;resetToDefault();});
@@ -621,25 +521,14 @@ document.getElementById('btn-heat').addEventListener('click',()=>{heatOn=!heatOn
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let _tt;
 function showToast(msg,err=false,style=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(err?' err':'')+(style==='purple'?' purple':'');clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500);}
+window._app={handleClick,openTeamPicker,assignTeam,archivePerson,restorePerson,deletePerson,openEditModal,closeEditModal,openActionMenu,closeActionMenu,panTo,panToPoi,jumpToResult,hideClusterPopup};
 
-window._app={handleClick,openTeamPicker,assignTeam,archivePerson,restorePerson,deletePerson,openEditModal,closeEditModal,openActionMenu,closeActionMenu,panTo,jumpToResult,hideClusterPopup};
-
-const SEED=[
-  {name:"Agyemang, Pius",type:"T",zip:"02189",team:"Operations & SLT"},{name:"Anarfi, Abel",type:"T",zip:"02132",team:"Burgundy"},{name:"Andrea, Michael",type:"T",zip:"01701",team:"Service Desk"},{name:"Angoff, Jeremy",type:"T",zip:"02132",team:"Operations & SLT"},{name:"Armoo-Daniels, Aba",type:"T",zip:"01702",team:"Gold"},{name:"Atherley, Jonte",type:"T",zip:"01607",team:"Burgundy"},{name:"Baars, Freddy",type:"T",zip:"01760",team:"NCE"},{name:"Barnatt, Joshua",type:"T",zip:"01760",team:"NCE"},{name:"Brooks, Michelle",type:"T",zip:"01526",team:"Burgundy"},{name:"Brown, Louis",type:"T",zip:"01453",team:"Operations & SLT"},{name:"Busby, Henry",type:"T",zip:"02054",team:"Operations & SLT"},{name:"Corbin, Thomas",type:"T",zip:"01778",team:"Operations & SLT"},{name:"Delorme, Michael",type:"T",zip:"01520",team:"Gold"},{name:"Foster, Barry",type:"T",zip:"02301",team:"Service Desk"},{name:"Gorski, Brandon",type:"T",zip:"01923",team:"Slate"},{name:"Gray, Joseph",type:"T",zip:"02129",team:"Gold"},{name:"Green, Andrew",type:"T",zip:"01453",team:"NCE"},{name:"Hoang, David",type:"T",zip:"02368",team:"Burgundy"},{name:"Jamanka, Mamoudou",type:"T",zip:"02139",team:"Burgundy"},{name:"Kaplish, Nipun",type:"T",zip:"02451",team:"NCE"},{name:"Kaszycki, Julia",type:"T",zip:"01464",team:"Slate"},{name:"Lahue, Cameron",type:"T",zip:"01905",team:"NCE"},{name:"LeBlanc, Nathan",type:"T",zip:"01757",team:"Slate"},{name:"Lincoln, Scott",type:"T",zip:"03051",team:"Slate"},{name:"Matas, Jared",type:"T",zip:"02460",team:"Operations & SLT"},{name:"McCormack, John",type:"T",zip:"01545",team:"Gold"},{name:"McHugh, Amelia",type:"T",zip:"02472",team:"Operations & SLT"},{name:"Meilus, Antanas",type:"T",zip:"02148",team:"NCE"},{name:"Morgan, Susan",type:"T",zip:"01936",team:"Operations & SLT"},{name:"Oppong, Nicholas",type:"T",zip:"01543",team:"NCE"},{name:"Ovando, Harold",type:"T",zip:"01902",team:"Burgundy"},{name:"Parker, Dale",type:"T",zip:"02169",team:"Operations & SLT"},{name:"Pereira, Aaron",type:"T",zip:"02703",team:"Operations & SLT"},{name:"Pinto, Melinda",type:"T",zip:"02472",team:"Gold"},{name:"Poles, Nick",type:"T",zip:"01775",team:"Gold"},{name:"Prosper, Judens",type:"T",zip:"01902",team:"Slate"},{name:"Quartararo, Jordan",type:"T",zip:"01844",team:"Gold"},{name:"Rivera, George",type:"T",zip:"01524",team:"Slate"},{name:"Schmidt, Sean",type:"T",zip:"02135",team:"Slate"},{name:"Smith, Robert",type:"T",zip:"01460",team:"Operations & SLT"},{name:"Starkin, Paul",type:"T",zip:"01082",team:"Slate"},{name:"Thang, Sundy",type:"T",zip:"01460",team:"Slate"},{name:"White, Erik",type:"T",zip:"01568",team:"Gold"},{name:"William Addo",type:"T",zip:"02132",team:"Burgundy"},{name:"Zakarashvili, Georgy",type:"T",zip:"02478",team:"Service Desk"},
-  {name:"Acera School",type:"C",zip:"02476",team:"Service Desk"},{name:"ACS",type:"C",zip:"02141",team:"Service Desk"},{name:"Asha Patel",type:"C",zip:"02138",team:"Service Desk"},{name:"Atrium School",type:"C",zip:"02472",team:"Burgundy"},{name:"Bancroft School",type:"C",zip:"01605",team:"Gold"},{name:"BCM",type:"C",zip:"02210",team:"Service Desk"},{name:"BHNS",type:"C",zip:"02114",team:"Burgundy"},{name:"Beaver Country Day School",type:"C",zip:"02467",team:"Service Desk"},{name:"Berkman",type:"C",zip:"02445",team:"Service Desk"},{name:"Bourell",type:"C",zip:"02090",team:"Service Desk"},{name:"Bridge",type:"C",zip:"02119",team:"Burgundy"},{name:"Broder Properties",type:"C",zip:"02116",team:"Service Desk"},{name:"CMS",type:"C",zip:"02138",team:"Burgundy"},{name:"CSW",type:"C",zip:"02493",team:"Gold"},{name:"Carroll Pierce",type:"C",zip:"02108",team:"Service Desk"},{name:"CNS",type:"C",zip:"02129",team:"Service Desk"},{name:"Children's Own School",type:"C",zip:"01890",team:"Service Desk"},{name:"Cliff Briggin",type:"C",zip:"02467",team:"Service Desk"},{name:"CTAC",type:"C",zip:"02108",team:"Service Desk"},{name:"Concord Academy",type:"C",zip:"01742",team:"Slate"},{name:"Concord Museum",type:"C",zip:"01742",team:"Service Desk"},{name:"CPW",type:"C",zip:"02151",team:"Service Desk"},{name:"Curio Spice",type:"C",zip:"01803",team:"Service Desk"},{name:"DCD",type:"C",zip:"02026",team:"Burgundy"},{name:"Discovery Museum",type:"C",zip:"01720",team:"Service Desk"},{name:"Donelan Contracting, Inc",type:"C",zip:"02130",team:"Service Desk"},{name:"EHS",type:"C",zip:"01945",team:"Slate"},{name:"Fayerweather",type:"C",zip:"02138",team:"Service Desk"},{name:"Figur8",type:"C",zip:"02116",team:"Service Desk"},{name:"Fred Maynard",type:"C",zip:"02116",team:"Service Desk"},{name:"FreshComm",type:"C",zip:"01864",team:"Service Desk"},{name:"Gann Academy",type:"C",zip:"02452",team:"NCE"},{name:"GUS",type:"C",zip:"01915",team:"Slate"},{name:"Harborlight",type:"C",zip:"01915",team:"Service Desk"},{name:"Hardy+Man",type:"C",zip:"02189",team:"Service Desk"},{name:"Harrington Heep",type:"C",zip:"02482",team:"Service Desk"},{name:"Henshon Klein LLP",type:"C",zip:"02481",team:"Service Desk"},{name:"HOPe",type:"C",zip:"02356",team:"Service Desk"},{name:"JWP",type:"C",zip:"02458",team:"Burgundy"},{name:"Jason & Fischer",type:"C",zip:"02108",team:"Service Desk"},{name:"Jim Donovan",type:"C",zip:"02467",team:"Service Desk"},{name:"Joan Weinsten",type:"C",zip:"02493",team:"Service Desk"},{name:"Kingsley",type:"C",zip:"02116",team:"Burgundy"},{name:"Lili Banani",type:"C",zip:"02110",team:"Service Desk"},{name:"Mary Kane",type:"C",zip:"02115",team:"Service Desk"},{name:"Material Impact",type:"C",zip:"02116",team:"Service Desk"},{name:"MMLaw",type:"C",zip:"02151",team:"Service Desk"},{name:"NEIA",type:"C",zip:"01752",team:"Gold"},{name:"Nobles",type:"C",zip:"02026",team:"Gold"},{name:"Oak Meadow",type:"C",zip:"01460",team:"Service Desk"},{name:"OunceIT, LLC",type:"C",zip:"01760",team:"Operations & SLT"},{name:"Park School",type:"C",zip:"02445",team:"Gold"},{name:"Pike School",type:"C",zip:"01810",team:"Slate"},{name:"Plymouth center",type:"C",zip:"02360",team:"Service Desk"},{name:"Princeton Properties",type:"C",zip:"01851",team:"Service Desk"},{name:"Promoboxx",type:"C",zip:"02118",team:"Service Desk"},{name:"Quality Graphics",type:"C",zip:"02145",team:"Service Desk"},{name:"Roxbury Latin",type:"C",zip:"02132",team:"Service Desk"},{name:"Russo",type:"C",zip:"02459",team:"Service Desk"},{name:"Sisters of Notre Dame",type:"C",zip:"01938",team:"Service Desk"},{name:"Smarter Health Care",type:"C",zip:"01772",team:"Service Desk"},{name:"SmarterWisdom Consulting",type:"C",zip:"02459",team:"Service Desk"},{name:"St. Mark's School",type:"C",zip:"01772",team:"NCE"},{name:"St. Sebastian's School",type:"C",zip:"02492",team:"Service Desk"},{name:"Tenacre Country Day School",type:"C",zip:"02482",team:"Burgundy"},{name:"Thacher Montessori School",type:"C",zip:"02186",team:"NCE"},{name:"The Chestnut Hill School",type:"C",zip:"02467",team:"Burgundy"},{name:"The Fenn School",type:"C",zip:"01742",team:"Service Desk"},{name:"The Fessenden School",type:"C",zip:"02465",team:"Slate"},{name:"The Rashi School",type:"C",zip:"02026",team:"Burgundy"},{name:"The Waring School",type:"C",zip:"01915",team:"Slate"},{name:"Tremont School",type:"C",zip:"01742",team:"Service Desk"},{name:"Walnut Hill School",type:"C",zip:"01760",team:"Gold"},{name:"Wellesley Historical Society",type:"C",zip:"02481",team:"Service Desk"},{name:"Worcester Academy",type:"C",zip:"01604",team:"Service Desk"},{name:"YWBoston",type:"C",zip:"02116",team:"Service Desk"},{name:"YWCA Cambridge",type:"C",zip:"02139",team:"Service Desk"}
-];
+const SEED=[{name:"Agyemang, Pius",type:"T",zip:"02189",team:"Operations & SLT"},{name:"Anarfi, Abel",type:"T",zip:"02132",team:"Burgundy"},{name:"Andrea, Michael",type:"T",zip:"01701",team:"Service Desk"},{name:"Angoff, Jeremy",type:"T",zip:"02132",team:"Operations & SLT"},{name:"Armoo-Daniels, Aba",type:"T",zip:"01702",team:"Gold"},{name:"Atherley, Jonte",type:"T",zip:"01607",team:"Burgundy"},{name:"Baars, Freddy",type:"T",zip:"01760",team:"NCE"},{name:"Barnatt, Joshua",type:"T",zip:"01760",team:"NCE"},{name:"Brooks, Michelle",type:"T",zip:"01526",team:"Burgundy"},{name:"Brown, Louis",type:"T",zip:"01453",team:"Operations & SLT"},{name:"Busby, Henry",type:"T",zip:"02054",team:"Operations & SLT"},{name:"Corbin, Thomas",type:"T",zip:"01778",team:"Operations & SLT"},{name:"Delorme, Michael",type:"T",zip:"01520",team:"Gold"},{name:"Foster, Barry",type:"T",zip:"02301",team:"Service Desk"},{name:"Gorski, Brandon",type:"T",zip:"01923",team:"Slate"},{name:"Gray, Joseph",type:"T",zip:"02129",team:"Gold"},{name:"Green, Andrew",type:"T",zip:"01453",team:"NCE"},{name:"Hoang, David",type:"T",zip:"02368",team:"Burgundy"},{name:"Jamanka, Mamoudou",type:"T",zip:"02139",team:"Burgundy"},{name:"Kaplish, Nipun",type:"T",zip:"02451",team:"NCE"},{name:"Kaszycki, Julia",type:"T",zip:"01464",team:"Slate"},{name:"Lahue, Cameron",type:"T",zip:"01905",team:"NCE"},{name:"LeBlanc, Nathan",type:"T",zip:"01757",team:"Slate"},{name:"Lincoln, Scott",type:"T",zip:"03051",team:"Slate"},{name:"Matas, Jared",type:"T",zip:"02460",team:"Operations & SLT"},{name:"McCormack, John",type:"T",zip:"01545",team:"Gold"},{name:"McHugh, Amelia",type:"T",zip:"02472",team:"Operations & SLT"},{name:"Meilus, Antanas",type:"T",zip:"02148",team:"NCE"},{name:"Morgan, Susan",type:"T",zip:"01936",team:"Operations & SLT"},{name:"Oppong, Nicholas",type:"T",zip:"01543",team:"NCE"},{name:"Ovando, Harold",type:"T",zip:"01902",team:"Burgundy"},{name:"Parker, Dale",type:"T",zip:"02169",team:"Operations & SLT"},{name:"Pereira, Aaron",type:"T",zip:"02703",team:"Operations & SLT"},{name:"Pinto, Melinda",type:"T",zip:"02472",team:"Gold"},{name:"Poles, Nick",type:"T",zip:"01775",team:"Gold"},{name:"Prosper, Judens",type:"T",zip:"01902",team:"Slate"},{name:"Quartararo, Jordan",type:"T",zip:"01844",team:"Gold"},{name:"Rivera, George",type:"T",zip:"01524",team:"Slate"},{name:"Schmidt, Sean",type:"T",zip:"02135",team:"Slate"},{name:"Smith, Robert",type:"T",zip:"01460",team:"Operations & SLT"},{name:"Starkin, Paul",type:"T",zip:"01082",team:"Slate"},{name:"Thang, Sundy",type:"T",zip:"01460",team:"Slate"},{name:"White, Erik",type:"T",zip:"01568",team:"Gold"},{name:"William Addo",type:"T",zip:"02132",team:"Burgundy"},{name:"Zakarashvili, Georgy",type:"T",zip:"02478",team:"Service Desk"},{name:"Acera School",type:"C",zip:"02476",team:"Service Desk"},{name:"ACS",type:"C",zip:"02141",team:"Service Desk"},{name:"Asha Patel",type:"C",zip:"02138",team:"Service Desk"},{name:"Atrium School",type:"C",zip:"02472",team:"Burgundy"},{name:"Bancroft School",type:"C",zip:"01605",team:"Gold"},{name:"BCM",type:"C",zip:"02210",team:"Service Desk"},{name:"BHNS",type:"C",zip:"02114",team:"Burgundy"},{name:"Beaver Country Day School",type:"C",zip:"02467",team:"Service Desk"},{name:"Berkman",type:"C",zip:"02445",team:"Service Desk"},{name:"Bourell",type:"C",zip:"02090",team:"Service Desk"},{name:"Bridge",type:"C",zip:"02119",team:"Burgundy"},{name:"Broder Properties",type:"C",zip:"02116",team:"Service Desk"},{name:"CMS",type:"C",zip:"02138",team:"Burgundy"},{name:"CSW",type:"C",zip:"02493",team:"Gold"},{name:"Carroll Pierce",type:"C",zip:"02108",team:"Service Desk"},{name:"CNS",type:"C",zip:"02129",team:"Service Desk"},{name:"Children's Own School",type:"C",zip:"01890",team:"Service Desk"},{name:"Cliff Briggin",type:"C",zip:"02467",team:"Service Desk"},{name:"CTAC",type:"C",zip:"02108",team:"Service Desk"},{name:"Concord Academy",type:"C",zip:"01742",team:"Slate"},{name:"Concord Museum",type:"C",zip:"01742",team:"Service Desk"},{name:"CPW",type:"C",zip:"02151",team:"Service Desk"},{name:"Curio Spice",type:"C",zip:"01803",team:"Service Desk"},{name:"DCD",type:"C",zip:"02026",team:"Burgundy"},{name:"Discovery Museum",type:"C",zip:"01720",team:"Service Desk"},{name:"Donelan Contracting, Inc",type:"C",zip:"02130",team:"Service Desk"},{name:"EHS",type:"C",zip:"01945",team:"Slate"},{name:"Fayerweather",type:"C",zip:"02138",team:"Service Desk"},{name:"Figur8",type:"C",zip:"02116",team:"Service Desk"},{name:"Fred Maynard",type:"C",zip:"02116",team:"Service Desk"},{name:"FreshComm",type:"C",zip:"01864",team:"Service Desk"},{name:"Gann Academy",type:"C",zip:"02452",team:"NCE"},{name:"GUS",type:"C",zip:"01915",team:"Slate"},{name:"Harborlight",type:"C",zip:"01915",team:"Service Desk"},{name:"Hardy+Man",type:"C",zip:"02189",team:"Service Desk"},{name:"Harrington Heep",type:"C",zip:"02482",team:"Service Desk"},{name:"Henshon Klein LLP",type:"C",zip:"02481",team:"Service Desk"},{name:"HOPe",type:"C",zip:"02356",team:"Service Desk"},{name:"JWP",type:"C",zip:"02458",team:"Burgundy"},{name:"Jason & Fischer",type:"C",zip:"02108",team:"Service Desk"},{name:"Jim Donovan",type:"C",zip:"02467",team:"Service Desk"},{name:"Joan Weinsten",type:"C",zip:"02493",team:"Service Desk"},{name:"Kingsley",type:"C",zip:"02116",team:"Burgundy"},{name:"Lili Banani",type:"C",zip:"02110",team:"Service Desk"},{name:"Mary Kane",type:"C",zip:"02115",team:"Service Desk"},{name:"Material Impact",type:"C",zip:"02116",team:"Service Desk"},{name:"MMLaw",type:"C",zip:"02151",team:"Service Desk"},{name:"NEIA",type:"C",zip:"01752",team:"Gold"},{name:"Nobles",type:"C",zip:"02026",team:"Gold"},{name:"Oak Meadow",type:"C",zip:"01460",team:"Service Desk"},{name:"OunceIT, LLC",type:"C",zip:"01760",team:"Operations & SLT"},{name:"Park School",type:"C",zip:"02445",team:"Gold"},{name:"Pike School",type:"C",zip:"01810",team:"Slate"},{name:"Plymouth center",type:"C",zip:"02360",team:"Service Desk"},{name:"Princeton Properties",type:"C",zip:"01851",team:"Service Desk"},{name:"Promoboxx",type:"C",zip:"02118",team:"Service Desk"},{name:"Quality Graphics",type:"C",zip:"02145",team:"Service Desk"},{name:"Roxbury Latin",type:"C",zip:"02132",team:"Service Desk"},{name:"Russo",type:"C",zip:"02459",team:"Service Desk"},{name:"Sisters of Notre Dame",type:"C",zip:"01938",team:"Service Desk"},{name:"Smarter Health Care",type:"C",zip:"01772",team:"Service Desk"},{name:"SmarterWisdom Consulting",type:"C",zip:"02459",team:"Service Desk"},{name:"St. Mark's School",type:"C",zip:"01772",team:"NCE"},{name:"St. Sebastian's School",type:"C",zip:"02492",team:"Service Desk"},{name:"Tenacre Country Day School",type:"C",zip:"02482",team:"Burgundy"},{name:"Thacher Montessori School",type:"C",zip:"02186",team:"NCE"},{name:"The Chestnut Hill School",type:"C",zip:"02467",team:"Burgundy"},{name:"The Fenn School",type:"C",zip:"01742",team:"Service Desk"},{name:"The Fessenden School",type:"C",zip:"02465",team:"Slate"},{name:"The Rashi School",type:"C",zip:"02026",team:"Burgundy"},{name:"The Waring School",type:"C",zip:"01915",team:"Slate"},{name:"Tremont School",type:"C",zip:"01742",team:"Service Desk"},{name:"Walnut Hill School",type:"C",zip:"01760",team:"Gold"},{name:"Wellesley Historical Society",type:"C",zip:"02481",team:"Service Desk"},{name:"Worcester Academy",type:"C",zip:"01604",team:"Service Desk"},{name:"YWBoston",type:"C",zip:"02116",team:"Service Desk"},{name:"YWCA Cambridge",type:"C",zip:"02139",team:"Service Desk"}];
 
 async function seedOnce(){try{const flag=await getDoc(SEED_FLAG);if(flag.exists())return;setLoadingMsg('Setting up database for the first time…');document.getElementById('loading').style.display='flex';const batch=writeBatch(db);SEED.forEach(s=>{batch.set(doc(PEOPLE_COL),{...s,archived:false});});batch.set(SEED_FLAG,{seededAt:new Date().toISOString(),count:SEED.length});await batch.commit();document.getElementById('loading').style.display='none';}catch(e){document.getElementById('loading').style.display='none';console.error('Seed error:',e);}}
 function setupRealtimeSync(){setStatus('connecting');onSnapshot(PEOPLE_COL,async snapshot=>{people=snapshot.docs.map(d=>({id:d.id,...d.data()}));clearTimeout(renderTimer);renderTimer=setTimeout(async()=>{await renderAll();if(Object.keys(zipGroups).length>0){const pts=people.filter(p=>p.coords&&isVisible(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length&&!selectedTech&&!lastInterPerson){try{map.fitBounds(pts,{padding:[50,50]});}catch(e){}}}},300);setStatus('live');},error=>{console.error('Firestore:',error);setStatus('error');showToast('Database error',true);});}
 
-try{
-  initMap();
-  setupAuth();
-  seedOnce().then(()=>loadSharedGeoCache()).then(()=>setupRealtimeSync());
-}catch(e){
-  document.getElementById('err-overlay').style.display='flex';
-  document.getElementById('err-msg').textContent=e.message;
-}
+try{initMap();setupAuth();seedOnce().then(()=>loadSharedGeoCache()).then(()=>setupRealtimeSync());}catch(e){document.getElementById('err-overlay').style.display='flex';document.getElementById('err-msg').textContent=e.message;}
 </script>
 </body>
 </html>
