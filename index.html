@@ -311,7 +311,24 @@ async function qOP(lat,lng,mi,cat){
   const [k,v]=c.tag.split('=');
   const rm=Math.round(mi*1609.344*1.1);
   const q='[out:json][timeout:30];(node(around:'+rm+','+lat+','+lng+')['+k+'='+v+'];way(around:'+rm+','+lat+','+lng+')['+k+'='+v+'];);out center;';
-  try{const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});const d=await r.json();return(d.elements||[]).map(el=>({id:'p'+el.id,name:el.tags?.name||el.tags?.['name:en']||cat,lat:el.lat||el.center?.lat,lng:el.lon||el.center?.lon,addr:(el.tags?.['addr:housenumber']?el.tags['addr:housenumber']+' ':'')+(el.tags?.['addr:street']||''),cat})).filter(x=>x.lat&&x.lng);}catch(ex){return[];}
+  try{
+    const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});
+    const d=await r.json();
+    return(d.elements||[]).map(el=>{
+      const t=el.tags||{};
+      return {
+        id:'p'+el.id,
+        name:t.name||t['name:en']||cat,
+        lat:el.lat||el.center?.lat,
+        lng:el.lon||el.center?.lon,
+        addr:(t['addr:housenumber']?t['addr:housenumber']+' ':'')+(t['addr:street']||''),
+        website:t.website||t['contact:website']||t['url']||'',
+        phone:t.phone||t['contact:phone']||t['contact:mobile']||'',
+        email:t.email||t['contact:email']||'',
+        cat
+      };
+    }).filter(x=>x.lat&&x.lng);
+  }catch(ex){return[];}
 }
 
 async function gZip(zip){const k=zip.toString().trim().padStart(5,'0');if(geo[k]){if(!inSS(geo[k].lat,geo[k].lng)){delete geo[k];delete city[k];}else return geo[k];}let c=null;const bb=selState&&SBB[selState]?SBB[selState]:null;const base='https://nominatim.openstreetmap.org/search?postalcode='+k+'&country=US&format=json&limit=1&addressdetails=1';try{if(bb){const r=await fetch(base+'&viewbox='+bb+'&bounded=1',{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)&&inSS(+d[0].lat,+d[0].lon)){c={lat:+d[0].lat,lng:+d[0].lon};const a=d[0].address||{};city[k]=a.city||a.town||a.village||a.suburb||a.county||'';}}else{const r=await fetch(base,{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)){c={lat:+d[0].lat,lng:+d[0].lon};const a=d[0].address||{};city[k]=a.city||a.town||a.village||a.suburb||a.county||'';}}if(c){geo[k]=c;localStorage.setItem('geo',JSON.stringify(geo));localStorage.setItem('city',JSON.stringify(city));const u={};u[k]={lat:c.lat,lng:c.lng,city:city[k]||''};try{await setDoc(GD,u,{merge:true});}catch(ex){}}}catch(ex){}return c;}
@@ -398,10 +415,50 @@ async function apPR(p,mi,cat){
   const raw=await qOP(p.coords.lat,p.coords.lng,mi,cat);
   const sorted=raw.map(r=>({...r,dm:dist(p.coords,{lat:r.lat,lng:r.lng})})).filter(r=>r.dm<=mi).sort((a,b)=>a.dm-b.dm).slice(0,20);
   if(!sorted.length){document.getElementById('dl').innerHTML='<div style="color:#94a3b8;font-size:12px;padding:16px 4px;text-align:center;">No '+cat.toLowerCase()+' found within '+mi+' mi.<br>Try a larger radius.</div>';sBan(c.e+' No '+cat+' found within '+mi+' mi',c.c);return;}
-  sorted.forEach(r=>{const m=L.marker([r.lat,r.lng],{icon:pIcon(cat)}).addTo(map);m.bindTooltip('<b>'+r.name+'</b>'+(r.addr?'<br>'+r.addr:''),{direction:'top',offset:[0,-14]});m.on('click',()=>map.setView([r.lat,r.lng],16,{animate:true}));pm.push(m);});
+  sorted.forEach(r=>{
+    const m=L.marker([r.lat,r.lng],{icon:pIcon(cat)}).addTo(map);
+    // Build rich tooltip with all available contact info
+    let tip='<b>'+r.name+'</b>';
+    if(r.addr) tip+='<br>📍 '+r.addr;
+    if(r.phone) tip+='<br>📞 '+r.phone;
+    if(r.email) tip+='<br>✉️ '+r.email;
+    if(r.website) tip+='<br>🌐 <em>'+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</em>';
+    if(r.website) tip+='<br><small style="color:#a78bfa">(click pin to open website)</small>';
+    m.bindTooltip(tip,{direction:'top',offset:[0,-14],maxWidth:220});
+    // Click: open website if available, otherwise zoom in
+    m.on('click',()=>{
+      if(r.website){
+        const url=r.website.startsWith('http')?r.website:'https://'+r.website;
+        window.open(url,'_blank','noopener,noreferrer');
+      } else {
+        map.setView([r.lat,r.lng],16,{animate:true});
+      }
+    });
+    pm.push(m);
+  });
   document.getElementById('lp2').style.display='flex';
-  document.getElementById('dl').innerHTML=sorted.map(r=>'<div class="poi" data-lat="'+r.lat+'" data-lng="'+r.lng+'"><div class="pe">'+c.e+'</div><div style="flex:1"><div class="pna">'+r.name+'</div>'+(r.addr?'<small class="pa">'+r.addr+'</small>':'')+'</div><div class="pdi">'+r.dm.toFixed(1)+' mi</div></div>').join('');
-  document.getElementById('dl').querySelectorAll('.poi').forEach(el=>el.addEventListener('click',()=>map.setView([+el.dataset.lat,+el.dataset.lng],16,{animate:true})));
+  document.getElementById('dl').innerHTML=sorted.map(r=>{
+    let info='';
+    if(r.addr) info+='<small class="pa">\u{1F4CD} '+r.addr+'</small>';
+    if(r.phone) info+='<small class="pa">\u{1F4DE} '+r.phone+'</small>';
+    if(r.email) info+='<small class="pa">✉️ '+r.email+'</small>';
+    if(r.website) info+='<small class="pa">🌐 '+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</small>';
+    return '<div class="poi" data-lat="'+r.lat+'" data-lng="'+r.lng+'" data-web="'+(r.website||'')+'">'
+      +'<div class="pe">'+c.e+'</div>'
+      +'<div style="flex:1"><div class="pna">'+r.name+'</div>'+info+'</div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">'
+      +'<div class="pdi">'+r.dm.toFixed(1)+' mi</div>'
+      +(r.website?'<div style="font-size:9px;color:#7c3aed;font-weight:700">Open ↗</div>':'')
+      +'</div></div>';
+  }).join('');
+  document.getElementById('dl').querySelectorAll('.poi').forEach(el=>el.addEventListener('click',()=>{
+    if(el.dataset.web){
+      const url=el.dataset.web.startsWith('http')?el.dataset.web:'https://'+el.dataset.web;
+      window.open(url,'_blank','noopener,noreferrer');
+    } else {
+      map.setView([+el.dataset.lat,+el.dataset.lng],16,{animate:true});
+    }
+  }));
   sBan(c.e+' '+sorted.length+' '+cat+(sorted.length!==1?'s':'')+' within '+mi+' mi of '+p.name,c.c);
 }
 
