@@ -155,6 +155,7 @@ header h1{font-size:17px;font-weight:800;color:#f8fafc;letter-spacing:-.5px}head
         <option value="Parking">&#x1F17F; Parking</option>
         <option value="Hotel">&#x1F3E8; Hotel</option>
         <option value="Bank">&#x1F3E6; Bank</option>
+        <option value="Apartments">&#x1F3E2; Apartments</option>
       </select>
     </div>
     <button class="btn bd" id="bf">&#x2922; Fit All</button>
@@ -243,7 +244,7 @@ const SBB={'Alabama':'-88.473,35.008,-84.888,30.144','Alaska':'-179.149,71.365,-
 function inSS(lat,lng){if(!selState||!SBB[selState])return true;const p=SBB[selState].split(',').map(Number);return lat>=p[3]&&lat<=p[1]&&lng>=p[0]&&lng<=p[2];}
 
 // FIX2: Hotel = tourism=hotel (correct OSM tag)
-const POI={'Restaurant':{tag:'amenity=restaurant',e:'\u{1F37D}',c:'#ef4444'},'Fast Food':{tag:'amenity=fast_food',e:'\u{1F354}',c:'#f97316'},'Cafe':{tag:'amenity=cafe',e:'\u{2615}',c:'#92400e'},'Hospital':{tag:'amenity=hospital',e:'\u{1F3E5}',c:'#dc2626'},'Pharmacy':{tag:'amenity=pharmacy',e:'\u{1F48A}',c:'#059669'},'Auto Shop':{tag:'shop=car_repair',e:'\u{1F527}',c:'#475569'},'Gas Station':{tag:'amenity=fuel',e:'\u{26FD}',c:'#ca8a04'},'Parking':{tag:'amenity=parking',e:'\u{1F17F}',c:'#1d4ed8'},'Hotel':{tag:'tourism=hotel',e:'\u{1F3E8}',c:'#7c3aed'},'Bank':{tag:'amenity=bank',e:'\u{1F3E6}',c:'#065f46'}};
+const POI={'Restaurant':{tag:'amenity=restaurant',e:'\u{1F37D}',c:'#ef4444'},'Fast Food':{tag:'amenity=fast_food',e:'\u{1F354}',c:'#f97316'},'Cafe':{tag:'amenity=cafe',e:'\u{2615}',c:'#92400e'},'Hospital':{tag:'amenity=hospital',e:'\u{1F3E5}',c:'#dc2626'},'Pharmacy':{tag:'amenity=pharmacy',e:'\u{1F48A}',c:'#059669'},'Auto Shop':{tag:'shop=car_repair',e:'\u{1F527}',c:'#475569'},'Gas Station':{tag:'amenity=fuel',e:'\u{26FD}',c:'#ca8a04'},'Parking':{tag:'amenity=parking',e:'\u{1F17F}',c:'#1d4ed8'},'Hotel':{tag:'tourism=hotel',e:'\u{1F3E8}',c:'#7c3aed'},'Bank':{tag:'amenity=bank',e:'\u{1F3E6}',c:'#065f46'},'Apartments':{tag:'building=apartments',e:'\u{1F3E2}',c:'#0e7490'}};
 
 const TEAMS=['Burgundy','Slate','Gold','NCE','Service Desk','Operations & SLT','Unassigned'];
 const TC={'Burgundy':'#9f1239','Slate':'#475569','Gold':'#b45309','NCE':'#065f46','Service Desk':'#1e40af','Operations & SLT':'#7c3aed','Unassigned':'#94a3b8'};
