@@ -130,13 +130,36 @@ header h1{font-size:17px;font-weight:800;color:#f8fafc;letter-spacing:-.5px}head
 @keyframes spin{to{transform:rotate(360deg)}}
 .dle{background:white;border:2px solid #1e293b;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:800;color:#1e293b;white-space:nowrap;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+#splash{position:fixed;inset:0;background:#0f172a;z-index:100000;display:flex;align-items:center;justify-content:center;}
+#spb{background:#1e293b;border-radius:20px;padding:44px 36px;width:360px;max-width:calc(100vw - 32px);text-align:center;border:1px solid #334155;box-shadow:0 25px 60px rgba(0,0,0,.6);}
+#spb .sph1{font-size:36px;font-weight:900;color:#f8fafc;letter-spacing:-1.5px;margin-bottom:8px;}#spb .sph1 span{color:#38bdf8}
+#spb .spsub{font-size:13px;color:#64748b;margin-bottom:36px;}
+.spbtn{display:block;width:100%;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;margin-bottom:10px;}
+#spg{background:#1e40af;color:white;}#spg:hover{background:#1d4ed8;}
+#spa{background:#0ea5e9;color:white;}#spa:hover{background:#0284c7;}
+.spft{font-size:11px;color:#475569;margin-top:14px;}
+#gbg{display:none;align-items:center;gap:5px;background:#1e293b55;border:1px solid #334155;color:#94a3b8;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:800;letter-spacing:.07em;}
+body.guest #gbg{display:flex;}
+body.guest .acb{display:none!important;}
+body.guest [data-tab="add"]{display:none!important;}
+body.guest #tab-add{display:none!important;}
 </style>
 </head>
 <body>
+<div id="splash">
+  <div id="spb">
+    <div class="sph1">Field<span>Map</span></div>
+    <div class="spsub">Technician &amp; Client Proximity</div>
+    <button class="spbtn" id="spg">&#x1F441; Continue as Guest</button>
+    <button class="spbtn" id="spa">&#x1F510; Admin Sign In</button>
+    <div class="spft">Guests can view &amp; explore &mdash; Admins can add &amp; edit</div>
+  </div>
+</div>
 <header>
   <h1>Field<span>Map</span></h1><div class="sub">Technician &amp; Client Proximity</div>
   <div id="ss"><div class="sd conn" id="sd"></div><span class="sl" id="sl">Connecting&#8230;</span></div>
   <div class="hr">
+    <div id="gbg">&#x1F441; GUEST</div>
     <button class="btn bd" id="bh">&#x1F525; Heat Map</button>
     <button class="btn bd" id="bi">&#x1F3AF; Interactive</button>
     <div id="ic">
@@ -163,7 +186,7 @@ header h1{font-size:17px;font-weight:800;color:#f8fafc;letter-spacing:-.5px}head
     <button id="ab"><div class="ad"></div><span id="al2">&#x1F512; Sign In</span></button>
   </div>
 </header>
-<div id="am"><div class="ame"><span>Signed in as</span><div id="amea"></div></div><button id="asb">&#x1F6AA; Sign Out</button></div>index
+<div id="am"><div class="ame"><span>Signed in as</span><div id="amea"></div></div><button id="asb">&#x1F6AA; Sign Out</button></div>
 <div id="acm"></div>
 <div id="em" class="mo">
   <div class="mb"><h2>&#x270F;&#xFE0F; Edit entry</h2><p>Update the details below and save.</p>
@@ -258,11 +281,18 @@ let people=[],geo=JSON.parse(localStorage.getItem('geo')||'{}'),city=JSON.parse(
 let selState=localStorage.getItem('selState')||'Massachusetts';
 let zg={},mk={},cl=[],lbl=[],pm=[];
 let vpin=null,hcv=null,hOn=false,iMode=false,rc=null;
+let poiAll=[],poiPage=0;
+const POI_PER_PAGE=20;
 let selT=null,lastP=null,iHL=new Set();
 let tFilter='All',sQ='',pct=null,soOpen=true,aExp=false;
 let cu=null,pwcb=null,epid=null,map,rt;
 
 window.onerror=(m,s,l)=>{document.getElementById('eo').style.display='flex';document.getElementById('em2').textContent=m+' (line '+l+')';};
+
+let guestMode=false,fromSplash=false;
+function showSplash(){guestMode=false;document.body.classList.remove('guest');if(!cu)document.getElementById('al2').textContent='🔒 Sign In';document.getElementById('splash').style.display='flex';}
+function hideSplash(){document.getElementById('splash').style.display='none';}
+function enterGuest(){guestMode=true;document.body.classList.add('guest');hideSplash();if(!cu)document.getElementById('al2').textContent='🔑 Admin Login';}
 
 function iM(){map=L.map('map').setView([42.36,-71.06],10);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'\u00a9 <a href="https://openstreetmap.org">OpenStreetMap</a>',maxZoom:19}).addTo(map);map.on('moveend zoomend',()=>{if(hOn)dHC();});map.on('click',()=>{hCP();hTP();hSD();cAM();cACM();});}
 function sSt(s){document.getElementById('sd').className='sd '+(s==='live'?'live':s==='conn'?'conn':'err');document.getElementById('sl').textContent=s==='live'?'Live':s==='conn'?'Connecting\u2026':'Offline';}
@@ -275,15 +305,16 @@ async function lSGC(){
 }
 
 function sAuth(){
-  onAuthStateChanged(auth,u=>{cu=u;if(u){document.getElementById('ab').className='btn bd in';document.getElementById('al2').textContent='\u2713 '+u.email.split('@')[0];document.getElementById('amea').textContent=u.email;}else{document.getElementById('ab').className='btn bd';document.getElementById('al2').textContent='\uD83D\uDD12 Sign In';cAM();}});
+  let authInit=false;
+  onAuthStateChanged(auth,u=>{cu=u;if(u){guestMode=false;document.body.classList.remove('guest');document.getElementById('ab').className='btn bd in';document.getElementById('al2').textContent='\u2713 '+u.email.split('@')[0];document.getElementById('amea').textContent=u.email;if(!authInit){hideSplash();authInit=true;}}else{document.getElementById('ab').className='btn bd';document.getElementById('al2').textContent=guestMode?'\uD83D\uDD11 Admin Login':'\uD83D\uDD12 Sign In';cAM();authInit=true;}});
   document.getElementById('ab').addEventListener('click',e=>{e.stopPropagation();if(cu){const m=document.getElementById('am'),o=m.classList.contains('open');if(o){cAM();return;}const r=document.getElementById('ab').getBoundingClientRect();m.style.top=(r.bottom+6)+'px';m.style.right=(window.innerWidth-r.right)+'px';m.style.left='auto';m.classList.add('open');}else oLM(null);});
-  document.getElementById('asb').addEventListener('click',()=>{signOut(auth);cAM();sT('Signed out');});
+  document.getElementById('asb').addEventListener('click',()=>{signOut(auth);cAM();sT('Signed out');showSplash();});
   document.addEventListener('click',e=>{if(!document.getElementById('am').contains(e.target)&&e.target!==document.getElementById('ab'))cAM();if(!document.getElementById('acm').contains(e.target))cACM();});
   document.getElementById('lsub').addEventListener('click',subL);document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')subL();});document.getElementById('lcan').addEventListener('click',cLM);document.getElementById('lm2').addEventListener('click',e=>{if(e.target===document.getElementById('lm2'))cLM();});
 }
 function cAM(){document.getElementById('am').classList.remove('open');}
 function oLM(cb){pwcb=cb;document.getElementById('le').value='';document.getElementById('lp').value='';document.getElementById('ler').style.display='none';document.getElementById('lm2').classList.add('open');setTimeout(()=>document.getElementById('le').focus(),100);}
-function cLM(){document.getElementById('lm2').classList.remove('open');pwcb=null;}
+function cLM(){document.getElementById('lm2').classList.remove('open');const fs=fromSplash;fromSplash=false;pwcb=null;if(fs&&!cu){showSplash();}}
 async function subL(){const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;const er=document.getElementById('ler'),b=document.getElementById('lsub');if(!e||!p){er.textContent='Please enter email and password.';er.style.display='block';return;}b.disabled=true;b.textContent='Signing in\u2026';er.style.display='none';try{await signInWithEmailAndPassword(auth,e,p);cLM();sT('Signed in!');if(pwcb){pwcb();pwcb=null;}}catch(ex){er.textContent=(ex.code==='auth/invalid-credential'||ex.code==='auth/wrong-password'||ex.code==='auth/user-not-found')?'Incorrect email or password.':'Sign-in failed: '+ex.message;er.style.display='block';}b.disabled=false;b.textContent='Sign In';}
 function rAuth(fn){if(cu)fn();else oLM(fn);}
 
@@ -304,7 +335,7 @@ async function pVP(lat,lng,lbl){cVP();const m=L.marker([lat,lng],{icon:vPIcon(),
 async function srchLoc(q){hSD();document.getElementById('si2').value='';sQ='';document.getElementById('scl').style.display='none';const s=q.trim();sLM('Finding location\u2026');document.getElementById('loading').style.display='flex';let lat,lng,lbl;try{const isZ=/^\d{5}$/.test(s);if(isZ){const c=await gZip(s);if(c){lat=c.lat;lng=c.lng;const ct=gCity(s.padStart(5,'0'));lbl='Zip '+s+(ct?' \u00b7 '+ct:'');}}if(!lat){const sq=selState?', '+selState+', USA':', USA';const r=await fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(s+sq)+'&format=json&limit=1&addressdetails=1',{headers:{'Accept-Language':'en'}});const d=await r.json();if(d&&d[0]&&inUSA(+d[0].lat,+d[0].lon)){lat=+d[0].lat;lng=+d[0].lon;lbl=(d[0].display_name||s).split(',').slice(0,2).join(', ');}}}catch(ex){}document.getElementById('loading').style.display='none';if(!lat){sT('Location not found for "'+s+'"',true);return;}await pVP(lat,lng,lbl||s);}
 
 // POI
-function cPM(){pm.forEach(m=>map.removeLayer(m));pm=[];document.getElementById('lp2').style.display='none';}
+function cPM(){pm.forEach(m=>map.removeLayer(m));pm=[];document.getElementById('lp2').style.display='none';const pn=document.getElementById('poi-nav');if(pn)pn.style.display='none';}
 function pIcon(cat){const c=POI[cat]||{e:'\uD83D\uDCCD',c:'#7c3aed'};return L.divIcon({html:'<div style="background:'+c.c+';border:3px solid white;border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:15px;transform:rotate(45deg)"><span style="transform:rotate(-45deg)">'+c.e+'</span></div>',iconSize:[30,30],iconAnchor:[15,15],className:''});}
 
 async function qOP(lat,lng,mi,cat){
@@ -409,26 +440,47 @@ async function apPR(p,mi,cat){
   map.fitBounds(rc.getBounds(),{padding:[40,40],animate:true});
   sBan('\uD83D\uDD0D Searching '+c.e+' '+cat+' within '+mi+' mi\u2026',c.c);
   document.getElementById('de').style.display='none';
-  const body=document.getElementById('db');body.style.cssText='display:flex;flex-direction:column;gap:6px;';
+  const body=document.getElementById('db');
+  body.style.cssText='display:flex;flex-direction:column;gap:4px;';
   document.getElementById('dt').textContent=c.e+' '+cat+' near '+p.name;
+  // Ensure poi-nav exists as a fixed bar above the scrollable list
+  if(!document.getElementById('poi-nav')){
+    const nav=document.createElement('div');
+    nav.id='poi-nav';
+    body.insertBefore(nav,document.getElementById('dl'));
+  }
+  document.getElementById('poi-nav').innerHTML='';
+  document.getElementById('poi-nav').style.display='none';
+  document.getElementById('dl').style.cssText='overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:7px;';
   document.getElementById('dl').innerHTML='<div class="psr"><div class="psp"></div>Querying OpenStreetMap\u2026</div>';
   swT('distances');
   const raw=await qOP(p.coords.lat,p.coords.lng,mi,cat);
-  const sorted=raw.map(r=>({...r,dm:dist(p.coords,{lat:r.lat,lng:r.lng})})).filter(r=>r.dm<=mi).sort((a,b)=>a.dm-b.dm).slice(0,20);
+  const sorted=raw.map(r=>({...r,dm:dist(p.coords,{lat:r.lat,lng:r.lng})})).filter(r=>r.dm<=mi).sort((a,b)=>a.dm-b.dm);
+poiAll=sorted;poiPage=0;
   if(!sorted.length){document.getElementById('dl').innerHTML='<div style="color:#94a3b8;font-size:12px;padding:16px 4px;text-align:center;">No '+cat.toLowerCase()+' found within '+mi+' mi.<br>Try a larger radius.</div>';sBan(c.e+' No '+cat+' found within '+mi+' mi',c.c);return;}
+  // Plot ALL pins at once on the map
   sorted.forEach(r=>{
     const m=L.marker([r.lat,r.lng],{icon:pIcon(cat)}).addTo(map);
-    // Build rich tooltip with all available contact info
+    // Build rich tooltip — Apartments get Zillow hint, others get contact info
     let tip='<b>'+r.name+'</b>';
     if(r.addr) tip+='<br>📍 '+r.addr;
-    if(r.phone) tip+='<br>📞 '+r.phone;
-    if(r.email) tip+='<br>✉️ '+r.email;
-    if(r.website) tip+='<br>🌐 <em>'+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</em>';
-    if(r.website) tip+='<br><small style="color:#a78bfa">(click pin to open website)</small>';
+    if(cat==='Apartments'){
+      tip+='<br><small style="color:#0e7490;font-weight:700">🔍 Click to search rentals on Zillow</small>';
+    } else {
+      if(r.phone) tip+='<br>📞 '+r.phone;
+      if(r.email) tip+='<br>✉️ '+r.email;
+      if(r.website) tip+='<br>🌐 <em>'+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</em>';
+      if(r.website) tip+='<br><small style="color:#a78bfa">(click pin to open website)</small>';
+    }
     m.bindTooltip(tip,{direction:'top',offset:[0,-14],maxWidth:220});
-    // Click: open website if available, otherwise zoom in
+    // Click: for Apartments open Zillow/Apartments.com search; else open website or zoom
     m.on('click',()=>{
-      if(r.website){
+      if(cat==='Apartments'){
+        // Build a search query from name + address for Zillow
+        const q=encodeURIComponent((r.name!==cat?r.name+' ':'')+r.addr);
+        const zillow='https://www.zillow.com/homes/for_rent/'+q+'_rb/';
+        window.open(zillow,'_blank','noopener,noreferrer');
+      } else if(r.website){
         const url=r.website.startsWith('http')?r.website:'https://'+r.website;
         window.open(url,'_blank','noopener,noreferrer');
       } else {
@@ -438,29 +490,72 @@ async function apPR(p,mi,cat){
     pm.push(m);
   });
   document.getElementById('lp2').style.display='flex';
-  document.getElementById('dl').innerHTML=sorted.map(r=>{
+  renderPoiPage(cat,c);
+  const catPlural=(sorted.length!==1&&!cat.endsWith('s'))?cat+'s':cat;
+sBan(c.e+' '+sorted.length+' '+catPlural+' within '+mi+' mi of '+p.name,c.c);
+
+// Paginated POI results renderer
+function renderPoiPage(cat,c){
+  const dl=document.getElementById('dl');
+  const nav=document.getElementById('poi-nav');
+  const start=poiPage*POI_PER_PAGE;
+  const end=Math.min(start+POI_PER_PAGE, poiAll.length);
+  const page=poiAll.slice(start,end);
+  const total=poiAll.length;
+  const isApt=cat==='Apartments';
+
+  // ★ Pagination bar lives in #poi-nav — OUTSIDE the scrollable list, always visible
+  const hasPrev=poiPage>0;
+  const hasNext=end<total;
+  if(nav){
+    nav.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#f5f3ff;border-radius:8px;border:1.5px solid #ede9fe;margin-bottom:6px;flex-shrink:0;';
+    nav.innerHTML=
+      '<button id="poi-prev" style="background:'+(hasPrev?'#7c3aed':'#cbd5e1')+';color:'+(hasPrev?'white':'#94a3b8')+';border:none;border-radius:7px;padding:7px 16px;font-size:12px;font-weight:700;cursor:'+(hasPrev?'pointer':'default')+';">&#x2190; Prev</button>'
+      +'<span style="font-size:12px;color:#7c3aed;font-weight:700;">'+(start+1)+'&#8211;'+end+' <span style="color:#64748b;font-weight:500">of '+total+'</span></span>'
+      +'<button id="poi-next" style="background:'+(hasNext?'#7c3aed':'#cbd5e1')+';color:'+(hasNext?'white':'#94a3b8')+';border:none;border-radius:7px;padding:7px 16px;font-size:12px;font-weight:700;cursor:'+(hasNext?'pointer':'default')+';">Next &#x2192;</button>';
+    // Wire buttons
+    const pb=document.getElementById('poi-prev');
+    const nb=document.getElementById('poi-next');
+    if(pb&&hasPrev) pb.addEventListener('click',()=>{poiPage--;renderPoiPage(cat,c);dl.scrollTop=0;});
+    if(nb&&hasNext) nb.addEventListener('click',()=>{poiPage++;renderPoiPage(cat,c);dl.scrollTop=0;});
+  }
+
+  let items=page.map(r=>{
     let info='';
-    if(r.addr) info+='<small class="pa">\u{1F4CD} '+r.addr+'</small>';
-    if(r.phone) info+='<small class="pa">\u{1F4DE} '+r.phone+'</small>';
-    if(r.email) info+='<small class="pa">✉️ '+r.email+'</small>';
-    if(r.website) info+='<small class="pa">🌐 '+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</small>';
-    return '<div class="poi" data-lat="'+r.lat+'" data-lng="'+r.lng+'" data-web="'+(r.website||'')+'">'
+    if(r.addr) info+='<small class="pa">&#x1F4CD; '+r.addr+'</small>';
+    if(r.phone) info+='<small class="pa">&#x1F4DE; '+r.phone+'</small>';
+    if(r.email) info+='<small class="pa">&#x2709;&#xFE0F; '+r.email+'</small>';
+    if(r.website&&!isApt) info+='<small class="pa">&#x1F310; '+r.website.replace(/^https?:\/\//,'').split('/')[0]+'</small>';
+    return '<div class="poi" data-lat="'+r.lat+'" data-lng="'+r.lng
+      +'" data-web="'+(r.website||'')+'" data-apt="'+(isApt?'1':'0')
+      +'" data-name="'+r.name+'" data-addr="'+r.addr+'">'
       +'<div class="pe">'+c.e+'</div>'
       +'<div style="flex:1"><div class="pna">'+r.name+'</div>'+info+'</div>'
       +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">'
       +'<div class="pdi">'+r.dm.toFixed(1)+' mi</div>'
-      +(r.website?'<div style="font-size:9px;color:#7c3aed;font-weight:700">Open ↗</div>':'')
+      +(isApt?'<div style="font-size:9px;color:#0e7490;font-weight:700">Zillow &#x2197;</div>'
+             :(r.website?'<div style="font-size:9px;color:#7c3aed;font-weight:700">Open &#x2197;</div>':''))
       +'</div></div>';
   }).join('');
-  document.getElementById('dl').querySelectorAll('.poi').forEach(el=>el.addEventListener('click',()=>{
-    if(el.dataset.web){
+
+  // Items go in the scrollable #dl; pagination is in #poi-nav above
+  dl.innerHTML=items;
+
+  // Wire up item clicks
+  dl.querySelectorAll('.poi').forEach(el=>el.addEventListener('click',()=>{
+    if(el.dataset.apt==='1'){
+      const q=encodeURIComponent((el.dataset.name&&el.dataset.name!==cat?el.dataset.name+' ':'')+el.dataset.addr);
+      window.open('https://www.zillow.com/homes/for_rent/'+q+'_rb/','_blank','noopener,noreferrer');
+    } else if(el.dataset.web){
       const url=el.dataset.web.startsWith('http')?el.dataset.web:'https://'+el.dataset.web;
       window.open(url,'_blank','noopener,noreferrer');
     } else {
       map.setView([+el.dataset.lat,+el.dataset.lng],16,{animate:true});
     }
   }));
-  sBan(c.e+' '+sorted.length+' '+cat+(sorted.length!==1?'s':'')+' within '+mi+' mi of '+p.name,c.c);
+
+}
+
 }
 
 function cRad(){if(rc){map.removeLayer(rc);rc=null;}document.getElementById('lr').style.display='none';}
@@ -507,6 +602,8 @@ const SEED=[{"name":"Agyemang, Pius","type":"T","zip":"02189","team":"Operations
 
 async function seedOnce(){try{const fl=await getDoc(SF);if(fl.exists())return;sLM('Setting up database\u2026');document.getElementById('loading').style.display='flex';const batch=writeBatch(db);SEED.forEach(s=>{batch.set(doc(PC),{...s,archived:false});});batch.set(SF,{seededAt:new Date().toISOString(),count:SEED.length});await batch.commit();document.getElementById('loading').style.display='none';}catch(ex){document.getElementById('loading').style.display='none';console.error('Seed:',ex);}}
 function sRS(){sSt('conn');onSnapshot(PC,async sn=>{people=sn.docs.map(d=>({id:d.id,...d.data()}));clearTimeout(rt);rt=setTimeout(async()=>{await rAll();if(Object.keys(zg).length>0){const pts=people.filter(p=>p.coords&&isV(p)).map(p=>[p.coords.lat,p.coords.lng]);if(pts.length&&!selT&&!lastP){try{map.fitBounds(pts,{padding:[50,50]});}catch(ex){}}}},300);sSt('live');},ex=>{console.error('Firestore:',ex);sSt('err');sT('Database error',true);});}
+document.getElementById('spg').addEventListener('click',enterGuest);
+document.getElementById('spa').addEventListener('click',()=>{fromSplash=true;hideSplash();oLM(null);});
 try{iM();sAuth();seedOnce().then(()=>lSGC()).then(()=>sRS());}catch(ex){document.getElementById('eo').style.display='flex';document.getElementById('em2').textContent=ex.message;}
 
 </script>
